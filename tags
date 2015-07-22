@@ -1,0 +1,95 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+COMPILE_FLAGS	Makefile	/^COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g$/;"	m
+CXX	Makefile	/^CXX ?= g++$/;"	m
+DEBUG	include/util/Log.h	/^const int DEBUG = 0x00;$/;"	v
+DESTDIR	Makefile	/^DESTDIR = \/$/;"	m
+ERROR	include/util/Log.h	/^const int ERROR = 0x03;$/;"	v
+GAME_H	include/Game.h	2;"	d
+Game	include/Game.h	/^class Game {$/;"	c
+Game::init	include/Game.h	/^	static void init();$/;"	p	class:Game	access:public	signature:()
+Game::init	src/Game.cpp	/^void Game::init() {$/;"	f	class:Game	signature:()
+HEIGHT	src/gfx/Window.cpp	/^const int HEIGHT = WIDTH \/ 4 * 3;$/;"	v
+INCLUDES	Makefile	/^INCLUDES = -I .\/include$/;"	m
+INFO	include/util/Log.h	/^const int INFO = 0x01;$/;"	v
+INPUT_H	include/Input.h	2;"	d
+Input	include/Input.h	/^class Input {$/;"	c
+Input::isPressed	include/Input.h	/^	static bool isPressed(int key);$/;"	p	class:Input	access:public	signature:(int key)
+Input::isPressed	src/Input.cpp	/^bool Input::isPressed(int key) {$/;"	f	class:Input	signature:(int key)
+Input::setState	include/Input.h	/^	static void setState(int key, bool state);$/;"	p	class:Input	access:public	signature:(int key, bool state)
+Input::setState	src/Input.cpp	/^void Input::setState(int key, bool state) {$/;"	f	class:Input	signature:(int key, bool state)
+LIBS	Makefile	/^LIBS = -lGL -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lXcursor -lXinerama$/;"	m
+LOG_H	include/util/Log.h	2;"	d
+Log	include/util/Log.h	/^class Log {$/;"	c
+Log::print	include/util/Log.h	/^	static void print(int msg);$/;"	p	class:Log	access:public	signature:(int msg)
+Log::print	include/util/Log.h	/^	static void print(std::string msg);$/;"	p	class:Log	access:public	signature:(std::string msg)
+Log::print	include/util/Log.h	/^	static void print(std::string msg, int type);$/;"	p	class:Log	access:public	signature:(std::string msg, int type)
+Log::print	src/util/Log.cpp	/^void Log::print(int msg) {$/;"	f	class:Log	signature:(int msg)
+Log::print	src/util/Log.cpp	/^void Log::print(std::string msg) {$/;"	f	class:Log	signature:(std::string msg)
+Log::print	src/util/Log.cpp	/^void Log::print(std::string msg, int type) {$/;"	f	class:Log	signature:(std::string msg, int type)
+NAME	Makefile	/^NAME = platformer$/;"	m
+NAME	src/gfx/Window.cpp	/^const char NAME[] = "Platformer";$/;"	v
+SCREEN_H	include/gfx/Screen.h	2;"	d
+SOURCES	Makefile	/^SOURCES = $(shell find $(SRC_PATH)\/ -name '*.$(SRC_EXT)' -printf '%T@\\t%p\\n' \\$/;"	m
+SRC_EXT	Makefile	/^SRC_EXT = cpp$/;"	m
+SRC_PATH	Makefile	/^SRC_PATH = src$/;"	m
+Screen	include/gfx/Screen.h	/^class Screen {$/;"	c
+Screen::clear	include/gfx/Screen.h	/^	static void clear();$/;"	p	class:Screen	access:public	signature:()
+Screen::clear	src/gfx/Screen.cpp	/^void Screen::clear() {$/;"	f	class:Screen	signature:()
+Screen::drawRectangle	include/gfx/Screen.h	/^	static void drawRectangle(int x1, int y1, int x2, int y2);$/;"	p	class:Screen	access:public	signature:(int x1, int y1, int x2, int y2)
+Screen::drawRectangle	src/gfx/Screen.cpp	/^void Screen::drawRectangle(int x1, int y1, int x2, int y2) {$/;"	f	class:Screen	signature:(int x1, int y1, int x2, int y2)
+TICK_H	include/util/Tick.h	2;"	d
+TPS	include/Game.h	/^const int TPS = 60;$/;"	v
+WARNING	include/util/Log.h	/^const int WARNING = 0x02;$/;"	v
+WIDTH	src/gfx/Window.cpp	/^const int WIDTH = 608;$/;"	v
+WINDOW_H	include/gfx/Window.h	2;"	d
+clear	include/gfx/Screen.h	/^	static void clear();$/;"	p	class:Screen	access:public	signature:()
+clear	src/gfx/Screen.cpp	/^void Screen::clear() {$/;"	f	class:Screen	signature:()
+createWindow	include/gfx/Window.h	/^bool createWindow();$/;"	p	signature:()
+createWindow	src/gfx/Window.cpp	/^bool createWindow() {$/;"	f	signature:()
+destroyWindow	include/gfx/Window.h	/^void destroyWindow();$/;"	p	signature:()
+destroyWindow	src/gfx/Window.cpp	/^void destroyWindow() {$/;"	f	signature:()
+drawRectangle	include/gfx/Screen.h	/^	static void drawRectangle(int x1, int y1, int x2, int y2);$/;"	p	class:Screen	access:public	signature:(int x1, int y1, int x2, int y2)
+drawRectangle	src/gfx/Screen.cpp	/^void Screen::drawRectangle(int x1, int y1, int x2, int y2) {$/;"	f	class:Screen	signature:(int x1, int y1, int x2, int y2)
+gameLoop	src/Game.cpp	/^void gameLoop() {$/;"	f	signature:()
+gameLoop	src/Game.cpp	/^void gameLoop();$/;"	p	file:	signature:()
+getMilliCount	include/util/Tick.h	/^int getMilliCount();$/;"	p	signature:()
+getMilliCount	src/util/Tick.cpp	/^int getMilliCount() {$/;"	f	signature:()
+getMilliSpan	include/util/Tick.h	/^int getMilliSpan(int nTimeStart);$/;"	p	signature:(int nTimeStart)
+getMilliSpan	src/util/Tick.cpp	/^int getMilliSpan(int nTimeStart) {$/;"	f	signature:(int nTimeStart)
+info	src/Game.cpp	/^void info() {$/;"	f	signature:()
+info	src/Game.cpp	/^void info();$/;"	p	file:	signature:()
+init	include/Game.h	/^	static void init();$/;"	p	class:Game	access:public	signature:()
+init	src/Game.cpp	/^void Game::init() {$/;"	f	class:Game	signature:()
+isPressed	include/Input.h	/^	static bool isPressed(int key);$/;"	p	class:Input	access:public	signature:(int key)
+isPressed	src/Input.cpp	/^bool Input::isPressed(int key) {$/;"	f	class:Input	signature:(int key)
+keyCallback	include/Input.h	/^void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);$/;"	p	signature:(GLFWwindow* window, int key, int scancode, int action, int mods)
+keyCallback	src/Input.cpp	/^void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {$/;"	f	signature:(GLFWwindow* window, int key, int scancode, int action, int mods)
+keys	src/Input.cpp	/^bool keys[1000] = {0};$/;"	v
+lastInfo	src/Game.cpp	/^int lastInfo;$/;"	v
+lastTick	src/Game.cpp	/^int lastTick;$/;"	v
+main	src/Launcher.cpp	/^int main() {$/;"	f	signature:()
+pollWindow	include/gfx/Window.h	/^void pollWindow();$/;"	p	signature:()
+pollWindow	src/gfx/Window.cpp	/^void pollWindow() {$/;"	f	signature:()
+print	include/util/Log.h	/^	static void print(int msg);$/;"	p	class:Log	access:public	signature:(int msg)
+print	include/util/Log.h	/^	static void print(std::string msg);$/;"	p	class:Log	access:public	signature:(std::string msg)
+print	include/util/Log.h	/^	static void print(std::string msg, int type);$/;"	p	class:Log	access:public	signature:(std::string msg, int type)
+print	src/util/Log.cpp	/^void Log::print(int msg) {$/;"	f	class:Log	signature:(int msg)
+print	src/util/Log.cpp	/^void Log::print(std::string msg) {$/;"	f	class:Log	signature:(std::string msg)
+print	src/util/Log.cpp	/^void Log::print(std::string msg, int type) {$/;"	f	class:Log	signature:(std::string msg, int type)
+render	src/Game.cpp	/^void render() {$/;"	f	signature:()
+render	src/Game.cpp	/^void render();$/;"	p	file:	signature:()
+setState	include/Input.h	/^	static void setState(int key, bool state);$/;"	p	class:Input	access:public	signature:(int key, bool state)
+setState	src/Input.cpp	/^void Input::setState(int key, bool state) {$/;"	f	class:Input	signature:(int key, bool state)
+shouldCloseWindow	include/gfx/Window.h	/^bool shouldCloseWindow();$/;"	p	signature:()
+shouldCloseWindow	src/gfx/Window.cpp	/^bool shouldCloseWindow() {$/;"	f	signature:()
+swapWindow	include/gfx/Window.h	/^void swapWindow();$/;"	p	signature:()
+swapWindow	src/gfx/Window.cpp	/^void swapWindow() {$/;"	f	signature:()
+tick	src/Game.cpp	/^void tick() {$/;"	f	signature:()
+tick	src/Game.cpp	/^void tick();$/;"	p	file:	signature:()
+ticks	src/Game.cpp	/^int ticks = 0;$/;"	v
+window	src/gfx/Window.cpp	/^GLFWwindow* window;$/;"	v
