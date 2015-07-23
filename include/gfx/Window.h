@@ -3,6 +3,11 @@
 
 #include "GLFW/glfw3.h"
 
+const int SCALE = 1;
+const int WIDTH = 608 * SCALE;
+const int HEIGHT = (WIDTH / 4 * 3) * SCALE;
+const char NAME[] = "Platformer";
+
 bool createWindow();
 bool shouldCloseWindow();
 void destroyWindow();

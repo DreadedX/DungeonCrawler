@@ -1,10 +1,13 @@
 #include "Game.h"
+#include "Defs.h"
 #include "Input.h"
 #include "gfx/Window.h"
 #include "gfx/Screen.h"
-#include "util/Math.h"
+#include "entities/Entity.h"
 #include "util/Tick.h"
 #include "util/Log.h"
+
+#include <fstream>
 
 void gameLoop();
 void info();
@@ -15,8 +18,21 @@ int lastTick;
 int lastInfo;
 
 int ticks = 0;
+int frames = 0;
+
+// TESTING
+Entity entity;
 
 void Game::init() {
+
+    // byte buffer[100];
+    // std::ifstream myFile ("out.gaff", std::ios::in | std::ios::binary);
+    // myFile.read(reinterpret_cast<char*>(buffer), 100);
+    // myFile.close();
+    // for(int i = 0; i < 4; i++) {
+	// std::cout << +buffer[i] << std::endl;
+    // }
+    // return;
 
     Log::print("Debug", DEBUG);
     Log::print("Info", INFO);
@@ -50,37 +66,31 @@ void info() {
     if (getMilliSpan(lastInfo) > 1000) {
 	lastInfo = getMilliCount();
 
-	std::cout << "Ticks: " << ticks << std::endl;
+	std::cout << "Ticks: " << ticks << ", Frames: " << frames << std::endl;
 
 	ticks = 0;
+	frames = 0;
     }
 }
 
 void tick() {
 
-    int delta = getMilliSpan(lastTick);
 // TODO: This appears to not work correctly yet
-    while (delta > 1000/TPS) {
+    // if (getMilliSpan(lastTick) > 1000/TPS) {
 	lastTick = getMilliCount();
-	delta -= 1000/TPS;
+
+	entity.tick();
 
 	ticks++;
-
-	if(Input::isPressed(32)) {
-	    Log::print("Spacebar pressed");
-	    Input::setState(32, false);
-	}
-    }
+    // }
 }
 
 void render() {
     Screen::clear();
 
-    vec3f colour {1.0f, 0.5f, 0.2f};
-    // colour.x = 1.0f;
-    // colour.y = 0.5f;
-    // colour.z = 0.2f;
-    Screen::drawRectangle(100, 100, 200, 200, colour);
+    entity.render();
 
     swapWindow();
+
+    frames++;
 }

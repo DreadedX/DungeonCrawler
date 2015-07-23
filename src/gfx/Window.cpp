@@ -2,10 +2,6 @@
 #include "Input.h"
 #include "util/Log.h"
 
-const int WIDTH = 608;
-const int HEIGHT = WIDTH / 4 * 3;
-const char NAME[] = "Platformer";
-
 GLFWwindow* window;
 
 bool createWindow() {
