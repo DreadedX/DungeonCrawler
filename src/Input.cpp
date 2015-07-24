@@ -1,7 +1,4 @@
 #include "Input.h"
-#include "util/Log.h"
-
-#include "GLFW/glfw3.h"
 
 bool keys[1000] = {0};
 

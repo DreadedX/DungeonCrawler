@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "util/Log.h"
 
 void Log::print(int msg) {

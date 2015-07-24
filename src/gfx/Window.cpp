@@ -1,6 +1,4 @@
 #include "gfx/Window.h"
-#include "Input.h"
-#include "util/Log.h"
 
 GLFWwindow* window;
 

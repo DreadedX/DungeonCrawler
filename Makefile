@@ -7,7 +7,6 @@ NAME = platformer
 SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
 SRC_PATH = src
-# Space-separated pkg-config libraries used by this project
 # General compiler flags
 COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g
 # Add additional include paths
@@ -21,12 +20,18 @@ LIBS = -lGL -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lXcursor -lXinerama
 SOURCES = $(shell find $(SRC_PATH)/ -name '*.$(SRC_EXT)' -printf '%T@\t%p\n' \
 		    | sort -k 1nr | cut -f2-)
 
+GAFF = $(shell find GaffMaker/ -name '*.$(SRC_EXT)' -printf '%T@\t%p\n' \
+		    | sort -k 1nr | cut -f2-)
+
 all: $(NAME)
 
 # release: $(NAME)-release
 
 $(NAME): $(SOURCES)
-	$(CXX) $(SOURCES) $(COMPILE_FLAGS) $(INCLUDES) $(LIBS) -o$(NAME)
+	$(CXX) $(SOURCES) $(COMPILE_FLAGS) $(INCLUDES) $(LIBS) -o $(NAME)
+
+gaff: $(GAFF)
+	$(CXX) $(GAFF) $(COMPILE_FLAGS) $(INCLUDES) $(LIBS) -o gaff
 
 # $(NAME)-release: $(SOURCES)
 	# $(CXX) $(SOURCES) $(COMPILE_FLAGS) $(INCLUDES) $(LIBS) -o$(NAME)

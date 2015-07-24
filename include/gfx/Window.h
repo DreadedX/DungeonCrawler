@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "GLFW/glfw3.h"
+#include "Standard.h"
 
 const int SCALE = 1;
 const int WIDTH = 608 * SCALE;

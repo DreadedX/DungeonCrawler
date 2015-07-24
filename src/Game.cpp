@@ -1,13 +1,4 @@
 #include "Game.h"
-#include "Defs.h"
-#include "Input.h"
-#include "gfx/Window.h"
-#include "gfx/Screen.h"
-#include "entities/Entity.h"
-#include "util/Tick.h"
-#include "util/Log.h"
-
-#include <fstream>
 
 void gameLoop();
 void info();
@@ -24,20 +15,12 @@ int frames = 0;
 Entity entity;
 
 void Game::init() {
-
-    // byte buffer[100];
-    // std::ifstream myFile ("out.gaff", std::ios::in | std::ios::binary);
-    // myFile.read(reinterpret_cast<char*>(buffer), 100);
-    // myFile.close();
-    // for(int i = 0; i < 4; i++) {
-	// std::cout << +buffer[i] << std::endl;
-    // }
-    // return;
-
-    Log::print("Debug", DEBUG);
-    Log::print("Info", INFO);
-    Log::print("Warning", WARNING);
-    Log::print("Error", ERROR);
+    Reader::load("gaff");
+    
+    // Log::print("Debug", DEBUG);
+    // Log::print("Info", INFO);
+    // Log::print("Warning", WARNING);
+    // Log::print("Error", ERROR);
 
     if(!createWindow()) {
 	Log::print("Failed to create window!", ERROR);
@@ -45,6 +28,7 @@ void Game::init() {
     }
 
     Log::print("Starting game loop");
+    entity.init();
     gameLoop();
 }
 

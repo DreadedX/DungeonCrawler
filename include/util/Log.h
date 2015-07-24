@@ -1,7 +1,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include <iostream>
+#include "Standard.h"
 
 const int DEBUG = 0x00;
 const int INFO = 0x01;
