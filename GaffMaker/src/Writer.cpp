@@ -31,6 +31,8 @@ int main() {
     };
     makeFile("demo", 0xA3, imageSize(4, 4), sizeof(data2), data2);
 
+    makeFile("brickDark", 0xA3, imageSize(gimp_image.width, gimp_image.height), sizeof(gimp_image.pixel_data), gimp_image.pixel_data);
+
     byteShort fileCount;
     fileCount.s = counter;
 
@@ -64,6 +66,27 @@ int main() {
 
     file.close();
 }
+
+// Just to test
+#define PNGSIGSIZE 8
+
+bool validate(istream& source) {
+
+    //Allocate a buffer of 8 bytes, where we can put the file signature.
+    png_byte pngsig[PNGSIGSIZE];
+    int is_png = 0;
+
+    //Read the 8 bytes from the stream into the sig buffer.
+    source.read((char*)pngsig, PNGSIGSIZE);
+
+    //Check if the read worked...
+    if (!source.good()) return false;
+
+    //Let LibPNG check the sig. If this function returns 0, everything is OK.
+    is_png = png_sig_cmp(pngsig, 0, PNGSIGSIZE);
+    return (is_png == 0);
+}
+///////////////
 
 int imageSize(int width, int height) {
     byteShort w;

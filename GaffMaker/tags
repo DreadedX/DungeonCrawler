@@ -1,0 +1,91 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+COMPILE_FLAGS	Makefile	/^COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g$/;"	m
+CXX	Makefile	/^CXX ?= g++$/;"	m
+DEFINITION_H	include/Definitions.h	2;"	d
+DESTDIR	Makefile	/^DESTDIR = \/$/;"	m
+Gaff	include/Definitions.h	/^class Gaff {$/;"	c
+Gaff::MAGIC	include/Definitions.h	/^	static constexpr byte MAGIC[5] = {"GAFF"};$/;"	m	class:Gaff	access:public
+Gaff::VERSION	include/Definitions.h	/^	static const byte VERSION = 0x01;$/;"	m	class:Gaff	access:public
+Gaff::fileInfo	include/Definitions.h	/^	struct fileInfo {$/;"	s	class:Gaff	access:public
+Gaff::fileInfo::extra	include/Definitions.h	/^	    byteInt extra;$/;"	m	struct:Gaff::fileInfo	access:public
+Gaff::fileInfo::name	include/Definitions.h	/^	    std::string name = "";$/;"	m	struct:Gaff::fileInfo	access:public
+Gaff::fileInfo::nameSize	include/Definitions.h	/^	    byte nameSize = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
+Gaff::fileInfo::offset	include/Definitions.h	/^	    byteInt offset;$/;"	m	struct:Gaff::fileInfo	access:public
+Gaff::fileInfo::origin	include/Definitions.h	/^	    std::string origin = "";$/;"	m	struct:Gaff::fileInfo	access:public
+Gaff::fileInfo::size	include/Definitions.h	/^	    byteInt size;$/;"	m	struct:Gaff::fileInfo	access:public
+Gaff::fileInfo::type	include/Definitions.h	/^	    byte type = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
+INCLUDES	Makefile	/^INCLUDES = -I .\/include$/;"	m
+LIBS	Makefile	/^LIBS = libpng16$/;"	m
+MAGIC	include/Definitions.h	/^	static constexpr byte MAGIC[5] = {"GAFF"};$/;"	m	class:Gaff	access:public
+NAME	Makefile	/^NAME = gaff$/;"	m
+PNGSIGSIZE	src/Writer.cpp	70;"	d	file:
+SOURCES	Makefile	/^SOURCES = $(shell find $(SRC_PATH)\/ -name '*.$(SRC_EXT)' -printf '%T@\\t%p\\n' \\$/;"	m
+SRC_EXT	Makefile	/^SRC_EXT = cpp$/;"	m
+SRC_PATH	Makefile	/^SRC_PATH = src$/;"	m
+STANDARD_H	include/Standard.h	2;"	d
+VERSION	include/Definitions.h	/^	static const byte VERSION = 0x01;$/;"	m	class:Gaff	access:public
+__anon1::bytes_per_pixel	include/brickDark.h	/^  unsigned int 	 bytes_per_pixel; \/* 2:RGB16, 3:RGB, 4:RGBA *\/ $/;"	m	struct:__anon1	access:public
+__anon1::height	include/brickDark.h	/^  unsigned int 	 height;$/;"	m	struct:__anon1	access:public
+__anon1::pixel_data	include/brickDark.h	/^  unsigned char	 pixel_data[16 * 16 * 3 + 1];$/;"	m	struct:__anon1	access:public
+__anon1::width	include/brickDark.h	/^  unsigned int 	 width;$/;"	m	struct:__anon1	access:public
+b	include/Definitions.h	/^    byte b[2] = {0x00};$/;"	m	union:byteShort	access:public
+b	include/Definitions.h	/^    byte b[4] = {0x00};$/;"	m	union:byteInt	access:public
+byte	include/Definitions.h	/^typedef unsigned char byte;$/;"	t
+byteInt	include/Definitions.h	/^union byteInt {$/;"	u
+byteInt::b	include/Definitions.h	/^    byte b[4] = {0x00};$/;"	m	union:byteInt	access:public
+byteInt::i	include/Definitions.h	/^    uint i;$/;"	m	union:byteInt	access:public
+byteShort	include/Definitions.h	/^union byteShort {$/;"	u
+byteShort::b	include/Definitions.h	/^    byte b[2] = {0x00};$/;"	m	union:byteShort	access:public
+byteShort::s	include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
+bytes_per_pixel	include/brickDark.h	/^  unsigned int 	 bytes_per_pixel; \/* 2:RGB16, 3:RGB, 4:RGBA *\/ $/;"	m	struct:__anon1	access:public
+counter	src/Writer.cpp	/^int counter = 0;$/;"	v
+data	src/Writer.cpp	/^    byte *data;$/;"	m	struct:fileAll	file:	access:public
+extra	include/Definitions.h	/^	    byteInt extra;$/;"	m	struct:Gaff::fileInfo	access:public
+f3	include/Definitions.h	/^struct f3 {$/;"	s
+f3::x	include/Definitions.h	/^    float x;$/;"	m	struct:f3	access:public
+f3::y	include/Definitions.h	/^    float y;$/;"	m	struct:f3	access:public
+f3::z	include/Definitions.h	/^    float z;$/;"	m	struct:f3	access:public
+fileAll	src/Writer.cpp	/^struct fileAll {$/;"	s	file:
+fileAll::data	src/Writer.cpp	/^    byte *data;$/;"	m	struct:fileAll	file:	access:public
+fileAll::info	src/Writer.cpp	/^    Gaff::fileInfo info;$/;"	m	struct:fileAll	file:	access:public
+fileInfo	include/Definitions.h	/^	struct fileInfo {$/;"	s	class:Gaff	access:public
+files	src/Writer.cpp	/^fileAll files[255];$/;"	v
+gimp_image	include/brickDark.h	/^} gimp_image = {$/;"	v	typeref:struct:__anon1
+height	include/Definitions.h	/^    int height;$/;"	m	struct:size	access:public
+height	include/brickDark.h	/^  unsigned int 	 height;$/;"	m	struct:__anon1	access:public
+i	include/Definitions.h	/^    uint i;$/;"	m	union:byteInt	access:public
+i2	include/Definitions.h	/^struct i2 {$/;"	s
+i2::x	include/Definitions.h	/^    float x;$/;"	m	struct:i2	access:public
+i2::y	include/Definitions.h	/^    float y;$/;"	m	struct:i2	access:public
+imageSize	src/Writer.cpp	/^int imageSize(int width, int height) {$/;"	f	signature:(int width, int height)
+imageSize	src/Writer.cpp	/^int imageSize(int width, int height);$/;"	p	file:	signature:(int width, int height)
+info	src/Writer.cpp	/^    Gaff::fileInfo info;$/;"	m	struct:fileAll	file:	access:public
+main	src/Writer.cpp	/^int main() {$/;"	f	signature:()
+makeFile	src/Writer.cpp	/^void makeFile(string name, byte type, int extra, int size, byte data[]) {$/;"	f	signature:(string name, byte type, int extra, int size, byte data[])
+makeFile	src/Writer.cpp	/^void makeFile(string name, byte type, int extra, int size, byte data[]);$/;"	p	file:	signature:(string name, byte type, int extra, int size, byte data[])
+name	include/Definitions.h	/^	    std::string name = "";$/;"	m	struct:Gaff::fileInfo	access:public
+nameSize	include/Definitions.h	/^	    byte nameSize = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
+offset	include/Definitions.h	/^	    byteInt offset;$/;"	m	struct:Gaff::fileInfo	access:public
+offset	src/Writer.cpp	/^byteInt offset;$/;"	v
+origin	include/Definitions.h	/^	    std::string origin = "";$/;"	m	struct:Gaff::fileInfo	access:public
+pixel_data	include/brickDark.h	/^  unsigned char	 pixel_data[16 * 16 * 3 + 1];$/;"	m	struct:__anon1	access:public
+s	include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
+size	include/Definitions.h	/^	    byteInt size;$/;"	m	struct:Gaff::fileInfo	access:public
+size	include/Definitions.h	/^struct size {$/;"	s
+size::height	include/Definitions.h	/^    int height;$/;"	m	struct:size	access:public
+size::width	include/Definitions.h	/^    int width;$/;"	m	struct:size	access:public
+type	include/Definitions.h	/^	    byte type = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
+uint	include/Definitions.h	/^typedef unsigned int uint;$/;"	t
+validate	src/Writer.cpp	/^bool validate(istream& source) {$/;"	f	signature:(istream& source)
+width	include/Definitions.h	/^    int width;$/;"	m	struct:size	access:public
+width	include/brickDark.h	/^  unsigned int 	 width;$/;"	m	struct:__anon1	access:public
+x	include/Definitions.h	/^    float x;$/;"	m	struct:f3	access:public
+x	include/Definitions.h	/^    float x;$/;"	m	struct:i2	access:public
+y	include/Definitions.h	/^    float y;$/;"	m	struct:f3	access:public
+y	include/Definitions.h	/^    float y;$/;"	m	struct:i2	access:public
+z	include/Definitions.h	/^    float z;$/;"	m	struct:f3	access:public
