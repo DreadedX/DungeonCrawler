@@ -1,8 +1,6 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include "Standard.h"
-
 const int DEBUG = 0x00;
 const int INFO = 0x01;
 const int WARNING = 0x02;

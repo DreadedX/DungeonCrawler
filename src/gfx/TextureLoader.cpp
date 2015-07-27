@@ -1,6 +1,7 @@
-#include "gfx/TextureLoader.h"
+#include "Standard.h"
 
 GLuint loadTexture(std::string name) {
+
     GLuint tex;
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
@@ -11,19 +12,19 @@ GLuint loadTexture(std::string name) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     uint id = Reader::getId(name);
-    // TODO: Find better thing to return when an error has occured
     if (id == 256) {
-	Log::print("Could not load texture", ERROR);
-	return tex;
+	std::cout << "Could not load texture: " << name << std::endl;
+	// TODO: Make this not hardcoded
+	id = Reader::getId("tile/void");
     }
 
-    size imageSize = Reader::getImageSize(id);
-    byte pixels[imageSize.width * imageSize.height * 3];
+    std::cout << "Loaded: " << name << " with id: " << tex << std::endl;
+    
+    v2i imageSize = Reader::getImageSize(id);
+    byte pixels[imageSize.x * imageSize.y * 4];
     Reader::read(id, pixels);
-    for(int i = 0; i < imageSize.width*imageSize.height*3; i += 3) {std::cout << +pixels[i] << " " << +pixels[i+1] << " " << +pixels[i+2] << std::endl; }
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageSize.width, imageSize.height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-
-    // glGenerateMipmap(GL_TEXTURE_2D);
+    // for(int i = 0; i < imageSize.x*imageSize.y*3; i += 3) {std::cout << +pixels[i] << " " << +pixels[i+1] << " " << +pixels[i+2] << std::endl; }
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageSize.x, imageSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
     return tex;
 }

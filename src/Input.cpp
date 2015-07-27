@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "Standard.h"
 
 bool keys[1000] = {0};
 

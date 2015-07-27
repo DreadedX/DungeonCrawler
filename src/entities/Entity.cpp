@@ -1,30 +1,28 @@
-#include "entities/Entity.h"
-
-i2 pos = {300, 300};
-int speed = 6;
-int tex;
+#include "Standard.h"
 
 void Entity::init() {
-    tex = loadTexture("demo");
+
+    tex = loadTexture("entity/player");
 }
 
 void Entity::tick() {
-    if (Input::isPressed(Key::UP)) {
-	pos.y -= speed;
-    }
-    if (Input::isPressed(Key::LEFT)) {
-	pos.x -= speed;
-    }
-    if (Input::isPressed(Key::DOWN)) {
-	pos.y += speed;
-    }
-    if (Input::isPressed(Key::RIGHT)) {
-	pos.x += speed;
-    }
+
+    velocity.x *= friction;
+    velocity.y *= friction;
+
+    if ((velocity.x > -0.01f) && (velocity.x < 0.01f) && velocity.x != 0) velocity.x = 0;
+    if ((velocity.y > -0.01f) && (velocity.y < 0.01f) && velocity.y != 0) velocity.y = 0;
+
+    if (Input::isPressed(Key::UP)) velocity.y -= acceleration;
+    if (Input::isPressed(Key::DOWN)) velocity.y += acceleration;
+    if (Input::isPressed(Key::LEFT)) velocity.x -= acceleration;
+    if (Input::isPressed(Key::RIGHT)) velocity.x += acceleration;
+
+    pos.x += velocity.x;
+    pos.y += velocity.y;
 }
 
 void Entity::render() {
-    // f3 colour {1.0f, 0.5f, 0.2f};
-    Screen::drawRectangle(pos.x-100, pos.y-100, pos.x+100, pos.y+100, tex);
 
+    Screen::drawTile(pos.x, pos.y, tex);
 }

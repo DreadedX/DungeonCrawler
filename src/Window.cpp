@@ -1,4 +1,4 @@
-#include "gfx/Window.h"
+#include "Standard.h"
 
 GLFWwindow* window;
 

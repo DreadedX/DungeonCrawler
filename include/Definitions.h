@@ -1,8 +1,6 @@
 #ifndef DEFINITION_H
 #define DEFINITION_H
 
-#include "Standard.h"
-
 typedef unsigned char byte;
 typedef unsigned int uint;
 
@@ -15,20 +13,28 @@ union byteShort {
     unsigned short s;
 };
 
-struct size {
-    int width;
-    int height;
+struct v2i {
+    int x;
+    int y;
 };
-
-struct i2 {
+struct v2f {
     float x;
     float y;
 };
-struct f3 {
+struct v3f {
     float x;
     float y;
     float z;
 };
+
+// 0000 0001
+const byte TYPE_TILE = 0x01;
+// 0000 0010
+const byte TYPE_SOLID = 0x02;
+// 0000 0100
+const byte TYPE_ENTITY = 0x04;
+// 1000 0000
+// byte HAS_ALPHA = 0x80;
 
 class Gaff {
 

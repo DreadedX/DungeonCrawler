@@ -21,18 +21,14 @@ Gaff::fileInfo::size	include/Definitions.h	/^	    byteInt size;$/;"	m	struct:Gaf
 Gaff::fileInfo::type	include/Definitions.h	/^	    byte type = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
 INCLUDES	Makefile	/^INCLUDES = -I .\/include$/;"	m
 LIBS	Makefile	/^LIBS = libpng16$/;"	m
+LOAD_PNG_H	include/LoadPNG.h	2;"	d
 MAGIC	include/Definitions.h	/^	static constexpr byte MAGIC[5] = {"GAFF"};$/;"	m	class:Gaff	access:public
 NAME	Makefile	/^NAME = gaff$/;"	m
-PNGSIGSIZE	src/Writer.cpp	70;"	d	file:
 SOURCES	Makefile	/^SOURCES = $(shell find $(SRC_PATH)\/ -name '*.$(SRC_EXT)' -printf '%T@\\t%p\\n' \\$/;"	m
 SRC_EXT	Makefile	/^SRC_EXT = cpp$/;"	m
 SRC_PATH	Makefile	/^SRC_PATH = src$/;"	m
 STANDARD_H	include/Standard.h	2;"	d
 VERSION	include/Definitions.h	/^	static const byte VERSION = 0x01;$/;"	m	class:Gaff	access:public
-__anon1::bytes_per_pixel	include/brickDark.h	/^  unsigned int 	 bytes_per_pixel; \/* 2:RGB16, 3:RGB, 4:RGBA *\/ $/;"	m	struct:__anon1	access:public
-__anon1::height	include/brickDark.h	/^  unsigned int 	 height;$/;"	m	struct:__anon1	access:public
-__anon1::pixel_data	include/brickDark.h	/^  unsigned char	 pixel_data[16 * 16 * 3 + 1];$/;"	m	struct:__anon1	access:public
-__anon1::width	include/brickDark.h	/^  unsigned int 	 width;$/;"	m	struct:__anon1	access:public
 b	include/Definitions.h	/^    byte b[2] = {0x00};$/;"	m	union:byteShort	access:public
 b	include/Definitions.h	/^    byte b[4] = {0x00};$/;"	m	union:byteInt	access:public
 byte	include/Definitions.h	/^typedef unsigned char byte;$/;"	t
@@ -42,8 +38,8 @@ byteInt::i	include/Definitions.h	/^    uint i;$/;"	m	union:byteInt	access:public
 byteShort	include/Definitions.h	/^union byteShort {$/;"	u
 byteShort::b	include/Definitions.h	/^    byte b[2] = {0x00};$/;"	m	union:byteShort	access:public
 byteShort::s	include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
-bytes_per_pixel	include/brickDark.h	/^  unsigned int 	 bytes_per_pixel; \/* 2:RGB16, 3:RGB, 4:RGBA *\/ $/;"	m	struct:__anon1	access:public
 counter	src/Writer.cpp	/^int counter = 0;$/;"	v
+data	include/LoadPNG.h	/^    byte *data;$/;"	m	struct:image	access:public
 data	src/Writer.cpp	/^    byte *data;$/;"	m	struct:fileAll	file:	access:public
 extra	include/Definitions.h	/^	    byteInt extra;$/;"	m	struct:Gaff::fileInfo	access:public
 f3	include/Definitions.h	/^struct f3 {$/;"	s
@@ -55,35 +51,42 @@ fileAll::data	src/Writer.cpp	/^    byte *data;$/;"	m	struct:fileAll	file:	access
 fileAll::info	src/Writer.cpp	/^    Gaff::fileInfo info;$/;"	m	struct:fileAll	file:	access:public
 fileInfo	include/Definitions.h	/^	struct fileInfo {$/;"	s	class:Gaff	access:public
 files	src/Writer.cpp	/^fileAll files[255];$/;"	v
-gimp_image	include/brickDark.h	/^} gimp_image = {$/;"	v	typeref:struct:__anon1
 height	include/Definitions.h	/^    int height;$/;"	m	struct:size	access:public
-height	include/brickDark.h	/^  unsigned int 	 height;$/;"	m	struct:__anon1	access:public
+height	include/LoadPNG.h	/^    short height = 0;$/;"	m	struct:image	access:public
 i	include/Definitions.h	/^    uint i;$/;"	m	union:byteInt	access:public
 i2	include/Definitions.h	/^struct i2 {$/;"	s
 i2::x	include/Definitions.h	/^    float x;$/;"	m	struct:i2	access:public
 i2::y	include/Definitions.h	/^    float y;$/;"	m	struct:i2	access:public
+image	include/LoadPNG.h	/^struct image {$/;"	s
+image::data	include/LoadPNG.h	/^    byte *data;$/;"	m	struct:image	access:public
+image::height	include/LoadPNG.h	/^    short height = 0;$/;"	m	struct:image	access:public
+image::size	include/LoadPNG.h	/^    int size = 0;$/;"	m	struct:image	access:public
+image::width	include/LoadPNG.h	/^    short width = 0;$/;"	m	struct:image	access:public
 imageSize	src/Writer.cpp	/^int imageSize(int width, int height) {$/;"	f	signature:(int width, int height)
 imageSize	src/Writer.cpp	/^int imageSize(int width, int height);$/;"	p	file:	signature:(int width, int height)
 info	src/Writer.cpp	/^    Gaff::fileInfo info;$/;"	m	struct:fileAll	file:	access:public
+loadPNG	include/LoadPNG.h	/^image loadPNG(char *name);$/;"	p	signature:(char *name)
+loadPNG	src/LoadPNG.cpp	/^image loadPNG(char *name) {$/;"	f	signature:(char *name)
 main	src/Writer.cpp	/^int main() {$/;"	f	signature:()
 makeFile	src/Writer.cpp	/^void makeFile(string name, byte type, int extra, int size, byte data[]) {$/;"	f	signature:(string name, byte type, int extra, int size, byte data[])
 makeFile	src/Writer.cpp	/^void makeFile(string name, byte type, int extra, int size, byte data[]);$/;"	p	file:	signature:(string name, byte type, int extra, int size, byte data[])
+makeImage	src/Writer.cpp	/^void makeImage(string fileName, string name, byte type) {$/;"	f	signature:(string fileName, string name, byte type)
+makeImage	src/Writer.cpp	/^void makeImage(string fileName, string name, byte type);$/;"	p	file:	signature:(string fileName, string name, byte type)
 name	include/Definitions.h	/^	    std::string name = "";$/;"	m	struct:Gaff::fileInfo	access:public
 nameSize	include/Definitions.h	/^	    byte nameSize = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
 offset	include/Definitions.h	/^	    byteInt offset;$/;"	m	struct:Gaff::fileInfo	access:public
 offset	src/Writer.cpp	/^byteInt offset;$/;"	v
 origin	include/Definitions.h	/^	    std::string origin = "";$/;"	m	struct:Gaff::fileInfo	access:public
-pixel_data	include/brickDark.h	/^  unsigned char	 pixel_data[16 * 16 * 3 + 1];$/;"	m	struct:__anon1	access:public
 s	include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
 size	include/Definitions.h	/^	    byteInt size;$/;"	m	struct:Gaff::fileInfo	access:public
 size	include/Definitions.h	/^struct size {$/;"	s
+size	include/LoadPNG.h	/^    int size = 0;$/;"	m	struct:image	access:public
 size::height	include/Definitions.h	/^    int height;$/;"	m	struct:size	access:public
 size::width	include/Definitions.h	/^    int width;$/;"	m	struct:size	access:public
 type	include/Definitions.h	/^	    byte type = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
 uint	include/Definitions.h	/^typedef unsigned int uint;$/;"	t
-validate	src/Writer.cpp	/^bool validate(istream& source) {$/;"	f	signature:(istream& source)
 width	include/Definitions.h	/^    int width;$/;"	m	struct:size	access:public
-width	include/brickDark.h	/^  unsigned int 	 width;$/;"	m	struct:__anon1	access:public
+width	include/LoadPNG.h	/^    short width = 0;$/;"	m	struct:image	access:public
 x	include/Definitions.h	/^    float x;$/;"	m	struct:f3	access:public
 x	include/Definitions.h	/^    float x;$/;"	m	struct:i2	access:public
 y	include/Definitions.h	/^    float y;$/;"	m	struct:f3	access:public

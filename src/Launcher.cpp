@@ -1,5 +1,4 @@
-#include "Game.h"
-#include "util/Log.h"
+#include "Standard.h"
 // #include <gtkmm/main.h>
 // #include <gtkmm/messagedialog.h>
 

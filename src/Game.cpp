@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "Standard.h"
 
 void gameLoop();
 void info();
@@ -11,25 +11,20 @@ int lastInfo;
 int ticks = 0;
 int frames = 0;
 
-// TESTING
-Entity entity;
-
 void Game::init() {
-    Reader::load("gaff");
     
-    // Log::print("Debug", DEBUG);
-    // Log::print("Info", INFO);
-    // Log::print("Warning", WARNING);
-    // Log::print("Error", ERROR);
-
     if(!createWindow()) {
 	Log::print("Failed to create window!", ERROR);
 	return;
     }
 
-    Log::print("Starting game loop");
-    entity.init();
+    Reader::load("gaff");
+
+    Level::init();
+
     gameLoop();
+
+    Reader::freeReader();
 }
 
 void gameLoop() {
@@ -63,7 +58,7 @@ void tick() {
     // if (getMilliSpan(lastTick) > 1000/TPS) {
 	lastTick = getMilliCount();
 
-	entity.tick();
+	Level::tick();
 
 	ticks++;
     // }
@@ -72,7 +67,7 @@ void tick() {
 void render() {
     Screen::clear();
 
-    entity.render();
+    Level::render();
 
     swapWindow();
 

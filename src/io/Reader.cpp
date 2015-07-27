@@ -1,11 +1,12 @@
-#include "io/Reader.h"
+#include "Standard.h"
 
 using namespace std;
 //
 // TODO: Make this allocate the correct size
-static Gaff::fileInfo files[255];
+static Gaff::fileInfo files[256];
 
 void Reader::load(string extension) {
+
     string fileName = "out." + extension;
     ifstream file (fileName, ios::in | ios::binary);
 
@@ -24,7 +25,6 @@ void Reader::load(string extension) {
 
     byteInt fileCount;
     file.read(reinterpret_cast<char*>(fileCount.b), 2);
-    cout << fileCount.i << endl;
 
     // Gaff::fileInfo files[fileCount.i];
     for(uint i = 0; i < fileCount.i; i++) {
@@ -66,31 +66,48 @@ void Reader::load(string extension) {
     file.close();
 }
 
+void Reader::getWithType(byte type, uint *idList) {
+    int counter = 0;
+    for (uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
+	if ((files[i].type | type) == files[i].type) {
+	    idList[counter] = i;
+	    counter++;
+	}
+    }
+}
+
+string Reader::getName(uint id) {
+    return files[id].name;
+}
+
 uint Reader::getId(string name) {
+
     for(uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
 	if (files[i].name == name) {
 	    return i;
 	}
     }
-    // TODO: Find better thing to return when an error has occured
+    // TODO: Find a better way to deal with this
     return 256;
 }
 
-size Reader::getImageSize(int id) {
-    size imageSize;
-    imageSize.width = (files[id].extra.b[1] << 8) + (files[id].extra.b[0]);
-    imageSize.height = (files[id].extra.b[3] << 8) + (files[id].extra.b[2]);
+v2i Reader::getImageSize(int id) {
+
+    v2i imageSize;
+    imageSize.x = (files[id].extra.b[1] << 8) + (files[id].extra.b[0]);
+    imageSize.y = (files[id].extra.b[3] << 8) + (files[id].extra.b[2]);
 
     return imageSize;
 }
 
 void Reader::read(int id, byte data[]) {
+
     ifstream file (files[id].origin, ios::in | ios::binary);
     file.seekg(files[id].offset.i, ios::beg);
     file.read(reinterpret_cast<char*>(data), files[id].size.i);
+}
 
-    // for (uint i = 0; i < files[id].size.i; i += 3) {
-	// cout << +data[i] << " " << +data[i+1] << " " << +data[i+2] << endl;
-    // }
+void Reader::freeReader() {
 
+    // free(files);
 }

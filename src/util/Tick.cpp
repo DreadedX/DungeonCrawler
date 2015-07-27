@@ -1,6 +1,4 @@
-#include <sys/timeb.h>
-
-#include "util/Tick.h"
+#include "Standard.h"
 
 int getMilliCount() {
     timeb tb;

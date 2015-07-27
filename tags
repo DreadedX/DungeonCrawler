@@ -4,11 +4,12 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-COMPILE_FLAGS	GaffMaker/Makefile	/^COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g$/;"	m
-COMPILE_FLAGS	Makefile	/^COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g$/;"	m
+COMPILE_FLAGS	GaffMaker/Makefile	/^COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g -Wno-write-strings$/;"	m
+COMPILE_FLAGS	Makefile	/^COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g $(EXTRA)$/;"	m
 CONFIG_H	include/Config.h	2;"	d
 CXX	GaffMaker/Makefile	/^CXX ?= g++$/;"	m
 CXX	Makefile	/^CXX ?= g++$/;"	m
+DASH	include/Config.h	/^	static const int DASH = GLFW_KEY_W;$/;"	m	class:Key	access:public
 DEBUG	include/util/Log.h	/^const int DEBUG = 0x00;$/;"	v
 DEFINITION_H	GaffMaker/include/Definitions.h	2;"	d
 DEFINITION_H	include/Definitions.h	2;"	d
@@ -17,13 +18,21 @@ DESTDIR	Makefile	/^DESTDIR = \/$/;"	m
 DOWN	include/Config.h	/^	static const int DOWN = GLFW_KEY_S;$/;"	m	class:Key	access:public
 ENTITY_H	include/entities/Entity.h	2;"	d
 ERROR	include/util/Log.h	/^const int ERROR = 0x03;$/;"	v
+EXTRA	Makefile	/^EXTRA = -Wno-write-strings #-Wno-deprecated$/;"	m
 Entity	include/entities/Entity.h	/^class Entity {$/;"	c
+Entity::acceleration	include/entities/Entity.h	/^    float acceleration = 10.0f \/ (1 \/ (1 - friction));$/;"	m	class:Entity	access:private
+Entity::canDash	include/entities/Entity.h	/^    bool canDash = true;$/;"	m	class:Entity	access:private
+Entity::canJump	include/entities/Entity.h	/^    bool canJump = false;$/;"	m	class:Entity	access:private
+Entity::friction	include/entities/Entity.h	/^    float friction = 0.8f;$/;"	m	class:Entity	access:private
 Entity::init	include/entities/Entity.h	/^	void init();$/;"	p	class:Entity	access:public	signature:()
 Entity::init	src/entities/Entity.cpp	/^void Entity::init() {$/;"	f	class:Entity	signature:()
+Entity::pos	include/entities/Entity.h	/^    v2f pos = {300, 300};$/;"	m	class:Entity	access:private
 Entity::render	include/entities/Entity.h	/^	void render();$/;"	p	class:Entity	access:public	signature:()
 Entity::render	src/entities/Entity.cpp	/^void Entity::render() {$/;"	f	class:Entity	signature:()
+Entity::tex	include/entities/Entity.h	/^    int tex;$/;"	m	class:Entity	access:private
 Entity::tick	include/entities/Entity.h	/^	void tick();$/;"	p	class:Entity	access:public	signature:()
 Entity::tick	src/entities/Entity.cpp	/^void Entity::tick() {$/;"	f	class:Entity	signature:()
+Entity::velocity	include/entities/Entity.h	/^    v2f velocity = {0, 0};$/;"	m	class:Entity	access:private
 GAME_H	include/Game.h	2;"	d
 Gaff	GaffMaker/include/Definitions.h	/^class Gaff {$/;"	c
 Gaff	include/Definitions.h	/^class Gaff {$/;"	c
@@ -50,7 +59,7 @@ Gaff::fileInfo::type	include/Definitions.h	/^	    byte type = 0x00;$/;"	m	struct
 Game	include/Game.h	/^class Game {$/;"	c
 Game::init	include/Game.h	/^	static void init();$/;"	p	class:Game	access:public	signature:()
 Game::init	src/Game.cpp	/^void Game::init() {$/;"	f	class:Game	signature:()
-HEIGHT	include/gfx/Window.h	/^const int HEIGHT = (WIDTH \/ 4 * 3) * SCALE;$/;"	v
+HEIGHT	include/Window.h	/^const int HEIGHT = (WIDTH \/ 4 * 3) * SCALE;$/;"	v
 INCLUDES	GaffMaker/Makefile	/^INCLUDES = -I .\/include$/;"	m
 INCLUDES	Makefile	/^INCLUDES = -I .\/include$/;"	m
 INFO	include/util/Log.h	/^const int INFO = 0x01;$/;"	v
@@ -60,15 +69,27 @@ Input::isPressed	include/Input.h	/^	static bool isPressed(int key);$/;"	p	class:
 Input::isPressed	src/Input.cpp	/^bool Input::isPressed(int key) {$/;"	f	class:Input	signature:(int key)
 Input::setState	include/Input.h	/^	static void setState(int key, bool state);$/;"	p	class:Input	access:public	signature:(int key, bool state)
 Input::setState	src/Input.cpp	/^void Input::setState(int key, bool state) {$/;"	f	class:Input	signature:(int key, bool state)
+JUMP	include/Config.h	/^	static const int JUMP = GLFW_KEY_SPACE;$/;"	m	class:Key	access:public
 Key	include/Config.h	/^class Key {$/;"	c
+Key::DASH	include/Config.h	/^	static const int DASH = GLFW_KEY_W;$/;"	m	class:Key	access:public
 Key::DOWN	include/Config.h	/^	static const int DOWN = GLFW_KEY_S;$/;"	m	class:Key	access:public
+Key::JUMP	include/Config.h	/^	static const int JUMP = GLFW_KEY_SPACE;$/;"	m	class:Key	access:public
 Key::LEFT	include/Config.h	/^	static const int LEFT = GLFW_KEY_A;$/;"	m	class:Key	access:public
 Key::RIGHT	include/Config.h	/^	static const int RIGHT = GLFW_KEY_D;$/;"	m	class:Key	access:public
 Key::UP	include/Config.h	/^	static const int UP = GLFW_KEY_W;$/;"	m	class:Key	access:public
 LEFT	include/Config.h	/^	static const int LEFT = GLFW_KEY_A;$/;"	m	class:Key	access:public
+LEVEL_H	include/level/Level.h	2;"	d
 LIBS	GaffMaker/Makefile	/^LIBS = libpng16$/;"	m
-LIBS	Makefile	/^LIBS = gtkmm-3.0 glfw3 $(shell pkg-config --print-requires --print-requires-private glfw3)$/;"	m
+LIBS	Makefile	/^LIBS = python2 libpng16 glfw3 $(shell pkg-config --print-requires --print-requires-private glfw3)$/;"	m
+LOAD_PNG_H	GaffMaker/include/LoadPNG.h	2;"	d
 LOG_H	include/util/Log.h	2;"	d
+Level	include/level/Level.h	/^class Level {$/;"	c
+Level::init	include/level/Level.h	/^	static void init();$/;"	p	class:Level	access:public	signature:()
+Level::init	src/level/Level.cpp	/^void Level::init() {$/;"	f	class:Level	signature:()
+Level::render	include/level/Level.h	/^	static void render();$/;"	p	class:Level	access:public	signature:()
+Level::render	src/level/Level.cpp	/^void Level::render() {$/;"	f	class:Level	signature:()
+Level::tick	include/level/Level.h	/^	static void tick();$/;"	p	class:Level	access:public	signature:()
+Level::tick	src/level/Level.cpp	/^void Level::tick() {$/;"	f	class:Level	signature:()
 Log	include/util/Log.h	/^class Log {$/;"	c
 Log::print	include/util/Log.h	/^	static void print(int msg);$/;"	p	class:Log	access:public	signature:(int msg)
 Log::print	include/util/Log.h	/^	static void print(std::string msg);$/;"	p	class:Log	access:public	signature:(std::string msg)
@@ -80,21 +101,27 @@ MAGIC	GaffMaker/include/Definitions.h	/^	static constexpr byte MAGIC[5] = {"GAFF
 MAGIC	include/Definitions.h	/^	static constexpr byte MAGIC[5] = {"GAFF"};$/;"	m	class:Gaff	access:public
 NAME	GaffMaker/Makefile	/^NAME = gaff$/;"	m
 NAME	Makefile	/^NAME = platformer$/;"	m
-NAME	include/gfx/Window.h	/^const char NAME[] = "Platformer";$/;"	v
-PNGSIGSIZE	GaffMaker/src/Writer.cpp	69;"	d	file:
+NAME	include/Window.h	/^const char NAME[] = "Platformer";$/;"	v
 READER_H	include/io/Reader.h	2;"	d
 RIGHT	include/Config.h	/^	static const int RIGHT = GLFW_KEY_D;$/;"	m	class:Key	access:public
 Reader	include/io/Reader.h	/^class Reader {$/;"	c
+Reader::freeReader	include/io/Reader.h	/^	static void freeReader();$/;"	p	class:Reader	access:public	signature:()
+Reader::freeReader	src/io/Reader.cpp	/^void Reader::freeReader() {$/;"	f	class:Reader	signature:()
 Reader::getId	include/io/Reader.h	/^	static uint getId(std::string);$/;"	p	class:Reader	access:public	signature:(std::string)
 Reader::getId	src/io/Reader.cpp	/^uint Reader::getId(string name) {$/;"	f	class:Reader	signature:(string name)
-Reader::getImageSize	include/io/Reader.h	/^	static size getImageSize(int id);$/;"	p	class:Reader	access:public	signature:(int id)
-Reader::getImageSize	src/io/Reader.cpp	/^size Reader::getImageSize(int id) {$/;"	f	class:Reader	signature:(int id)
+Reader::getImageSize	include/io/Reader.h	/^	static v2i getImageSize(int id);$/;"	p	class:Reader	access:public	signature:(int id)
+Reader::getImageSize	src/io/Reader.cpp	/^v2i Reader::getImageSize(int id) {$/;"	f	class:Reader	signature:(int id)
+Reader::getName	include/io/Reader.h	/^	static std::string getName(uint id);$/;"	p	class:Reader	access:public	signature:(uint id)
+Reader::getName	src/io/Reader.cpp	/^string Reader::getName(uint id) {$/;"	f	class:Reader	signature:(uint id)
+Reader::getWithType	include/io/Reader.h	/^	static void getWithType(byte type, uint *idList);$/;"	p	class:Reader	access:public	signature:(byte type, uint *idList)
+Reader::getWithType	src/io/Reader.cpp	/^void Reader::getWithType(byte type, uint *idList) {$/;"	f	class:Reader	signature:(byte type, uint *idList)
 Reader::load	include/io/Reader.h	/^	static void load(std::string);$/;"	p	class:Reader	access:public	signature:(std::string)
 Reader::load	src/io/Reader.cpp	/^void Reader::load(string extension) {$/;"	f	class:Reader	signature:(string extension)
 Reader::read	include/io/Reader.h	/^	static void read(int id, byte*);$/;"	p	class:Reader	access:public	signature:(int id, byte*)
 Reader::read	src/io/Reader.cpp	/^void Reader::read(int id, byte data[]) {$/;"	f	class:Reader	signature:(int id, byte data[])
-SCALE	include/gfx/Window.h	/^const int SCALE = 1;$/;"	v
+SCALE	include/Window.h	/^const int SCALE = 1;$/;"	v
 SCREEN_H	include/gfx/Screen.h	2;"	d
+SCRIPT_H	include/Script.h	2;"	d
 SOURCES	GaffMaker/Makefile	/^SOURCES = $(shell find $(SRC_PATH)\/ -name '*.$(SRC_EXT)' -printf '%T@\\t%p\\n' \\$/;"	m
 SOURCES	Makefile	/^SOURCES = $(shell find $(SRC_PATH)\/ -name '*.$(SRC_EXT)' -printf '%T@\\t%p\\n' \\$/;"	m
 SRC_EXT	GaffMaker/Makefile	/^SRC_EXT = cpp$/;"	m
@@ -106,17 +133,30 @@ STANDARD_H	include/Standard.h	2;"	d
 Screen	include/gfx/Screen.h	/^class Screen {$/;"	c
 Screen::clear	include/gfx/Screen.h	/^	static void clear();$/;"	p	class:Screen	access:public	signature:()
 Screen::clear	src/gfx/Screen.cpp	/^void Screen::clear() {$/;"	f	class:Screen	signature:()
-Screen::drawRectangle	include/gfx/Screen.h	/^	static void drawRectangle(int x1, int y1, int x2, int y2, GLuint tex);$/;"	p	class:Screen	access:public	signature:(int x1, int y1, int x2, int y2, GLuint tex)
-Screen::drawRectangle	src/gfx/Screen.cpp	/^void Screen::drawRectangle(int x1, int y1, int x2, int y2, GLuint tex) {$/;"	f	class:Screen	signature:(int x1, int y1, int x2, int y2, GLuint tex)
+Screen::drawTile	include/gfx/Screen.h	/^	static void drawTile(int x, int y, GLuint tex);$/;"	p	class:Screen	access:public	signature:(int x, int y, GLuint tex)
+Screen::drawTile	src/gfx/Screen.cpp	/^void Screen::drawTile(int x, int y, GLuint tex) {$/;"	f	class:Screen	signature:(int x, int y, GLuint tex)
+Script	include/Script.h	/^class Script {$/;"	c
 TEXTURE_LOADER_H	include/gfx/TextureLoader.h	2;"	d
 TICK_H	include/util/Tick.h	2;"	d
+TILE_H	include/level/Tile.h	2;"	d
 TPS	include/Game.h	/^const int TPS = 60;$/;"	v
+TYPE_ENTITY	GaffMaker/include/Definitions.h	/^const byte TYPE_ENTITY = 0x04;$/;"	v
+TYPE_ENTITY	include/Definitions.h	/^const byte TYPE_ENTITY = 0x04;$/;"	v
+TYPE_SOLID	GaffMaker/include/Definitions.h	/^const byte TYPE_SOLID = 0x02;$/;"	v
+TYPE_SOLID	include/Definitions.h	/^const byte TYPE_SOLID = 0x02;$/;"	v
+TYPE_TILE	GaffMaker/include/Definitions.h	/^const byte TYPE_TILE = 0x01;$/;"	v
+TYPE_TILE	include/Definitions.h	/^const byte TYPE_TILE = 0x01;$/;"	v
+Tile	include/level/Tile.h	/^class Tile {$/;"	c
+Tile::render	include/level/Tile.h	/^	static void render(int x, int y, byte id);$/;"	p	class:Tile	access:public	signature:(int x, int y, byte id)
+Tile::render	src/level/Tile.cpp	/^void Tile::render(int x, int y, byte id) {$/;"	f	class:Tile	signature:(int x, int y, byte id)
 UP	include/Config.h	/^	static const int UP = GLFW_KEY_W;$/;"	m	class:Key	access:public
 VERSION	GaffMaker/include/Definitions.h	/^	static const byte VERSION = 0x01;$/;"	m	class:Gaff	access:public
 VERSION	include/Definitions.h	/^	static const byte VERSION = 0x01;$/;"	m	class:Gaff	access:public
 WARNING	include/util/Log.h	/^const int WARNING = 0x02;$/;"	v
-WIDTH	include/gfx/Window.h	/^const int WIDTH = 608 * SCALE;$/;"	v
-WINDOW_H	include/gfx/Window.h	2;"	d
+WIDTH	include/Window.h	/^const int WIDTH = 608 * SCALE;$/;"	v
+WINDOW_H	include/Window.h	2;"	d
+WRITER_H	GaffMaker/include/Writer.h	2;"	d
+acceleration	include/entities/Entity.h	/^    float acceleration = 10.0f \/ (1 \/ (1 - friction));$/;"	m	class:Entity	access:private
 b	GaffMaker/include/Definitions.h	/^    byte b[2] = {0x00};$/;"	m	union:byteShort	access:public
 b	GaffMaker/include/Definitions.h	/^    byte b[4] = {0x00};$/;"	m	union:byteInt	access:public
 b	include/Definitions.h	/^    byte b[2] = {0x00};$/;"	m	union:byteShort	access:public
@@ -135,55 +175,58 @@ byteShort::b	GaffMaker/include/Definitions.h	/^    byte b[2] = {0x00};$/;"	m	uni
 byteShort::b	include/Definitions.h	/^    byte b[2] = {0x00};$/;"	m	union:byteShort	access:public
 byteShort::s	GaffMaker/include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
 byteShort::s	include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
+canDash	include/entities/Entity.h	/^    bool canDash = true;$/;"	m	class:Entity	access:private
+canJump	include/entities/Entity.h	/^    bool canJump = false;$/;"	m	class:Entity	access:private
 clear	include/gfx/Screen.h	/^	static void clear();$/;"	p	class:Screen	access:public	signature:()
 clear	src/gfx/Screen.cpp	/^void Screen::clear() {$/;"	f	class:Screen	signature:()
 counter	GaffMaker/src/Writer.cpp	/^int counter = 0;$/;"	v
-createWindow	include/gfx/Window.h	/^bool createWindow();$/;"	p	signature:()
-createWindow	src/gfx/Window.cpp	/^bool createWindow() {$/;"	f	signature:()
+createTile	include/level/Tile.h	/^void createTile(std::string name, byte id);$/;"	p	signature:(std::string name, byte id)
+createTile	src/level/Tile.cpp	/^void createTile(std::string name, byte id) {$/;"	f	signature:(std::string name, byte id)
+createWindow	include/Window.h	/^bool createWindow();$/;"	p	signature:()
+createWindow	src/Window.cpp	/^bool createWindow() {$/;"	f	signature:()
+data	GaffMaker/include/LoadPNG.h	/^    byte *data;$/;"	m	struct:image	access:public
 data	GaffMaker/src/Writer.cpp	/^    byte *data;$/;"	m	struct:fileAll	file:	access:public
-destroyWindow	include/gfx/Window.h	/^void destroyWindow();$/;"	p	signature:()
-destroyWindow	src/gfx/Window.cpp	/^void destroyWindow() {$/;"	f	signature:()
-drawRectangle	include/gfx/Screen.h	/^	static void drawRectangle(int x1, int y1, int x2, int y2, GLuint tex);$/;"	p	class:Screen	access:public	signature:(int x1, int y1, int x2, int y2, GLuint tex)
-drawRectangle	src/gfx/Screen.cpp	/^void Screen::drawRectangle(int x1, int y1, int x2, int y2, GLuint tex) {$/;"	f	class:Screen	signature:(int x1, int y1, int x2, int y2, GLuint tex)
-entity	src/Game.cpp	/^Entity entity;$/;"	v
+destroyWindow	include/Window.h	/^void destroyWindow();$/;"	p	signature:()
+destroyWindow	src/Window.cpp	/^void destroyWindow() {$/;"	f	signature:()
+drawTile	include/gfx/Screen.h	/^	static void drawTile(int x, int y, GLuint tex);$/;"	p	class:Screen	access:public	signature:(int x, int y, GLuint tex)
+drawTile	src/gfx/Screen.cpp	/^void Screen::drawTile(int x, int y, GLuint tex) {$/;"	f	class:Screen	signature:(int x, int y, GLuint tex)
+entity	src/level/Level.cpp	/^Entity entity;$/;"	v
 extra	GaffMaker/include/Definitions.h	/^	    byteInt extra;$/;"	m	struct:Gaff::fileInfo	access:public
 extra	include/Definitions.h	/^	    byteInt extra;$/;"	m	struct:Gaff::fileInfo	access:public
-f3	GaffMaker/include/Definitions.h	/^struct f3 {$/;"	s
-f3	include/Definitions.h	/^struct f3 {$/;"	s
-f3::x	GaffMaker/include/Definitions.h	/^    float x;$/;"	m	struct:f3	access:public
-f3::x	include/Definitions.h	/^    float x;$/;"	m	struct:f3	access:public
-f3::y	GaffMaker/include/Definitions.h	/^    float y;$/;"	m	struct:f3	access:public
-f3::y	include/Definitions.h	/^    float y;$/;"	m	struct:f3	access:public
-f3::z	GaffMaker/include/Definitions.h	/^    float z;$/;"	m	struct:f3	access:public
-f3::z	include/Definitions.h	/^    float z;$/;"	m	struct:f3	access:public
 fileAll	GaffMaker/src/Writer.cpp	/^struct fileAll {$/;"	s	file:
 fileAll::data	GaffMaker/src/Writer.cpp	/^    byte *data;$/;"	m	struct:fileAll	file:	access:public
 fileAll::info	GaffMaker/src/Writer.cpp	/^    Gaff::fileInfo info;$/;"	m	struct:fileAll	file:	access:public
 fileInfo	GaffMaker/include/Definitions.h	/^	struct fileInfo {$/;"	s	class:Gaff	access:public
 fileInfo	include/Definitions.h	/^	struct fileInfo {$/;"	s	class:Gaff	access:public
 files	GaffMaker/src/Writer.cpp	/^fileAll files[255];$/;"	v
-files	src/io/Reader.cpp	/^static Gaff::fileInfo files[255];$/;"	v	file:
+files	src/io/Reader.cpp	/^static Gaff::fileInfo files[256];$/;"	v	file:
 frames	src/Game.cpp	/^int frames = 0;$/;"	v
+freeReader	include/io/Reader.h	/^	static void freeReader();$/;"	p	class:Reader	access:public	signature:()
+freeReader	src/io/Reader.cpp	/^void Reader::freeReader() {$/;"	f	class:Reader	signature:()
+friction	include/entities/Entity.h	/^    float friction = 0.8f;$/;"	m	class:Entity	access:private
 gameLoop	src/Game.cpp	/^void gameLoop() {$/;"	f	signature:()
 gameLoop	src/Game.cpp	/^void gameLoop();$/;"	p	file:	signature:()
 getId	include/io/Reader.h	/^	static uint getId(std::string);$/;"	p	class:Reader	access:public	signature:(std::string)
 getId	src/io/Reader.cpp	/^uint Reader::getId(string name) {$/;"	f	class:Reader	signature:(string name)
-getImageSize	include/io/Reader.h	/^	static size getImageSize(int id);$/;"	p	class:Reader	access:public	signature:(int id)
-getImageSize	src/io/Reader.cpp	/^size Reader::getImageSize(int id) {$/;"	f	class:Reader	signature:(int id)
+getImageSize	include/io/Reader.h	/^	static v2i getImageSize(int id);$/;"	p	class:Reader	access:public	signature:(int id)
+getImageSize	src/io/Reader.cpp	/^v2i Reader::getImageSize(int id) {$/;"	f	class:Reader	signature:(int id)
 getMilliCount	include/util/Tick.h	/^int getMilliCount();$/;"	p	signature:()
 getMilliCount	src/util/Tick.cpp	/^int getMilliCount() {$/;"	f	signature:()
 getMilliSpan	include/util/Tick.h	/^int getMilliSpan(int nTimeStart);$/;"	p	signature:(int nTimeStart)
 getMilliSpan	src/util/Tick.cpp	/^int getMilliSpan(int nTimeStart) {$/;"	f	signature:(int nTimeStart)
-height	GaffMaker/include/Definitions.h	/^    int height;$/;"	m	struct:size	access:public
-height	include/Definitions.h	/^    int height;$/;"	m	struct:size	access:public
+getName	include/io/Reader.h	/^	static std::string getName(uint id);$/;"	p	class:Reader	access:public	signature:(uint id)
+getName	src/io/Reader.cpp	/^string Reader::getName(uint id) {$/;"	f	class:Reader	signature:(uint id)
+getWithType	include/io/Reader.h	/^	static void getWithType(byte type, uint *idList);$/;"	p	class:Reader	access:public	signature:(byte type, uint *idList)
+getWithType	src/io/Reader.cpp	/^void Reader::getWithType(byte type, uint *idList) {$/;"	f	class:Reader	signature:(byte type, uint *idList)
+height	GaffMaker/include/LoadPNG.h	/^    short height = 0;$/;"	m	struct:image	access:public
+height	src/level/Level.cpp	/^const int height = 4;$/;"	v
 i	GaffMaker/include/Definitions.h	/^    uint i;$/;"	m	union:byteInt	access:public
 i	include/Definitions.h	/^    uint i;$/;"	m	union:byteInt	access:public
-i2	GaffMaker/include/Definitions.h	/^struct i2 {$/;"	s
-i2	include/Definitions.h	/^struct i2 {$/;"	s
-i2::x	GaffMaker/include/Definitions.h	/^    float x;$/;"	m	struct:i2	access:public
-i2::x	include/Definitions.h	/^    float x;$/;"	m	struct:i2	access:public
-i2::y	GaffMaker/include/Definitions.h	/^    float y;$/;"	m	struct:i2	access:public
-i2::y	include/Definitions.h	/^    float y;$/;"	m	struct:i2	access:public
+image	GaffMaker/include/LoadPNG.h	/^struct image {$/;"	s
+image::data	GaffMaker/include/LoadPNG.h	/^    byte *data;$/;"	m	struct:image	access:public
+image::height	GaffMaker/include/LoadPNG.h	/^    short height = 0;$/;"	m	struct:image	access:public
+image::size	GaffMaker/include/LoadPNG.h	/^    int size = 0;$/;"	m	struct:image	access:public
+image::width	GaffMaker/include/LoadPNG.h	/^    short width = 0;$/;"	m	struct:image	access:public
 imageSize	GaffMaker/src/Writer.cpp	/^int imageSize(int width, int height) {$/;"	f	signature:(int width, int height)
 imageSize	GaffMaker/src/Writer.cpp	/^int imageSize(int width, int height);$/;"	p	file:	signature:(int width, int height)
 info	GaffMaker/src/Writer.cpp	/^    Gaff::fileInfo info;$/;"	m	struct:fileAll	file:	access:public
@@ -191,8 +234,10 @@ info	src/Game.cpp	/^void info() {$/;"	f	signature:()
 info	src/Game.cpp	/^void info();$/;"	p	file:	signature:()
 init	include/Game.h	/^	static void init();$/;"	p	class:Game	access:public	signature:()
 init	include/entities/Entity.h	/^	void init();$/;"	p	class:Entity	access:public	signature:()
+init	include/level/Level.h	/^	static void init();$/;"	p	class:Level	access:public	signature:()
 init	src/Game.cpp	/^void Game::init() {$/;"	f	class:Game	signature:()
 init	src/entities/Entity.cpp	/^void Entity::init() {$/;"	f	class:Entity	signature:()
+init	src/level/Level.cpp	/^void Level::init() {$/;"	f	class:Level	signature:()
 isPressed	include/Input.h	/^	static bool isPressed(int key);$/;"	p	class:Input	access:public	signature:(int key)
 isPressed	src/Input.cpp	/^bool Input::isPressed(int key) {$/;"	f	class:Input	signature:(int key)
 keyCallback	include/Input.h	/^void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);$/;"	p	signature:(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -200,14 +245,19 @@ keyCallback	src/Input.cpp	/^void keyCallback(GLFWwindow* window, int key, int sc
 keys	src/Input.cpp	/^bool keys[1000] = {0};$/;"	v
 lastInfo	src/Game.cpp	/^int lastInfo;$/;"	v
 lastTick	src/Game.cpp	/^int lastTick;$/;"	v
+layout	src/level/Level.cpp	/^byte layout[height][width];$/;"	v
 load	include/io/Reader.h	/^	static void load(std::string);$/;"	p	class:Reader	access:public	signature:(std::string)
 load	src/io/Reader.cpp	/^void Reader::load(string extension) {$/;"	f	class:Reader	signature:(string extension)
+loadPNG	GaffMaker/include/LoadPNG.h	/^image loadPNG(char *name);$/;"	p	signature:(char *name)
+loadPNG	GaffMaker/src/LoadPNG.cpp	/^image loadPNG(char *name) {$/;"	f	signature:(char *name)
 loadTexture	include/gfx/TextureLoader.h	/^GLuint loadTexture(std::string name);$/;"	p	signature:(std::string name)
 loadTexture	src/gfx/TextureLoader.cpp	/^GLuint loadTexture(std::string name) {$/;"	f	signature:(std::string name)
 main	GaffMaker/src/Writer.cpp	/^int main() {$/;"	f	signature:()
 main	src/Launcher.cpp	/^int main() {$/;"	f	signature:()
 makeFile	GaffMaker/src/Writer.cpp	/^void makeFile(string name, byte type, int extra, int size, byte data[]) {$/;"	f	signature:(string name, byte type, int extra, int size, byte data[])
 makeFile	GaffMaker/src/Writer.cpp	/^void makeFile(string name, byte type, int extra, int size, byte data[]);$/;"	p	file:	signature:(string name, byte type, int extra, int size, byte data[])
+makeImage	GaffMaker/src/Writer.cpp	/^void makeImage(char *imageName, string name, byte type) {$/;"	f	signature:(char *imageName, string name, byte type)
+makeImage	GaffMaker/src/Writer.cpp	/^void makeImage(char *imageName, string name, byte type);$/;"	p	file:	signature:(char *imageName, string name, byte type)
 name	GaffMaker/include/Definitions.h	/^	    std::string name = "";$/;"	m	struct:Gaff::fileInfo	access:public
 name	include/Definitions.h	/^	    std::string name = "";$/;"	m	struct:Gaff::fileInfo	access:public
 nameSize	GaffMaker/include/Definitions.h	/^	    byte nameSize = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
@@ -217,59 +267,88 @@ offset	GaffMaker/src/Writer.cpp	/^byteInt offset;$/;"	v
 offset	include/Definitions.h	/^	    byteInt offset;$/;"	m	struct:Gaff::fileInfo	access:public
 origin	GaffMaker/include/Definitions.h	/^	    std::string origin = "";$/;"	m	struct:Gaff::fileInfo	access:public
 origin	include/Definitions.h	/^	    std::string origin = "";$/;"	m	struct:Gaff::fileInfo	access:public
-pollWindow	include/gfx/Window.h	/^void pollWindow();$/;"	p	signature:()
-pollWindow	src/gfx/Window.cpp	/^void pollWindow() {$/;"	f	signature:()
-pos	src/entities/Entity.cpp	/^i2 pos = {300, 300};$/;"	v
+pollWindow	include/Window.h	/^void pollWindow();$/;"	p	signature:()
+pollWindow	src/Window.cpp	/^void pollWindow() {$/;"	f	signature:()
+pos	include/entities/Entity.h	/^    v2f pos = {300, 300};$/;"	m	class:Entity	access:private
 print	include/util/Log.h	/^	static void print(int msg);$/;"	p	class:Log	access:public	signature:(int msg)
 print	include/util/Log.h	/^	static void print(std::string msg);$/;"	p	class:Log	access:public	signature:(std::string msg)
 print	include/util/Log.h	/^	static void print(std::string msg, int type);$/;"	p	class:Log	access:public	signature:(std::string msg, int type)
 print	src/util/Log.cpp	/^void Log::print(int msg) {$/;"	f	class:Log	signature:(int msg)
 print	src/util/Log.cpp	/^void Log::print(std::string msg) {$/;"	f	class:Log	signature:(std::string msg)
 print	src/util/Log.cpp	/^void Log::print(std::string msg, int type) {$/;"	f	class:Log	signature:(std::string msg, int type)
+quad	src/gfx/Screen.cpp	/^void quad(int x1, int y1, int x2, int y2) {$/;"	f	signature:(int x1, int y1, int x2, int y2)
+quad	src/gfx/Screen.cpp	/^void quad(int x1, int y1, int x2, int y2);$/;"	p	file:	signature:(int x1, int y1, int x2, int y2)
+quadTex	src/gfx/Screen.cpp	/^void quadTex(int x1, int y1, int x2, int y2, GLuint tex, float texWidth, float texHeight) {$/;"	f	signature:(int x1, int y1, int x2, int y2, GLuint tex, float texWidth, float texHeight)
+quadTex	src/gfx/Screen.cpp	/^void quadTex(int x1, int y1, int x2, int y2, GLuint tex, float texWidth, float texHeight);$/;"	p	file:	signature:(int x1, int y1, int x2, int y2, GLuint tex, float texWidth, float texHeight)
 read	include/io/Reader.h	/^	static void read(int id, byte*);$/;"	p	class:Reader	access:public	signature:(int id, byte*)
 read	src/io/Reader.cpp	/^void Reader::read(int id, byte data[]) {$/;"	f	class:Reader	signature:(int id, byte data[])
 render	include/entities/Entity.h	/^	void render();$/;"	p	class:Entity	access:public	signature:()
+render	include/level/Level.h	/^	static void render();$/;"	p	class:Level	access:public	signature:()
+render	include/level/Tile.h	/^	static void render(int x, int y, byte id);$/;"	p	class:Tile	access:public	signature:(int x, int y, byte id)
 render	src/Game.cpp	/^void render() {$/;"	f	signature:()
 render	src/Game.cpp	/^void render();$/;"	p	file:	signature:()
 render	src/entities/Entity.cpp	/^void Entity::render() {$/;"	f	class:Entity	signature:()
+render	src/level/Level.cpp	/^void Level::render() {$/;"	f	class:Level	signature:()
+render	src/level/Tile.cpp	/^void Tile::render(int x, int y, byte id) {$/;"	f	class:Tile	signature:(int x, int y, byte id)
 s	GaffMaker/include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
 s	include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
 setState	include/Input.h	/^	static void setState(int key, bool state);$/;"	p	class:Input	access:public	signature:(int key, bool state)
 setState	src/Input.cpp	/^void Input::setState(int key, bool state) {$/;"	f	class:Input	signature:(int key, bool state)
-shouldCloseWindow	include/gfx/Window.h	/^bool shouldCloseWindow();$/;"	p	signature:()
-shouldCloseWindow	src/gfx/Window.cpp	/^bool shouldCloseWindow() {$/;"	f	signature:()
+shouldCloseWindow	include/Window.h	/^bool shouldCloseWindow();$/;"	p	signature:()
+shouldCloseWindow	src/Window.cpp	/^bool shouldCloseWindow() {$/;"	f	signature:()
 size	GaffMaker/include/Definitions.h	/^	    byteInt size;$/;"	m	struct:Gaff::fileInfo	access:public
-size	GaffMaker/include/Definitions.h	/^struct size {$/;"	s
+size	GaffMaker/include/LoadPNG.h	/^    int size = 0;$/;"	m	struct:image	access:public
 size	include/Definitions.h	/^	    byteInt size;$/;"	m	struct:Gaff::fileInfo	access:public
-size	include/Definitions.h	/^struct size {$/;"	s
-size::height	GaffMaker/include/Definitions.h	/^    int height;$/;"	m	struct:size	access:public
-size::height	include/Definitions.h	/^    int height;$/;"	m	struct:size	access:public
-size::width	GaffMaker/include/Definitions.h	/^    int width;$/;"	m	struct:size	access:public
-size::width	include/Definitions.h	/^    int width;$/;"	m	struct:size	access:public
-speed	src/entities/Entity.cpp	/^int speed = 6;$/;"	v
-swapWindow	include/gfx/Window.h	/^void swapWindow();$/;"	p	signature:()
-swapWindow	src/gfx/Window.cpp	/^void swapWindow() {$/;"	f	signature:()
-tex	src/entities/Entity.cpp	/^int tex;$/;"	v
+swapWindow	include/Window.h	/^void swapWindow();$/;"	p	signature:()
+swapWindow	src/Window.cpp	/^void swapWindow() {$/;"	f	signature:()
+tex	include/entities/Entity.h	/^    int tex;$/;"	m	class:Entity	access:private
 tick	include/entities/Entity.h	/^	void tick();$/;"	p	class:Entity	access:public	signature:()
+tick	include/level/Level.h	/^	static void tick();$/;"	p	class:Level	access:public	signature:()
 tick	src/Game.cpp	/^void tick() {$/;"	f	signature:()
 tick	src/Game.cpp	/^void tick();$/;"	p	file:	signature:()
 tick	src/entities/Entity.cpp	/^void Entity::tick() {$/;"	f	class:Entity	signature:()
+tick	src/level/Level.cpp	/^void Level::tick() {$/;"	f	class:Level	signature:()
 ticks	src/Game.cpp	/^int ticks = 0;$/;"	v
+tiles	src/level/Tile.cpp	/^uint tiles[256] = {0x00};$/;"	v
 type	GaffMaker/include/Definitions.h	/^	    byte type = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
 type	include/Definitions.h	/^	    byte type = 0x00;$/;"	m	struct:Gaff::fileInfo	access:public
 uint	GaffMaker/include/Definitions.h	/^typedef unsigned int uint;$/;"	t
 uint	include/Definitions.h	/^typedef unsigned int uint;$/;"	t
-validate	GaffMaker/src/Writer.cpp	/^bool validate(istream& source) {$/;"	f	signature:(istream& source)
-width	GaffMaker/include/Definitions.h	/^    int width;$/;"	m	struct:size	access:public
-width	include/Definitions.h	/^    int width;$/;"	m	struct:size	access:public
-window	src/gfx/Window.cpp	/^GLFWwindow* window;$/;"	v
-x	GaffMaker/include/Definitions.h	/^    float x;$/;"	m	struct:f3	access:public
-x	GaffMaker/include/Definitions.h	/^    float x;$/;"	m	struct:i2	access:public
-x	include/Definitions.h	/^    float x;$/;"	m	struct:f3	access:public
-x	include/Definitions.h	/^    float x;$/;"	m	struct:i2	access:public
-y	GaffMaker/include/Definitions.h	/^    float y;$/;"	m	struct:f3	access:public
-y	GaffMaker/include/Definitions.h	/^    float y;$/;"	m	struct:i2	access:public
-y	include/Definitions.h	/^    float y;$/;"	m	struct:f3	access:public
-y	include/Definitions.h	/^    float y;$/;"	m	struct:i2	access:public
-z	GaffMaker/include/Definitions.h	/^    float z;$/;"	m	struct:f3	access:public
-z	include/Definitions.h	/^    float z;$/;"	m	struct:f3	access:public
+v2f	GaffMaker/include/Definitions.h	/^struct v2f {$/;"	s
+v2f	include/Definitions.h	/^struct v2f {$/;"	s
+v2f::x	GaffMaker/include/Definitions.h	/^    float x;$/;"	m	struct:v2f	access:public
+v2f::x	include/Definitions.h	/^    float x;$/;"	m	struct:v2f	access:public
+v2f::y	GaffMaker/include/Definitions.h	/^    float y;$/;"	m	struct:v2f	access:public
+v2f::y	include/Definitions.h	/^    float y;$/;"	m	struct:v2f	access:public
+v2i	GaffMaker/include/Definitions.h	/^struct v2i {$/;"	s
+v2i	include/Definitions.h	/^struct v2i {$/;"	s
+v2i::x	GaffMaker/include/Definitions.h	/^    int x;$/;"	m	struct:v2i	access:public
+v2i::x	include/Definitions.h	/^    int x;$/;"	m	struct:v2i	access:public
+v2i::y	GaffMaker/include/Definitions.h	/^    int y;$/;"	m	struct:v2i	access:public
+v2i::y	include/Definitions.h	/^    int y;$/;"	m	struct:v2i	access:public
+v3f	GaffMaker/include/Definitions.h	/^struct v3f {$/;"	s
+v3f	include/Definitions.h	/^struct v3f {$/;"	s
+v3f::x	GaffMaker/include/Definitions.h	/^    float x;$/;"	m	struct:v3f	access:public
+v3f::x	include/Definitions.h	/^    float x;$/;"	m	struct:v3f	access:public
+v3f::y	GaffMaker/include/Definitions.h	/^    float y;$/;"	m	struct:v3f	access:public
+v3f::y	include/Definitions.h	/^    float y;$/;"	m	struct:v3f	access:public
+v3f::z	GaffMaker/include/Definitions.h	/^    float z;$/;"	m	struct:v3f	access:public
+v3f::z	include/Definitions.h	/^    float z;$/;"	m	struct:v3f	access:public
+velocity	include/entities/Entity.h	/^    v2f velocity = {0, 0};$/;"	m	class:Entity	access:private
+width	GaffMaker/include/LoadPNG.h	/^    short width = 0;$/;"	m	struct:image	access:public
+width	src/level/Level.cpp	/^const int width = 8;$/;"	v
+window	src/Window.cpp	/^GLFWwindow* window;$/;"	v
+x	GaffMaker/include/Definitions.h	/^    float x;$/;"	m	struct:v2f	access:public
+x	GaffMaker/include/Definitions.h	/^    float x;$/;"	m	struct:v3f	access:public
+x	GaffMaker/include/Definitions.h	/^    int x;$/;"	m	struct:v2i	access:public
+x	include/Definitions.h	/^    float x;$/;"	m	struct:v2f	access:public
+x	include/Definitions.h	/^    float x;$/;"	m	struct:v3f	access:public
+x	include/Definitions.h	/^    int x;$/;"	m	struct:v2i	access:public
+y	GaffMaker/include/Definitions.h	/^    float y;$/;"	m	struct:v2f	access:public
+y	GaffMaker/include/Definitions.h	/^    float y;$/;"	m	struct:v3f	access:public
+y	GaffMaker/include/Definitions.h	/^    int y;$/;"	m	struct:v2i	access:public
+y	include/Definitions.h	/^    float y;$/;"	m	struct:v2f	access:public
+y	include/Definitions.h	/^    float y;$/;"	m	struct:v3f	access:public
+y	include/Definitions.h	/^    int y;$/;"	m	struct:v2i	access:public
+z	GaffMaker/include/Definitions.h	/^    float z;$/;"	m	struct:v3f	access:public
+z	include/Definitions.h	/^    float z;$/;"	m	struct:v3f	access:public

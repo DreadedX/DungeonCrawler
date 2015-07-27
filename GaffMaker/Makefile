@@ -8,7 +8,7 @@ SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
 SRC_PATH = src
 # General compiler flags
-COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g
+COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g -Wno-write-strings
 # Add additional include paths
 INCLUDES = -I ./include
 # Destination directory, like a jail or mounted system
@@ -23,6 +23,7 @@ SOURCES = $(shell find $(SRC_PATH)/ -name '*.$(SRC_EXT)' -printf '%T@\t%p\n' \
 all: $(NAME)
 
 $(NAME): $(SOURCES)
+	$(CXX) $(COMPILE_FLAGS) ./include/Standard.h 
 	$(CXX) $(SOURCES) $(COMPILE_FLAGS) $(shell pkg-config --libs --cflags $(LIBS)) $(INCLUDES) -o $(NAME)
 
 execute:

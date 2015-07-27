@@ -1,4 +1,4 @@
-#include "util/Log.h"
+#include "Standard.h"
 
 void Log::print(int msg) {
     std::cout << "[DEBUG] " << msg << std::endl;
