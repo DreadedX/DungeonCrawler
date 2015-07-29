@@ -8,7 +8,7 @@ const char NAME[] = "Platformer";
 class Window {
 
     public:
-	static bool create();
+	static void create();
 	static bool shouldClose();
 	static void terminate();
 	static void destroy();

@@ -12,16 +12,10 @@ int ticks = 0;
 int frames = 0;
 
 void Game::init() {
-    std::cerr << "Test error" << std::endl;
-    
-    if(!Window::create()) {
-	Log::print("Failed to create window!", ERROR);
-	exit(-1);
-	return;
-    }
-
     std::string fileName[] {"base.gaff", "level.gaff"};
     Reader::load(fileName);
+
+    Window::create();
 
     // Screen::init();
 

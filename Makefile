@@ -17,7 +17,7 @@ STANDARD_GCH = $(STANDARD_H).gch
 # Extra compiler settings
 EXTRA = -Wno-write-strings #-Wno-deprecated
 # Preprocessor defs
-DEFS = -DDRAW_BOX=1 -DSCALE=1
+DEFS = -DDRAW_BOX=1 -DSCALE=1 -DLEGACY=1
 # General compiler flags
 COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g $(EXTRA) $(DEFS)
 # Add additional include paths
