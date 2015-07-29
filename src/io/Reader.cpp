@@ -4,11 +4,25 @@ using namespace std;
 //
 // TODO: Make this allocate the correct size
 static Gaff::fileInfo files[256];
+uint rG = 0;
 
-void Reader::load(string extension) {
+void loadFile(string fileName);
 
-    string fileName = "out." + extension;
-    ifstream file (fileName, ios::in | ios::binary);
+void Reader::load(string fileName[]) {
+
+    // TODO: Add error handeling to opening files
+    // TODO: Make this not hardcoded
+    int count = 2;
+    for (int i = 0; i < count; i++) {
+	cout << fileName[i] << endl;
+	loadFile(fileName[i]);
+    }
+
+}
+
+void loadFile(std::string fileName) {
+
+    ifstream file(fileName, ios::in | ios::binary);
 
     byte magic[4] = {0x00};
     file.read(reinterpret_cast<char*>(magic), 4);
@@ -27,32 +41,33 @@ void Reader::load(string extension) {
     file.read(reinterpret_cast<char*>(fileCount.b), 2);
 
     // Gaff::fileInfo files[fileCount.i];
-    for(uint i = 0; i < fileCount.i; i++) {
-	files[i].origin = fileName;
+    for(uint r = rG; r < rG+fileCount.i; r++) {
+	files[r].origin = fileName;
 	
 	// Get name
 	byte nameSize[] = {0x00};
 	file.read(reinterpret_cast<char*>(nameSize), 1);
-	files[i].nameSize = nameSize[0];
+	files[r].nameSize = nameSize[0];
 
-	byte name[files[i].nameSize];
-	file.read(reinterpret_cast<char*>(name), files[i].nameSize);
-	files[i].name.assign(reinterpret_cast<char*>(name), files[i].nameSize);
+	byte name[files[r].nameSize];
+	file.read(reinterpret_cast<char*>(name), files[r].nameSize);
+	files[r].name.assign(reinterpret_cast<char*>(name), files[r].nameSize);
 	
 	// Get type
 	byte type[1] = {0x00};
 	file.read(reinterpret_cast<char*>(type), 1);
-	files[i].type = type[0];
+	files[r].type = type[0];
 
-	file.read(reinterpret_cast<char*>(files[i].extra.b), 4);
+	file.read(reinterpret_cast<char*>(files[r].extra.b), 4);
 	
 	// Get content offset
-	file.read(reinterpret_cast<char*>(files[i].offset.b), 4);
+	file.read(reinterpret_cast<char*>(files[r].offset.b), 4);
 
 	// Get content size
-	file.read(reinterpret_cast<char*>(files[i].size.b), 4);
+	file.read(reinterpret_cast<char*>(files[r].size.b), 4);
 
     }
+    rG += fileCount.i;
 
     cout << "name type width height offset size" << endl;
     for(uint i = 0; i < fileCount.i; i++) {
@@ -67,6 +82,7 @@ void Reader::load(string extension) {
 }
 
 void Reader::getWithType(byte type, uint *idList) {
+
     int counter = 0;
     for (uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
 	if ((files[i].type | type) == files[i].type) {
@@ -77,6 +93,7 @@ void Reader::getWithType(byte type, uint *idList) {
 }
 
 string Reader::getName(uint id) {
+
     return files[id].name;
 }
 

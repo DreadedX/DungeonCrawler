@@ -7,6 +7,9 @@ class Level {
 	static void init();
 	static void tick();
 	static void render();
+	static void end();
+
+	static Entity* getPlayer();
 
 };
 

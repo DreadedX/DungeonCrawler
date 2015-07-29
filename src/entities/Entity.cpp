@@ -2,10 +2,12 @@
 
 void Entity::init() {
 
-    tex = loadTexture("entity/player");
+    tex = Texture::load("entity/player");
 }
 
 void Entity::tick() {
+
+    // glTranslated(-velocity.x * 0.5f, -velocity.y * 0.5f, 0);
 
     velocity.x *= friction;
     velocity.y *= friction;

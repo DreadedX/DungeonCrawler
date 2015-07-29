@@ -12,32 +12,39 @@ int ticks = 0;
 int frames = 0;
 
 void Game::init() {
+    std::cerr << "Test error" << std::endl;
     
-    if(!createWindow()) {
+    if(!Window::create()) {
 	Log::print("Failed to create window!", ERROR);
+	exit(-1);
 	return;
     }
 
-    Reader::load("gaff");
+    std::string fileName[] {"base.gaff", "level.gaff"};
+    Reader::load(fileName);
+
+    // Screen::init();
 
     Level::init();
+    Camera::init();
 
     gameLoop();
 
+    Level::end();
     Reader::freeReader();
 }
 
 void gameLoop() {
     lastTick = getMilliCount();
-    while (!shouldCloseWindow()) {
+    while (!Window::shouldClose()) {
 	info();
 
 	tick();
 	render();
 
-	pollWindow();
+	Window::poll();
     }
-    destroyWindow();
+    Window::destroy();
 }
 
 void info() {
@@ -59,6 +66,7 @@ void tick() {
 	lastTick = getMilliCount();
 
 	Level::tick();
+	Camera::tick();
 
 	ticks++;
     // }
@@ -68,8 +76,11 @@ void render() {
     Screen::clear();
 
     Level::render();
+    Camera::tick();
 
-    swapWindow();
+    // Screen::drawVao();
+
+    Window::swap();
 
     frames++;
 }

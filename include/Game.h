@@ -5,7 +5,6 @@ const int TPS = 60;
 
 class Game {
 
-
     public:
 	static void init();
 };

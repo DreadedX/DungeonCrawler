@@ -2,7 +2,7 @@
 
 GLFWwindow* window;
 
-bool createWindow() {
+bool Window::create() {
 
     Log::print("Initializing glfw");
     if(!glfwInit()) {
@@ -11,9 +11,9 @@ bool createWindow() {
 
     Log::print("Creating glfw window");
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    window = glfwCreateWindow(WIDTH, HEIGHT, NAME, NULL, NULL);
+    window = glfwCreateWindow(WIDTH*SCALE, HEIGHT*SCALE, NAME, NULL, NULL);
     if (!window) {
-	glfwTerminate();
+	terminate();
 	return false;
     }
 
@@ -26,6 +26,7 @@ bool createWindow() {
 
     Log::print("Setting context to current");
     glfwMakeContextCurrent(window);
+    glewInit();
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClearDepth(1.0f);
@@ -44,22 +45,27 @@ bool createWindow() {
     return true;
 }
 
-bool shouldCloseWindow() {
+bool Window::shouldClose() {
 
     return glfwWindowShouldClose(window);
 }
 
-void destroyWindow() {
+void Window::terminate() {
+
+    glfwTerminate();
+}
+
+void Window::destroy() {
 
     glfwDestroyWindow(window);
 }
 
-void swapWindow() {
+void Window::swap() {
 
     glfwSwapBuffers(window);
 }
 
-void pollWindow() {
+void Window::poll() {
 
     glfwPollEvents();
 }

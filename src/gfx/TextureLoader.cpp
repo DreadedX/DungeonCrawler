@@ -1,6 +1,6 @@
 #include "Standard.h"
 
-GLuint loadTexture(std::string name) {
+GLuint Texture::load(std::string name) {
 
     GLuint tex;
     glGenTextures(1, &tex);
@@ -13,7 +13,7 @@ GLuint loadTexture(std::string name) {
 
     uint id = Reader::getId(name);
     if (id == 256) {
-	std::cout << "Could not load texture: " << name << std::endl;
+	std::cerr << "Could not load texture: " << name << std::endl;
 	// TODO: Make this not hardcoded
 	id = Reader::getId("tile/void");
     }

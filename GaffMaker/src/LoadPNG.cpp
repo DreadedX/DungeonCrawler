@@ -1,4 +1,4 @@
-#include "LoadPNG.h"
+#include "Standard.h"
 
 image loadPNG(char *name) {
     image png;

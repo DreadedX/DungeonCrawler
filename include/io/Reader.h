@@ -4,7 +4,7 @@
 class Reader {
 
     public:
-	static void load(std::string);
+	static void load(std::string*);
 	static void getWithType(byte type, uint *idList);
 	static std::string getName(uint id);
 	static uint getId(std::string);

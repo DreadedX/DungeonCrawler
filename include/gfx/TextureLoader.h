@@ -1,6 +1,9 @@
 #ifndef TEXTURE_LOADER_H
 #define TEXTURE_LOADER_H
 
-GLuint loadTexture(std::string name);
+class Texture {
+    public:
+	static GLuint load(std::string name);
+};
 
 #endif

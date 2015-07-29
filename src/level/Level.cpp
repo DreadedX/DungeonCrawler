@@ -3,10 +3,10 @@
 const int width = 8;
 const int height = 4;
 
+Entity entity;
+
 // TODO: Make this not hardcoded
 byte layout[height][width];
-
-Entity entity;
 
 void Level::init() {
 
@@ -52,4 +52,16 @@ void Level::render() {
     }
 
     entity.render();
+
+#if DRAW_BOX
+    Screen::drawOutline(0, 0, WIDTH, HEIGHT);
+#endif
+}
+
+void Level::end() {
+    // delete entity;
+}
+
+Entity* Level::getPlayer() {
+    return &entity;
 }

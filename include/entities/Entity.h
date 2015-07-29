@@ -3,7 +3,6 @@
 
 class Entity {
 
-    v2f pos = {300, 300};
     v2f velocity = {0, 0};
     float friction = 0.8f;
     float acceleration = 10.0f / (1 / (1 - friction));
@@ -13,6 +12,8 @@ class Entity {
     bool canDash = true;
 
     public:
+	v2f pos = {300, 300};
+
 	void init();
 	void tick();
 	void render();
