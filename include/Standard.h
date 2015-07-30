@@ -1,10 +1,6 @@
 #ifndef STANDARD_H
 #define STANDARD_H
 
-#ifndef SCALE
-#define SCALE 1
-#endif
-
 // Standard library includes
 #include <iostream>
 #include <fstream>
@@ -15,6 +11,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+using namespace glm;
+
 // Project includes
 #include "Config.h"
 #include "Definitions.h"
@@ -24,7 +24,7 @@
 #include "Window.h"
 #include "entities/Entity.h"
 #include "gfx/Camera.h"
-#include "gfx/Screen.h"
+#include "gfx/Render.h"
 #include "gfx/ShaderLoader.h"
 #include "gfx/TextureLoader.h"
 #include "io/Reader.h"

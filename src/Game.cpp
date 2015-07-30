@@ -13,7 +13,7 @@ int frames = 0;
 
 void Game::init() {
     std::string fileName[] {"base.gaff", "level.gaff"};
-    Reader::load(fileName);
+    IO::Reader::load(fileName);
 
     Window::create();
 
@@ -25,7 +25,7 @@ void Game::init() {
     gameLoop();
 
     Level::end();
-    Reader::freeReader();
+    IO::Reader::freeReader();
 }
 
 void gameLoop() {
@@ -56,18 +56,18 @@ void info() {
 void tick() {
 
 // TODO: This appears to not work correctly yet
-    // if (getMilliSpan(lastTick) > 1000/TPS) {
+    if (getMilliSpan(lastTick) > 1000/TPS) {
 	lastTick = getMilliCount();
 
 	Level::tick();
 	Camera::tick();
 
 	ticks++;
-    // }
+    }
 }
 
 void render() {
-    Screen::clear();
+    Render::clear();
 
     Level::render();
     Camera::tick();

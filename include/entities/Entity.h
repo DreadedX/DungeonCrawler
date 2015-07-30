@@ -3,16 +3,8 @@
 
 class Entity {
 
-    v2f velocity = {0, 0};
-    float friction = 0.8f;
-    float acceleration = 10.0f / (1 / (1 - friction));
-    int tex;
-
-    bool canJump = false;
-    bool canDash = true;
-
     public:
-	v2f pos = {300, 300};
+	vec4 position = vec4((WIDTH/2), (HEIGHT/2), 0.0f, 1.0f);
 
 	void init();
 	void tick();

@@ -1,15 +1,14 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
-class Level {
+namespace Level {
     
-    public:
-	static void init();
-	static void tick();
-	static void render();
-	static void end();
+    void init();
+    void tick();
+    void render();
+    void end();
 
-	static Entity* getPlayer();
+    Entity* getPlayer();
 
 };
 

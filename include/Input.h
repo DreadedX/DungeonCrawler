@@ -3,11 +3,10 @@
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-class Input {
+namespace Input {
 
-    public:
-	static bool isPressed(int key);
-	static void setState(int key, bool state);
+    bool isPressed(int key);
+    void setState(int key, bool state);
 };
 
 #endif

@@ -1,30 +1,40 @@
 #include "Standard.h"
 
+static int tex = 0;
+
+const float frictionFloat = pow(0.8f, VT);
+const float acceleration = 10.0f / (1 / (1 - frictionFloat)) * VT;
+const mat4 friction = scale(mat4(IDENTITY), vec3(frictionFloat));
+vec4 velocity = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+
 void Entity::init() {
 
-    tex = Texture::load("entity/player");
+    if (!tex) {
+	tex = Texture::load("entity/player");
+    }
 }
 
 void Entity::tick() {
 
-    // glTranslated(-velocity.x * 0.5f, -velocity.y * 0.5f, 0);
+    // Apply friction
+    velocity = friction * velocity;
 
-    velocity.x *= friction;
-    velocity.y *= friction;
-
+    // If movement speed is really low set it to 0
     if ((velocity.x > -0.01f) && (velocity.x < 0.01f) && velocity.x != 0) velocity.x = 0;
     if ((velocity.y > -0.01f) && (velocity.y < 0.01f) && velocity.y != 0) velocity.y = 0;
 
+    // Move on given input
     if (Input::isPressed(Key::UP)) velocity.y -= acceleration;
     if (Input::isPressed(Key::DOWN)) velocity.y += acceleration;
     if (Input::isPressed(Key::LEFT)) velocity.x -= acceleration;
     if (Input::isPressed(Key::RIGHT)) velocity.x += acceleration;
 
-    pos.x += velocity.x;
-    pos.y += velocity.y;
+    // Translate
+    mat4 move = translate(IDENTITY, vec3(velocity.x, velocity.y, velocity.z));
+    position = move * position;
 }
 
 void Entity::render() {
 
-    Screen::drawTile(pos.x, pos.y, tex);
+    Render::tile(position, tex);
 }

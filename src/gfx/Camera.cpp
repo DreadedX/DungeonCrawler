@@ -1,28 +1,20 @@
 # include "Standard.h"
 
-v2f pos;
-v2f posLast;
-v2f dPos;
-
 Entity *player;
+vec4 positionLast;
 
 void Camera::init() {
     player = Level::getPlayer();
 
-    pos = player->pos;
-    posLast = pos;
+    positionLast = player->position;
 }
 
 void Camera::tick() {
-    pos = player->pos;
-    dPos.x = posLast.x - pos.x;
-    dPos.y = posLast.y - pos.y;
-    
-    glTranslatef(dPos.x, dPos.y, 0);
-    
-    // std::cout << pos.x << " " << posLast.x << " " << pos.y << " " << posLast.y << std::endl;
+    vec4 positionDelta = positionLast - player->position;
 
-    posLast = pos;
+    glTranslatef(positionDelta.x, positionDelta.y, positionLast.z);
+
+    positionLast = player->position;
 }
 
 void Camera::render() {

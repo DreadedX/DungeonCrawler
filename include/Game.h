@@ -1,12 +1,15 @@
 #ifndef GAME_H
 #define GAME_H
 
-const int TPS = 60;
+#ifndef TPS
+#define TPS 60
+#endif
 
-class Game {
+const float VT = 60.0f/TPS;
 
-    public:
-	static void init();
+namespace Game {
+
+    void init();
 };
 
 #endif

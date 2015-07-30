@@ -1,14 +1,15 @@
 #include "Standard.h"
 
 using namespace std;
-//
+
 // TODO: Make this allocate the correct size
 static Gaff::fileInfo files[256];
+// TODO: Give this variable a better name;
 uint rG = 0;
 
-void loadFile(string fileName);
+static void loadFile(std::string fileName);
 
-void Reader::load(string fileName[]) {
+void IO::Reader::load(string fileName[]) {
 
     // TODO: Add error handeling to opening files
     // TODO: Make this not hardcoded
@@ -17,7 +18,6 @@ void Reader::load(string fileName[]) {
 	cout << fileName[i] << endl;
 	loadFile(fileName[i]);
     }
-
 }
 
 void loadFile(std::string fileName) {
@@ -81,7 +81,7 @@ void loadFile(std::string fileName) {
     file.close();
 }
 
-void Reader::getWithType(byte type, uint *idList) {
+void IO::Reader::getWithType(byte type, uint *idList) {
 
     int counter = 0;
     for (uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
@@ -92,12 +92,12 @@ void Reader::getWithType(byte type, uint *idList) {
     }
 }
 
-string Reader::getName(uint id) {
+string IO::Reader::getName(uint id) {
 
     return files[id].name;
 }
 
-uint Reader::getId(string name) {
+uint IO::Reader::getId(string name) {
 
     for(uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
 	if (files[i].name == name) {
@@ -108,23 +108,23 @@ uint Reader::getId(string name) {
     return 256;
 }
 
-v2i Reader::getImageSize(int id) {
+vec2 IO::Reader::getImageSize(int id) {
 
-    v2i imageSize;
+    vec2 imageSize;
     imageSize.x = (files[id].extra.b[1] << 8) + (files[id].extra.b[0]);
     imageSize.y = (files[id].extra.b[3] << 8) + (files[id].extra.b[2]);
 
     return imageSize;
 }
 
-void Reader::read(int id, byte data[]) {
+void IO::Reader::read(int id, byte data[]) {
 
     ifstream file (files[id].origin, ios::in | ios::binary);
     file.seekg(files[id].offset.i, ios::beg);
     file.read(reinterpret_cast<char*>(data), files[id].size.i);
 }
 
-void Reader::freeReader() {
+void IO::Reader::freeReader() {
 
     // free(files);
 }

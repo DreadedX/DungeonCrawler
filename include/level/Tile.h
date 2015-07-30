@@ -1,12 +1,11 @@
 #ifndef TILE_H
 #define TILE_H
 
-void createTile(std::string name, byte id);
 
-class Tile {
+namespace Tile {
 	
-    public:
-	static void render(int x, int y, byte id);
+    void create(std::string name, byte id);
+    void render(vec4 position, byte id);
 };
 
 #endif

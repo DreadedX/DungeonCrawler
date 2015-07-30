@@ -13,20 +13,6 @@ union byteShort {
     unsigned short s;
 };
 
-struct v2i {
-    int x;
-    int y;
-};
-struct v2f {
-    float x;
-    float y;
-};
-struct v3f {
-    float x;
-    float y;
-    float z;
-};
-
 // 0000 0001
 const byte TYPE_TILE = 0x01;
 // 0000 0010

@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 class Camera {
+
     public:
 	static void init();
 	static void tick();

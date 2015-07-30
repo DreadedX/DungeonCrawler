@@ -1,19 +1,24 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#ifndef SCALE
+#define SCALE 1
+#endif
+
 const int WIDTH = 608;
 const int HEIGHT = (WIDTH / 4 * 3);
 const char NAME[] = "Platformer";
 
-class Window {
+const mat4 IDENTITY = mat4(1.0f);
 
-    public:
-	static void create();
-	static bool shouldClose();
-	static void terminate();
-	static void destroy();
-	static void swap();
-	static void poll();
+namespace Window {
+
+    void create();
+    bool shouldClose();
+    void terminate();
+    void destroy();
+    void swap();
+    void poll();
 };
 
 

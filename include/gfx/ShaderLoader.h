@@ -1,10 +1,9 @@
 #ifndef SHADERLOADER_H
 #define SHADERLOADER_H
 
-class Shader {
+namespace Shader {
 
-    public:
-	static GLuint load(const char *nameVert, const char *nameFrag);
+    GLuint load(const char *nameVert, const char *nameFrag);
 
 };
 
