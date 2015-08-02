@@ -4,8 +4,9 @@ static int tex = 0;
 
 const float frictionFloat = pow(0.8f, VT);
 const float acceleration = 10.0f / (1 / (1 - frictionFloat)) * VT;
+// NOTE: When implementing jump there can be a different friction on the y-axis
 const mat4 friction = scale(mat4(IDENTITY), vec3(frictionFloat));
-vec4 velocity = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+vec4 velocity = vec4(0, 0, 0, 0);
 
 void Entity::init() {
 
@@ -20,8 +21,8 @@ void Entity::tick() {
     velocity = friction * velocity;
 
     // If movement speed is really low set it to 0
-    if ((velocity.x > -0.01f) && (velocity.x < 0.01f) && velocity.x != 0) velocity.x = 0;
-    if ((velocity.y > -0.01f) && (velocity.y < 0.01f) && velocity.y != 0) velocity.y = 0;
+    if ((velocity.x > -0.05f) && (velocity.x < 0.05f) && velocity.x != 0) velocity.x = 0;
+    if ((velocity.y > -0.05f) && (velocity.y < 0.05f) && velocity.y != 0) velocity.y = 0;
 
     // Move on given input
     if (Input::isPressed(Key::UP)) velocity.y -= acceleration;
@@ -32,6 +33,19 @@ void Entity::tick() {
     // Translate
     mat4 move = translate(IDENTITY, vec3(velocity.x, velocity.y, velocity.z));
     position = move * position;
+
+    if (position.x+8 > Level::width * 16) {
+	position.x = Level::width * Level::tileScaleInt - 8;
+    }
+    if (position.x-8 < 0) {
+	position.x = 8;
+    }
+    if (position.y + 8 > Level::height * 16) {
+	position.y = Level::height * Level::tileScaleInt - 8;
+    }
+    if (position.y - 8 < 0) {
+	position.y = 8;
+    }
 }
 
 void Entity::render() {

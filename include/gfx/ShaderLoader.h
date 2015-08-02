@@ -4,7 +4,6 @@
 namespace Shader {
 
     GLuint load(const char *nameVert, const char *nameFrag);
-
 };
 
 #endif

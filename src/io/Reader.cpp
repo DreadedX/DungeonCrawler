@@ -2,129 +2,134 @@
 
 using namespace std;
 
-// TODO: Make this allocate the correct size
-static Gaff::fileInfo files[256];
-// TODO: Give this variable a better name;
-uint rG = 0;
+namespace IO {
+    namespace Reader {
 
-static void loadFile(std::string fileName);
+	// TODO: Make this allocate the correct size
+	static Gaff::fileInfo files[256];
+	// TODO: Give this variable a better name;
+	uint rG = 0;
 
-void IO::Reader::load(string fileName[]) {
+	static void loadFile(std::string fileName);
 
-    // TODO: Add error handeling to opening files
-    // TODO: Make this not hardcoded
-    int count = 2;
-    for (int i = 0; i < count; i++) {
-	cout << fileName[i] << endl;
-	loadFile(fileName[i]);
-    }
-}
+	void load(string fileName[]) {
 
-void loadFile(std::string fileName) {
+	    // TODO: Add error handeling to opening files
+	    // TODO: Make this not hardcoded
+	    int count = 1;
+	    for (int i = 0; i < count; i++) {
+		Log::print(fileName[i], DEBUG);
+		loadFile(fileName[i]);
+	    }
+	}
 
-    ifstream file(fileName, ios::in | ios::binary);
+	void loadFile(std::string fileName) {
 
-    byte magic[4] = {0x00};
-    file.read(reinterpret_cast<char*>(magic), 4);
+	    ifstream file(fileName, ios::in | ios::binary);
 
-    if (magic[0] == Gaff::MAGIC[0] && magic[1] == Gaff::MAGIC[1] && magic[2] == Gaff::MAGIC[2] && magic[3] == Gaff::MAGIC[3]) {
-	cout << "Type: Gaff" << endl;
-    }
+	    byte magic[4] = {0x00};
+	    file.read(reinterpret_cast<char*>(magic), 4);
 
-    byte version[1] = {0x00};
-    file.read(reinterpret_cast<char*>(version), 1);
-    if (version[0] == Gaff::VERSION) {
-	cout << "Version: 1" << endl;
-    }
+	    if (magic[0] == Gaff::MAGIC[0] && magic[1] == Gaff::MAGIC[1] && magic[2] == Gaff::MAGIC[2] && magic[3] == Gaff::MAGIC[3]) {
+		Log::print("Type: Gaff", DEBUG);
+	    }
 
-    byteInt fileCount;
-    file.read(reinterpret_cast<char*>(fileCount.b), 2);
+	    byte version[1] = {0x00};
+	    file.read(reinterpret_cast<char*>(version), 1);
+	    if (version[0] == Gaff::VERSION) {
+		Log::print("Version: 1", DEBUG);
+	    }
 
-    // Gaff::fileInfo files[fileCount.i];
-    for(uint r = rG; r < rG+fileCount.i; r++) {
-	files[r].origin = fileName;
-	
-	// Get name
-	byte nameSize[] = {0x00};
-	file.read(reinterpret_cast<char*>(nameSize), 1);
-	files[r].nameSize = nameSize[0];
+	    byteInt fileCount;
+	    file.read(reinterpret_cast<char*>(fileCount.b), 2);
 
-	byte name[files[r].nameSize];
-	file.read(reinterpret_cast<char*>(name), files[r].nameSize);
-	files[r].name.assign(reinterpret_cast<char*>(name), files[r].nameSize);
-	
-	// Get type
-	byte type[1] = {0x00};
-	file.read(reinterpret_cast<char*>(type), 1);
-	files[r].type = type[0];
+	    // Gaff::fileInfo files[fileCount.i];
+	    for(uint r = rG; r < rG+fileCount.i; r++) {
+		files[r].origin = fileName;
 
-	file.read(reinterpret_cast<char*>(files[r].extra.b), 4);
-	
-	// Get content offset
-	file.read(reinterpret_cast<char*>(files[r].offset.b), 4);
+		// Get name
+		byte nameSize[] = {0x00};
+		file.read(reinterpret_cast<char*>(nameSize), 1);
+		files[r].nameSize = nameSize[0];
 
-	// Get content size
-	file.read(reinterpret_cast<char*>(files[r].size.b), 4);
+		byte name[files[r].nameSize];
+		file.read(reinterpret_cast<char*>(name), files[r].nameSize);
+		files[r].name.assign(reinterpret_cast<char*>(name), files[r].nameSize);
 
-    }
-    rG += fileCount.i;
+		// Get type
+		byte type[1] = {0x00};
+		file.read(reinterpret_cast<char*>(type), 1);
+		files[r].type = type[0];
 
-    cout << "name type width height offset size" << endl;
-    for(uint i = 0; i < fileCount.i; i++) {
-	short width;
-	width = (files[i].extra.b[1] << 8) + (files[i].extra.b[0]);
-	short height;
-	height = (files[i].extra.b[3] << 8) + (files[i].extra.b[2]);
+		file.read(reinterpret_cast<char*>(files[r].extra.b), 4);
 
-	cout << files[i].name << " " << +files[i].type << " " << width << " " << height << " " << files[i].offset.i << " " << files[i].size.i << endl;
-    }
-    file.close();
-}
+		// Get content offset
+		file.read(reinterpret_cast<char*>(files[r].offset.b), 4);
 
-void IO::Reader::getWithType(byte type, uint *idList) {
+		// Get content size
+		file.read(reinterpret_cast<char*>(files[r].size.b), 4);
 
-    int counter = 0;
-    for (uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
-	if ((files[i].type | type) == files[i].type) {
-	    idList[counter] = i;
-	    counter++;
+	    }
+	    rG += fileCount.i;
+
+	    Log::print("name type width height offset size", DEBUG);
+	    for(uint i = 0; i < fileCount.i; i++) {
+		short width;
+		width = (files[i].extra.b[1] << 8) + (files[i].extra.b[0]);
+		short height;
+		height = (files[i].extra.b[3] << 8) + (files[i].extra.b[2]);
+
+		Log::print(String::format("%s %i %i %i %i %i", files[i].name.c_str(), files[i].type, width, height, files[i].offset.i, files[i].size.i), DEBUG);
+	    }
+	    file.close();
+	}
+
+	void getWithType(byte type, uint *idList) {
+
+	    int counter = 0;
+	    for (uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
+		if ((files[i].type | type) == files[i].type) {
+		    idList[counter] = i;
+		    counter++;
+		}
+	    }
+	}
+
+	string getName(uint id) {
+
+	    return files[id].name;
+	}
+
+	uint getId(string name) {
+
+	    for(uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
+		if (files[i].name == name) {
+		    return i;
+		}
+	    }
+	    // TODO: Find a better way to deal with this
+	    return 256;
+	}
+
+	vec2 getImageSize(int id) {
+
+	    vec2 imageSize;
+	    imageSize.x = (files[id].extra.b[1] << 8) + (files[id].extra.b[0]);
+	    imageSize.y = (files[id].extra.b[3] << 8) + (files[id].extra.b[2]);
+
+	    return imageSize;
+	}
+
+	void read(int id, byte data[]) {
+
+	    ifstream file (files[id].origin, ios::in | ios::binary);
+	    file.seekg(files[id].offset.i, ios::beg);
+	    file.read(reinterpret_cast<char*>(data), files[id].size.i);
+	}
+
+	void freeReader() {
+
+	    // free(files);
 	}
     }
-}
-
-string IO::Reader::getName(uint id) {
-
-    return files[id].name;
-}
-
-uint IO::Reader::getId(string name) {
-
-    for(uint i = 0; i < sizeof(files)/sizeof(Gaff::fileInfo); i++) {
-	if (files[i].name == name) {
-	    return i;
-	}
-    }
-    // TODO: Find a better way to deal with this
-    return 256;
-}
-
-vec2 IO::Reader::getImageSize(int id) {
-
-    vec2 imageSize;
-    imageSize.x = (files[id].extra.b[1] << 8) + (files[id].extra.b[0]);
-    imageSize.y = (files[id].extra.b[3] << 8) + (files[id].extra.b[2]);
-
-    return imageSize;
-}
-
-void IO::Reader::read(int id, byte data[]) {
-
-    ifstream file (files[id].origin, ios::in | ios::binary);
-    file.seekg(files[id].offset.i, ios::beg);
-    file.read(reinterpret_cast<char*>(data), files[id].size.i);
-}
-
-void IO::Reader::freeReader() {
-
-    // free(files);
 }

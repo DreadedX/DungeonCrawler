@@ -1,12 +1,11 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-class Camera {
+namespace Camera {
 
-    public:
-	static void init();
-	static void tick();
-	static void render();
+    void init();
+    void tick();
+    void render();
 };
 
 #endif

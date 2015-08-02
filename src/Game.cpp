@@ -1,80 +1,124 @@
 #include "Standard.h"
 
-void gameLoop();
-void info();
-void tick();
-void render();
+namespace Game {
 
-int lastTick;
-int lastInfo;
+    void gameLoop();
+    void info();
+    void tick();
+    void render();
 
-int ticks = 0;
-int frames = 0;
+    int lastTick;
+    int lastInfo;
 
-void Game::init() {
-    std::string fileName[] {"base.gaff", "level.gaff"};
-    IO::Reader::load(fileName);
+    int ticks = 0;
+    int frames = 0;
 
-    Window::create();
+    int actualTPS = 0;
+    int actualFPS = 0;
 
-    // Screen::init();
+    bool paused = false;
+#if DEBUG_MODE
+    bool showDebug = false;
+#endif
 
-    Level::init();
-    Camera::init();
+    Entity *player = Level::getPlayer();
 
-    gameLoop();
+    void init() {
 
-    Level::end();
-    IO::Reader::freeReader();
-}
+	std::string fileName[] {"test.gaff"};
+	IO::Reader::load(fileName);
 
-void gameLoop() {
-    lastTick = getMilliCount();
-    while (!Window::shouldClose()) {
-	info();
+	Window::create();
 
-	tick();
-	render();
+	// Screen::init();
 
-	Window::poll();
+	Level::init();
+	Camera::init();
+
+	Font::init();
+
+	gameLoop();
+
+	Level::end();
+	IO::Reader::freeReader();
     }
-    Window::destroy();
-}
 
-void info() {
-
-    if (getMilliSpan(lastInfo) > 1000) {
-	lastInfo = getMilliCount();
-
-	std::cout << "Ticks: " << ticks << ", Frames: " << frames << std::endl;
-
-	ticks = 0;
-	frames = 0;
-    }
-}
-
-void tick() {
-
-// TODO: This appears to not work correctly yet
-    if (getMilliSpan(lastTick) > 1000/TPS) {
+    void gameLoop() {
 	lastTick = getMilliCount();
+	while (!Window::shouldClose()) {
+	    info();
 
-	Level::tick();
-	Camera::tick();
+	    tick();
+	    render();
 
-	ticks++;
+	    Window::poll();
+	}
+	Window::destroy();
     }
-}
 
-void render() {
-    Render::clear();
+    void info() {
 
-    Level::render();
-    Camera::tick();
+	if (getMilliSpan(lastInfo) > 1000) {
+	    lastInfo = getMilliCount();
 
-    // Screen::drawVao();
+	    actualTPS = ticks;
+	    actualFPS = frames;
 
-    Window::swap();
+	    ticks = 0;
+	    frames = 0;
+	}
+    }
 
-    frames++;
+    void tick() {
+
+	// TODO: This appears to not work correctly yet
+	if (getMilliSpan(lastTick) > 1000/TPS) {
+	    lastTick = getMilliCount();
+
+	    if(Input::isPressed(Key::PAUSE)) {
+		Input::setState(Key::PAUSE, false);
+		paused = !paused;
+	    }
+
+#if DEBUG_MODE
+	    if(Input::isPressed(Key::DEBUG)) {
+		Input::setState(Key::DEBUG, false);
+		showDebug = !showDebug;
+	    }
+#endif
+
+	    if (!paused) {
+		Level::tick();
+		Camera::tick();
+	    }
+
+	    ticks++;
+	}
+    }
+
+    void render() {
+	Render::clear();
+
+	Level::render();
+	Camera::render();
+
+	Render::test();
+
+	// TODO: Improve the format code!
+#if DEBUG_MODE
+	if (showDebug) {
+	    Font::render(vec4(0, 0, 0, 1), vec4(1), String::format("FPS: %i, TPS: %i", actualFPS, actualTPS));
+	    Font::render(vec4(0, 10, 0, 1), vec4(1), String::format("x: %i, y: %i", (int) (player->position.x), (int) (player->position.y)));
+	}
+#endif
+
+	if (paused) {
+	    Font::render(vec4(WIDTH - 6 * 8, 0, 0, 1), vec4(1), "Paused");
+	    Render::quadAbs(vec4(WIDTH/2, HEIGHT/2, 0, 1), vec2(WIDTH, HEIGHT), vec4(1, 1, 1, 0.05f));
+	}
+
+	Window::swap();
+
+	frames++;
+    }
 }

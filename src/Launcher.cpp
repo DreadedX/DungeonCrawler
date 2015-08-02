@@ -9,8 +9,7 @@ int main() {
     // Hello.run();
 
     // This is placholder launcher code
-    char test[] = "Launching game";
-    Log::print(test, DEBUG);
+    Log::print("Launching game", INFO);
     Game::init();
 
     return 0;

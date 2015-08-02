@@ -8,6 +8,7 @@ void Tile::create(std::string name, byte id) {
 }
 
 void Tile::render(vec4 position, byte id) {
-
-    Render::tile(position, tiles[id] + 1);
+    if (id != 1) {
+	Render::tile(position, tiles[id] + 1);
+    }
 }

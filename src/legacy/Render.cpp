@@ -1,115 +1,99 @@
 #if LEGACY
 #include "Standard.h"
 
-void quad(int x1, int y1, int x2, int y2);
-void quadTex(int x1, int y1, int x2, int y2, GLuint tex, float texWidth, float texHeight);
+namespace Render {
 
-GLfloat vertices_position[8] = {
-    -0.5f, -0.5f,
-    0.5f, -0.5f,
-    0.5f, 0.5f,
-    -0.5f, 0.5f
+    vec4 view = vec4(0, 0, 0, 1);
+    mat4 viewMatrix = translate(IDENTITY, vec3(0));
 
-    // 0.0f, 0.0f,
-    // 0.0f, 0.5f,
-    // -0.5f, 0.5f,
-    //
-    // 0.0f, 0.0f,
-    // -0.5f, 0.0f,
-    // -0.5f, -0.5f,
-    //
-    // 0.0f, 0.0f,
-    // 0.0f, -0.5f,
-    // 0.5f, -0.5f
-};
+    void init() {
+    }
 
-GLuint vao;
-void Render::init() {
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
+    void test() {
+    }
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_position), vertices_position, GL_STATIC_DRAW);
+    void clear() {
 
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+	glClearColor(0, 0, 0, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
 
-    GLuint shaderProgram = Shader::load("shaders/test.vert", "shaders/test.frag");
-    GLint positionAttribute = glGetAttribLocation(shaderProgram, "position");
-    glVertexAttribPointer(positionAttribute, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    void move(vec4 toMove) {
 
-    glEnableVertexAttribArray(positionAttribute);
-}
+	// glTranslatef(toMove.x, toMove.y, toMove.z);
+	view += toMove;
+	viewMatrix = translate(IDENTITY, vec3(view.x, view.y, view.z));
+    }
 
-void Render::test() {
-    glBindVertexArray(vao);
-    glDrawArrays(GL_QUADS, 0, 4);
-}
+    void tile(vec4 position, GLuint tex) {
 
-void Render::clear() {
-
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void Render::tile(vec4 position, GLuint tex) {
-
-    quadTex(position.x-8, position.y-8, position.x+8, position.y+8, tex, 1.0f, 1.0f);
+	quadTex(position, vec2(16, 16), tex, vec4(0, 0, 1, 1));
 #if DRAW_BOX
-    drawOutline(position.x-8, position.y-8, position.x+8, position.y+8);
+	outline(position, vec2(16, 16));
 #endif
-}
+    }
 
-void Render::outline(int x1, int y1, int x2, int y2) {
+    void outline(vec4 position , vec2 size, vec4 color) {
 
-    // x1 *= SCALE;
-    // y1 *= SCALE;
-    // x2 *= SCALE;
-    // y2 *= SCALE;
+	position = viewMatrix * position;
+	outlineAbs(position, size, color);
+    }
+    void outlineAbs(vec4 position , vec2 size, vec4 color) {
 
-    glBegin(GL_LINE_STRIP);
-	glVertex2f(x1, y1);
-	glVertex2f(x2, y1);
-	glVertex2f(x2, y2);
-	glVertex2f(x1, y2);
-	glVertex2f(x1, y1);
-    glEnd();
-}
+	size /= 2;
 
-void quad(int x1, int y1, int x2, int y2) {
+	glColor4f(color.x, color.y, color.z, color.w);
+	glBegin(GL_LINE_STRIP);
+	glVertex2f(position.x-(size.x), position.y-(size.y));
+	glVertex2f(position.x+(size.x), position.y-(size.y));
+	glVertex2f(position.x+(size.x), position.y+(size.y));
+	glVertex2f(position.x-(size.x), position.y+(size.y));
+	glVertex2f(position.x-(size.x), position.y-(size.y));
+	glEnd();
+	glColor3f(1, 1, 1);
+    }
 
-    // x1 *= SCALE;
-    // y1 *= SCALE;
-    // x2 *= SCALE;
-    // y2 *= SCALE;
+    void quad(vec4 position , vec2 size, vec4 color) {
 
-    glBegin(GL_QUADS);
-	glVertex2f(x1, y1);
-	glVertex2f(x2, y1);
-	glVertex2f(x2, y2);
-	glVertex2f(x1, y2);
-    glEnd();
-}
+	position = viewMatrix * position;
+	quadAbs(position, size, color);
+    }
+    void quadAbs(vec4 position, vec2 size, vec4 color) {
 
-void quadTex(int x1, int y1, int x2, int y2, GLuint tex, float texWidth, float texHeight) {
+	size /= 2;
 
-    // x1 *= SCALE;
-    // y1 *= SCALE;
-    // x2 *= SCALE;
-    // y2 *= SCALE;
+	glColor4f(color.x, color.y, color.z, color.w);
+	glBegin(GL_QUADS);
+	glVertex2f(position.x-(size.x), position.y-(size.y));
+	glVertex2f(position.x+(size.x), position.y-(size.y));
+	glVertex2f(position.x+(size.x), position.y+(size.y));
+	glVertex2f(position.x-(size.x), position.y+(size.y));
+	glEnd();
+	glColor3f(1, 1, 1);
+    }
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, tex);
-    glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex2f(x1, y1);
-	glTexCoord2f(texWidth, 0.0f);
-	glVertex2f(x2, y1);
-	glTexCoord2f(texWidth, texHeight);
-	glVertex2f(x2, y2);
-	glTexCoord2f(0.0f, texHeight);
-	glVertex2f(x1, y2);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
+    void quadTex(vec4 position, vec2 size, GLuint tex, vec4 uv) {
+
+	position = viewMatrix * position;
+	quadTexAbs(position, size, tex, uv);
+    }
+    void quadTexAbs(vec4 position, vec2 size, GLuint tex, vec4 uv) {
+
+	size /= 2;
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glBegin(GL_QUADS);
+	glTexCoord2f(uv.x, uv.y);
+	glVertex2f(position.x-(size.x), position.y-(size.y));
+	glTexCoord2f(uv.z, uv.y);
+	glVertex2f(position.x+(size.x), position.y-(size.y));
+	glTexCoord2f(uv.z, uv.w);
+	glVertex2f(position.x+(size.x), position.y+(size.y));
+	glTexCoord2f(uv.x, uv.w);
+	glVertex2f(position.x-(size.x), position.y+(size.y));
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+    }
 }
 #endif

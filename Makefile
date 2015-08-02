@@ -17,7 +17,7 @@ STANDARD_GCH = $(STANDARD_H).gch
 # Extra compiler settings
 EXTRA = -Wno-write-strings #-Wno-deprecated
 # Preprocessor defs
-DEFS = -DLEGACY=1 # -DTPS=120 -DDRAW_BOX=1 
+DEFS = -DDEBUG_MODE=true -DDRAW_BOX=false -DLEGACY=true -DTPS=40 -DSCALE=1
 # General compiler flags
 COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g $(EXTRA) $(DEFS)
 # Add additional include paths
@@ -36,8 +36,10 @@ HEADERS = $(shell find $(HEADER_PATH) -name '*.$(HEADER_EXT)' -printf '%T@\t%p\n
 
 all: $(STANDARD_GCH) $(NAME)
 
+default: $(STANDARD_GCH) $(NAME)
+
 $(NAME): $(SOURCES) $(HEADERS) ./Makefile
-	$(CXX) $(SOURCES) $(COMPILE_FLAGS) $(shell pkg-config --libs --cflags $(LIBS)) $(INCLUDES) -o $(NAME)
+	$(CXX) $(SOURCES) $(COMPILE_FLAGS) $(shell pkg-config --libs --cflags $(LIBS)) $(INCLUDES) -H -o $(NAME)
 
 $(STANDARD_GCH): $(HEADERS) ./Makefile
 	$(CXX) $(COMPILE_FLAGS) $(INCLUDES) $(STANDARD_H) 

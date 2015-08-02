@@ -1,67 +1,70 @@
 #if !LEGACY
 #include "Standard.h"
 
-GLFWwindow* window;
+namespace Window {
 
-void Window::create() {
+    GLFWwindow* window;
 
-    if(!glfwInit()) {
-	std::cerr << "Failed to initialize glfw!" << std::endl;
-	exit(-1);
-	return;
+    void create() {
+
+	if(!glfwInit()) {
+	    std::cerr << "Failed to initialize glfw!" << std::endl;
+	    exit(-1);
+	    return;
+	}
+
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	window = glfwCreateWindow(WIDTH*SCALE, HEIGHT*SCALE, NAME, NULL, NULL);
+	if (!window) {
+	    std::cerr << "Failed to create window!" << std::endl;
+	    terminate();
+	    exit(-1);
+	    return;
+	}
+
+	glfwMakeContextCurrent(window);
+	glewExperimental=true;
+	if(!glewInit()) {
+	    std::cerr << "Failed to initialize glew!" << std::endl;
+	    exit(-1);
+	    return;
+	}
+
+	GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+	glfwSetWindowPos(window, (mode->width-WIDTH*SCALE)/2, (mode->height-HEIGHT*SCALE)/2);
+
+	glfwSetKeyCallback(window, Input::keyCallback);
     }
 
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    window = glfwCreateWindow(WIDTH*SCALE, HEIGHT*SCALE, NAME, NULL, NULL);
-    if (!window) {
-	std::cerr << "Failed to create window!" << std::endl;
-	terminate();
-	exit(-1);
-	return;
+    bool shouldClose() {
+
+	return glfwWindowShouldClose(window);
     }
 
-    glfwMakeContextCurrent(window);
-    glewExperimental=true;
-    if(!glewInit()) {
-	std::cerr << "Failed to initialize glew!" << std::endl;
-	exit(-1);
-	return;
+    void terminate() {
+
+	glfwTerminate();
     }
 
-    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-    glfwSetWindowPos(window, (mode->width-WIDTH)/2, (mode->height-HEIGHT)/2);
+    void destroy() {
 
-    glfwSetKeyCallback(window, keyCallback);
-}
+	glfwDestroyWindow(window);
+    }
 
-bool Window::shouldClose() {
+    void swap() {
 
-    return glfwWindowShouldClose(window);
-}
+	glfwSwapBuffers(window);
+    }
 
-void Window::terminate() {
+    void poll() {
 
-    glfwTerminate();
-}
-
-void Window::destroy() {
-
-    glfwDestroyWindow(window);
-}
-
-void Window::swap() {
-
-    glfwSwapBuffers(window);
-}
-
-void Window::poll() {
-
-    glfwPollEvents();
+	glfwPollEvents();
+    }
 }
 #endif

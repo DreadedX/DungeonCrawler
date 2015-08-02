@@ -1,22 +1,31 @@
 # include "Standard.h"
 
-Entity *player;
-vec4 positionLast;
+namespace Camera {
 
-void Camera::init() {
-    player = Level::getPlayer();
+    Entity *player;
+    vec4 positionLast;
+    vec4 toMove = vec4(0, 0, 0, 0);
 
-    positionLast = player->position;
-}
+    float tweenFloat = 0.1 * VT;
+    mat4 tween = scale(IDENTITY, vec3(tweenFloat));
 
-void Camera::tick() {
-    vec4 positionDelta = positionLast - player->position;
+    void init() {
+	player = Level::getPlayer();
 
-    glTranslatef(positionDelta.x, positionDelta.y, positionLast.z);
+	positionLast = player->position;
+    }
 
-    positionLast = player->position;
-}
+    void tick() {
+	toMove += positionLast - player->position;
 
-void Camera::render() {
+	Render::move(toMove * tween);
 
+	toMove -= toMove * tween;
+
+	positionLast = player->position;
+    }
+
+    void render() {
+
+    }
 }

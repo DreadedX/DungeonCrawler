@@ -57,15 +57,28 @@ int main() {
     // Add entities
     makeImage("in/player.png", "entity/player", TYPE_ENTITY);
 
-    // Level info
-    byte layout[4 * 8] = {
-	0, 1, 2, 3, 4, 5, 6, 7,
-	8, 9, 10, 11, 12, 13, 14, 15,
-	16, 17, 18, 19, 20, 21, 22, 23,
-	23, 25, 26, 27, 28, 29, 30, 31
-    };
+    // Add font
+    makeImage("in/font.png", "font", 0x00);
 
-    makeFile("level", 0x00, imageSize(8, 4), 4*8, layout);
+    // Level info
+    // byte layout[4 * 8] = {
+	// 0, 1, 2, 3, 4, 5, 6, 7,
+	// 8, 9, 10, 11, 12, 13, 14, 15,
+	// 16, 17, 18, 19, 20, 21, 22, 23,
+	// 23, 25, 26, 27, 28, 29, 30, 31
+    // };
+    uint layoutSize = 3072;
+    byte layout[layoutSize];
+    ifstream layoutFile("in/level.dat", ios::in | ios::binary);
+    layoutFile.read(reinterpret_cast<char*>(layout), layoutSize);
+
+    makeFile("level", 0x00, imageSize(64, 48), 48*64, layout);
+
+    byte layout0[layoutSize];
+    ifstream layout0File("in/level0.dat", ios::in | ios::binary);
+    layout0File.read(reinterpret_cast<char*>(layout0), layoutSize);
+
+    makeFile("level0", 0x00, imageSize(64, 48), 48*64, layout0);
 
     byteShort fileCount;
     fileCount.s = counter;

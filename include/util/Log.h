@@ -8,8 +8,6 @@ const int ERROR = 0x03;
 
 namespace Log {
 
-    void print(int msg);
-    void print(std::string msg);
     void print(std::string msg, int type);
 };
 
