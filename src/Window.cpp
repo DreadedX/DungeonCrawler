@@ -8,7 +8,7 @@ namespace Window {
     void create() {
 
 	if(!glfwInit()) {
-	    std::cerr << "Failed to initialize glfw!" << std::endl;
+	    Log::print("Failed to initialize glfw!", ERROR);
 	    exit(-1);
 	    return;
 	}
@@ -29,8 +29,8 @@ namespace Window {
 
 	glfwMakeContextCurrent(window);
 	glewExperimental=true;
-	if(!glewInit()) {
-	    std::cerr << "Failed to initialize glew!" << std::endl;
+	if(glewInit() != GLEW_OK) {
+	    Log::print("Failed to initialize glew!", ERROR);
 	    exit(-1);
 	    return;
 	}
@@ -40,6 +40,8 @@ namespace Window {
 	glfwSetWindowPos(window, (mode->width-WIDTH*SCALE)/2, (mode->height-HEIGHT*SCALE)/2);
 
 	glfwSetKeyCallback(window, Input::keyCallback);
+
+	glfwSwapInterval(0);
     }
 
     bool shouldClose() {

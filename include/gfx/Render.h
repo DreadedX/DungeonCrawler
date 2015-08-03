@@ -7,8 +7,9 @@ namespace Render {
     void clear();
     void move(vec4 toMove);
 
-    void test();
+    void test(vec4 position);
     void tile(vec4 position, GLuint tex);
+    void font(vec4 position, vec4 color, GLuint tex, int index);
 
     void outline(vec4 position, vec2 size, vec4 color);
     void outlineAbs(vec4 position, vec2 size, vec4 color);

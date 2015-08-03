@@ -7,7 +7,7 @@ namespace Camera {
     vec4 toMove = vec4(0, 0, 0, 0);
 
     float tweenFloat = 0.1 * VT;
-    mat4 tween = scale(IDENTITY, vec3(tweenFloat));
+    mat4 tween = scale(IDENTITY, vec3(tweenFloat, tweenFloat, 1));
 
     void init() {
 	player = Level::getPlayer();
@@ -16,7 +16,14 @@ namespace Camera {
     }
 
     void tick() {
-	toMove += positionLast - player->position;
+	toMove += player->position - positionLast;
+	
+	if(Input::isPressed(GLFW_KEY_Q)) {
+	    toMove.z -= 1.0f * VT;
+	}
+	if(Input::isPressed(GLFW_KEY_E)) {
+	    toMove.z += 1.0f * VT;
+	}
 
 	Render::move(toMove * tween);
 

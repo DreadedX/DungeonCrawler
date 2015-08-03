@@ -91,16 +91,17 @@ namespace Level {
 
 	for (int y = 0; y < height; y++) {
 	    for (int x = 0; x < width; x++) {
-		vec4 position = vec4 (x, y, 0, 1);
+		vec4 position = vec4 (x, height-y, 0, 1);
 		// TODO: This should be done by the shader
-		position = tileOffset * tileScale * position;
+		// position = tileOffset * tileScale * position;
 
 		if (!Input::isPressed(GLFW_KEY_2)) {
-		    // Tile::render(position, layout0[y][x]);
+		    Tile::render(position, layout0[y][x]);
 		}
 		if (!Input::isPressed(GLFW_KEY_1)) {
 		    Tile::render(position, layout[y][x]);
 		}
+		// position.z -= 0.0001f;
 	    }
 
 	}

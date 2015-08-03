@@ -30,7 +30,7 @@ namespace Game {
 
 	Window::create();
 
-	// Screen::init();
+	Render::init();
 
 	Level::init();
 	Camera::init();
@@ -102,13 +102,11 @@ namespace Game {
 	Level::render();
 	Camera::render();
 
-	Render::test();
-
 	// TODO: Improve the format code!
 #if DEBUG_MODE
 	if (showDebug) {
-	    Font::render(vec4(0, 0, 0, 1), vec4(1), String::format("FPS: %i, TPS: %i", actualFPS, actualTPS));
-	    Font::render(vec4(0, 10, 0, 1), vec4(1), String::format("x: %i, y: %i", (int) (player->position.x), (int) (player->position.y)));
+	    Font::render(vec4(0, 1, 0, 1), vec4(1), String::format("FPS: %i, TPS: %i", actualFPS, actualTPS));
+	    Font::render(vec4(0, 0, 0, 1), vec4(1), String::format("x: %i, y: %i", (int) (player->position.x), (int) (player->position.y)));
 	}
 #endif
 

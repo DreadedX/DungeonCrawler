@@ -18,7 +18,9 @@ namespace Shader {
 	glDeleteShader(fragmentShader);
 
 	glLinkProgram(shaderProgram);
-	glUseProgram(shaderProgram);
+	// glUseProgram(shaderProgram);
+
+	Log::print(String::format("Succesfully compiled shader: %s, %s", nameVert, nameFrag), DEBUG);
 
 	return shaderProgram;
     }
@@ -30,7 +32,7 @@ namespace Shader {
 	std::ifstream file(fileName, std::ios::in | std::ios::binary);
 
 	if(!file.is_open()) {
-	    std::cout << "Failed to open file: " << fileName << std::endl;
+	    Log::print(String::format("Failed to open shader: %s", fileName.c_str()), ERROR);
 	}
 
 	file.seekg(0, std::ios::end);
@@ -56,15 +58,13 @@ namespace Shader {
 	GLint test = 0;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &test);
 	if(!test) {
-	    std::cerr << "Shader (" << name << ") compilation failed with message:" << std::endl;
+	    Log::print(String::format("Shader (%s) compilation failed with message:", name.c_str()), ERROR);
 	    std::vector<char> compilation_log(512);
 	    glGetShaderInfoLog(shader, compilation_log.size(), NULL, &compilation_log[0]);
-	    std::cerr << &compilation_log[0] << std::endl;
+	    Log::print(String::format("%s", &compilation_log[0]), ERROR);
 	    Window::terminate();
 	    exit(-1);
 	}
-
-	std::cout << "Shader (" << name << ") compiled" << std::endl;
 
 	return shader;
     }
