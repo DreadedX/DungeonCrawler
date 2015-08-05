@@ -5,6 +5,8 @@ namespace Window {
 
     GLFWwindow* window;
 
+    void tweakBarInit();
+
     void create() {
 
 	if(!glfwInit()) {
@@ -46,6 +48,24 @@ namespace Window {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glfwSwapInterval(0);
+
+	tweakBarInit();
+    }
+
+    void tweakBarInit() {
+	TwInit(TW_OPENGL_CORE, NULL);
+	TwWindowSize(WIDTH, HEIGHT);
+
+	// after GLFW initialization
+	// directly redirect GLFW events to AntTweakBar
+	glfwSetMouseButtonCallback((GLFWmousebuttonfun)TwEventMouseButtonGLFW);
+	glfwSetMousePosCallback((GLFWmouseposfun)TwEventMousePosGLFW);
+	glfwSetMouseWheelCallback((GLFWmousewheelfun)TwEventMouseWheelGLFW);
+	glfwSetKeyCallback((GLFWkeyfun)TwEventKeyGLFW);
+	glfwSetCharCallback((GLFWcharfun)TwEventCharGLFW);
+
+	// send window size events to AntTweakBar
+	glfwSetWindowSizeCallback(MyResize); // and call TwWindowSize in the function MyResize
     }
 
     bool shouldClose() {

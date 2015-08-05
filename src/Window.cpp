@@ -39,9 +39,14 @@ namespace Window {
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 	glfwSetWindowPos(window, (mode->width-WIDTH*SCALE)/2, (mode->height-HEIGHT*SCALE)/2);
 
-	glfwSetKeyCallback(window, Input::keyCallback);
+#if DEBUG_MODE
+	ImGui_ImplGlfwGL3_Init(window, true);
+#endif
 
-	glfwSwapInterval(0);
+	// glfwSetKeyCallback(window, Input::keyCallback);
+
+	glfwSwapInterval(SWAP);
+
     }
 
     bool shouldClose() {

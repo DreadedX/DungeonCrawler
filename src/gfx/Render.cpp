@@ -50,6 +50,8 @@ namespace Render {
     mat4 projectionMatrix = perspective(fov, 4.0f / 3.0f, 0.1f, 100.0f);
     // mat4 projectionMatrix = ortho(0, 2, 0, 2, -100, 100);
     mat4 viewMatrix = lookAt(vec3(view.x, view.y, view.z), vec3(view.x, view.y, view.z-1), vec3(0, 1, 0));
+    
+    GLuint VertexArrayID;
 
     GLuint tileVertexBuffer;
     GLuint tileUVBuffer;
@@ -75,7 +77,6 @@ namespace Render {
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_CULL_FACE);
 
-	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
@@ -117,12 +118,13 @@ namespace Render {
     void move(vec4 toMove) {
 
 	view += toMove;
-	viewMatrix = lookAt(vec3(view.x, view.y, view.z), vec3(view.x, view.y, 0), vec3(0, 1, 0));
+	viewMatrix = lookAt(vec3(view.x, view.y, view.z), vec3(view.x, view.y, view.z-1), vec3(0, 1, 0));
     }
 
     void tile(vec4 position, GLuint tex) {
 
 	glUseProgram(tileProgramID);
+	glBindVertexArray(VertexArrayID);
 
 	mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
 	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;

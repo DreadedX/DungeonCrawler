@@ -13,6 +13,9 @@
 #ifndef TPS
 #define TPS 60
 #endif
+#ifndef SWAP
+#define SWAP 0
+#endif
 #ifndef LEGACY
 #define LEGACY false
 #endif
@@ -22,9 +25,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <sys/timeb.h>
 #include <string>
 #include <cstdarg>
+
+#if DEBUG_MODE && __linux__
+#include <proc/readproc.h>
+#endif
 
 // Other library includes
 #include <GL/glew.h>
@@ -33,6 +39,9 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 using namespace glm;
+
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 
 // Project includes
 #include "Definitions.h"
@@ -49,8 +58,8 @@ using namespace glm;
 #include "io/Reader.h"
 #include "level/Level.h"
 #include "level/Tile.h"
+#include "util/Console.h"
 #include "util/Log.h"
 #include "util/String.h"
-#include "util/Tick.h"
 
 #endif

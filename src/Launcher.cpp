@@ -10,7 +10,7 @@ int main() {
 
     // This is placholder launcher code
     Log::print("Launching game", INFO);
-    Game::init();
+    Game::main();
 
     return 0;
 }

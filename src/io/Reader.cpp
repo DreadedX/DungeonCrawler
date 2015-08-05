@@ -18,7 +18,7 @@ namespace IO {
 	    // TODO: Make this not hardcoded
 	    int count = 1;
 	    for (int i = 0; i < count; i++) {
-		Log::print(fileName[i], DEBUG);
+		Log::print(String::format("Loading: %s", fileName[i].c_str()), DEBUG);
 		loadFile(fileName[i]);
 	    }
 	}
@@ -30,14 +30,16 @@ namespace IO {
 	    byte magic[4] = {0x00};
 	    file.read(reinterpret_cast<char*>(magic), 4);
 
-	    if (magic[0] == Gaff::MAGIC[0] && magic[1] == Gaff::MAGIC[1] && magic[2] == Gaff::MAGIC[2] && magic[3] == Gaff::MAGIC[3]) {
-		Log::print("Type: Gaff", DEBUG);
+	    if (magic[0] != Gaff::MAGIC[0] || magic[1] != Gaff::MAGIC[1] || magic[2] != Gaff::MAGIC[2] || magic[3] != Gaff::MAGIC[3]) {
+		Log::print(String::format("File is not in the gaff format: %s", fileName.c_str()), ERROR);
+		return;
 	    }
 
 	    byte version[1] = {0x00};
 	    file.read(reinterpret_cast<char*>(version), 1);
-	    if (version[0] == Gaff::VERSION) {
-		Log::print("Version: 1", DEBUG);
+	    if (version[0] != Gaff::VERSION) {
+		Log::print(String::format("File is a unknown version: %s", fileName.c_str()), ERROR);
+		return;
 	    }
 
 	    byteInt fileCount;
@@ -72,15 +74,6 @@ namespace IO {
 	    }
 	    rG += fileCount.i;
 
-	    Log::print("name type width height offset size", DEBUG);
-	    for(uint i = 0; i < fileCount.i; i++) {
-		short width;
-		width = (files[i].extra.b[1] << 8) + (files[i].extra.b[0]);
-		short height;
-		height = (files[i].extra.b[3] << 8) + (files[i].extra.b[2]);
-
-		Log::print(String::format("%s %i %i %i %i %i", files[i].name.c_str(), files[i].type, width, height, files[i].offset.i, files[i].size.i), DEBUG);
-	    }
 	    file.close();
 	}
 

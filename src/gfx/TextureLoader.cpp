@@ -25,7 +25,6 @@ namespace Texture {
 	vec2 imageSize = IO::Reader::getImageSize(id);
 	byte pixels[(int) (imageSize.x * imageSize.y * 4)];
 	IO::Reader::read(id, pixels);
-	// for(int i = 0; i < imageSize.x*imageSize.y*3; i += 3) {std::cout << +pixels[i] << " " << +pixels[i+1] << " " << +pixels[i+2] << std::endl; }
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageSize.x, imageSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
 	return tex;

@@ -2,10 +2,11 @@
 #define GAME_H
 
 const float VT = 60.0f/TPS;
+const float FT = 1.0f/TPS;
 
 namespace Game {
 
-    void init();
+    void main();
 };
 
 #endif

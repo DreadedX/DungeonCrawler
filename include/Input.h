@@ -18,10 +18,11 @@ namespace Key {
     const int RIGHT = GLFW_KEY_D;
     const int JUMP = GLFW_KEY_SPACE;
     // const int DASH = GLFW_KEY_W;
-    const int PAUSE = GLFW_KEY_P;
+    const int PAUSE = GLFW_KEY_ESCAPE;
 
 #if DEBUG_MODE
     const int DEBUG = GLFW_KEY_F3;
+    const int CONSOLE = GLFW_KEY_F4;
 #endif
 };
 

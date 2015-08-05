@@ -9,11 +9,20 @@ namespace Log {
 
 	switch (type) {
 	    case DEBUG:
-		if (!DEBUG_MODE) {
-		    return;
-		}
+#if DEBUG_MODE
 		prefix = "DEBUG";
 		color = "\033[37m";
+#else
+		return;
+#endif
+		break;
+	    case DEBUG_I:
+#if DEBUG_MODE
+		prefix = "DEBUG";
+		color = "\033[36m";
+#else
+		return;
+#endif
 		break;
 	    case INFO:
 		prefix = "INFO";
