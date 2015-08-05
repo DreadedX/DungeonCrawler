@@ -16,14 +16,6 @@ namespace Log {
 		return;
 #endif
 		break;
-	    case DEBUG_I:
-#if DEBUG_MODE
-		prefix = "DEBUG";
-		color = "\033[36m";
-#else
-		return;
-#endif
-		break;
 	    case INFO:
 		prefix = "INFO";
 		break;
@@ -40,6 +32,9 @@ namespace Log {
 		break;
 	}
 
+#if PRINT_TO_TERMINAL
 	std::cout << color << "[" << prefix << "] " << msg << "\u001B[0m" << std::endl;
+#endif
+	Console::log(String::format("[%s] %s", prefix.c_str(), msg.c_str()));
     }
 }

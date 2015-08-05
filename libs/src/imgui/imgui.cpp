@@ -467,7 +467,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include <ctype.h>      // toupper, isprint
 #include <math.h>       // sqrtf, fabsf, fmodf, powf, cosf, sinf, floorf, ceilf
 #include <stdio.h>      // vsnprintf, sscanf, printf
@@ -532,7 +532,7 @@ namespace IMGUI_STB_NAMESPACE
 #define STBRP_STATIC
 #define STB_RECT_PACK_IMPLEMENTATION
 #endif
-#include "stb_rect_pack.h"
+#include "imgui/stb_rect_pack.h"
 
 #define STBTT_malloc(x,u)  ((void)(u), ImGui::MemAlloc(x))
 #define STBTT_free(x,u)    ((void)(u), ImGui::MemFree(x))
@@ -543,14 +543,14 @@ namespace IMGUI_STB_NAMESPACE
 #else
 #define STBTT_DEF extern
 #endif
-#include "stb_truetype.h"
+#include "imgui/stb_truetype.h"
 
 #undef STB_TEXTEDIT_STRING
 #undef STB_TEXTEDIT_CHARTYPE
 #define STB_TEXTEDIT_STRING    ImGuiTextEditState
 #define STB_TEXTEDIT_CHARTYPE  ImWchar
 #define STB_TEXTEDIT_GETWIDTH_NEWLINE   -1.0f
-#include "stb_textedit.h"
+#include "imgui/stb_textedit.h"
 
 #ifdef __clang__
 #pragma clang diagnostic pop
@@ -6990,7 +6990,7 @@ namespace IMGUI_STB_NAMESPACE
 {
 #endif
 #define STB_TEXTEDIT_IMPLEMENTATION
-#include "stb_textedit.h"
+#include "imgui/stb_textedit.h"
 #ifdef IMGUI_STB_NAMESPACE
 }
 #endif

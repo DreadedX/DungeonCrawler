@@ -19,6 +19,9 @@
 #ifndef LEGACY
 #define LEGACY false
 #endif
+#ifndef PRINT_TO_TERMINAL
+#define PRINT_TO_TERMINAL true
+#endif
 
 
 // Standard library includes
@@ -40,8 +43,12 @@
 #include <glm/ext.hpp>
 using namespace glm;
 
-#include "imgui.h"
-#include "imgui_impl_glfw_gl3.h"
+#include "imgui/imgui.h"
+#if LEGACY
+#include "imgui/imgui_impl_glfw.h"
+#else
+#include "imgui/imgui_impl_glfw_gl3.h"
+#endif
 
 // Project includes
 #include "Definitions.h"
@@ -58,6 +65,7 @@ using namespace glm;
 #include "io/Reader.h"
 #include "level/Level.h"
 #include "level/Tile.h"
+#include "util/Command.h"
 #include "util/Console.h"
 #include "util/Log.h"
 #include "util/String.h"

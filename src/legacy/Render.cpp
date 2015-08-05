@@ -9,9 +9,6 @@ namespace Render {
     void init() {
     }
 
-    void test() {
-    }
-
     void clear() {
 
 	glClearColor(0, 0, 0, 0);
@@ -21,13 +18,22 @@ namespace Render {
     void move(vec4 toMove) {
 
 	// glTranslatef(toMove.x, toMove.y, toMove.z);
-	view += toMove;
+	view -= toMove;
 	viewMatrix = translate(IDENTITY, vec3(view.x, view.y, view.z));
     }
 
     void tile(vec4 position, GLuint tex) {
 
 	quadTex(position, vec2(16, 16), tex, vec4(0, 0, 1, 1));
+#if DRAW_BOX
+	outline(position, vec2(16, 16));
+#endif
+    }
+
+    void font(vec4 position, vec4 color, GLuint tex, int index) {
+
+	static float charWidth = 0.012195f;
+	quadTex(position, vec2(16, 16), tex, vec4(index*charWidth, 0, (index+1) * charWidth, 1));
 #if DRAW_BOX
 	outline(position, vec2(16, 16));
 #endif

@@ -1,60 +1,76 @@
 #### PROJECT SETTINGS ####
-# Compiler used
+# Default build type
+TYPE = debug
+
+# Defaults for variables
+PROGRAM_NAME = platformer
 CXX = g++
-# Program name
-NAME = build/platformer
-# Extension of source files used in the project
-SRC_EXT = cpp
-# Path to the source directory, relative to the makefile
-SRC_PATH = src
-# Header extention
-HEADER_EXT = h
-# Header location
-HEADER_PATH = ./include
-# Standard header that should be precompiled
-STANDARD_H = $(HEADER_PATH)/Standard.h
-STANDARD_GCH = $(STANDARD_H).gch
-# Extra compiler settings
-EXTRA = -Wno-write-strings -Wno-unused-parameter #-Wno-deprecated
-# Preprocessor defs
+
+DRAW_BOX = false
+TPS = 60
+SCALE = 2
+SWAP = 0
+LEGACY = false
+
+# Variables based on build type
+ifeq ($(TYPE),debug)
 DEBUG = true
-DEFS = -DDEBUG_MODE=$(DEBUG) -DDRAW_BOX=false -DLEGACY=false -DTPS=60 -DSCALE=2 -DSWAP=0
-# General compiler flags
-COMPILE_FLAGS = -std=c++14 -Wall -Wextra $(EXTRA) $(DEFS) -g
-# Add additional include paths
-INCLUDES = -I $(HEADER_PATH) -I libs/imgui
-# Destination directory, like a jail or mounted system
-DESTDIR = /
-# Used libraries
-LIBS = libprocps glew glfw3 $(shell pkg-config --print-requires --print-requires-private glfw3)
-LIBS2 = libs/imgui/imgui.o libs/imgui/imgui_impl_glfw_gl3.o
-LIBSwin = -lglew32 -lglfw3 -lopengl32
+PRINT_TO_TERMINAL = false
+COMPILE_FLAGS_EXTRA = -Wno-write-strings -Wno-unused-parameter -g
+endif
+ifeq ($(TYPE),release)
+DEBUG = false
+PRINT_TO_TERMINAL = true
+COMPILE_FLAGS_EXTRA = -O3
+endif
+
+# Libraries
+LIBS_EXTERN = libprocps glew glfw3 $(shell pkg-config --print-requires --print-requires-private glfw3)
 #### END PROJECT SETTINGS ####
+#
+#
+#
+#
+#
+#
+#
+#
 
-SOURCES = $(shell find $(SRC_PATH)/ -name '*.$(SRC_EXT)' -printf '%T@\t%p\n' \
-		    | sort -k 1nr | cut -f2-)
+NAME = build/$(TYPE)/$(PROGRAM_NAME)
+LIBS = $(shell pkg-config --libs --cflags $(LIBS_EXTERN))
+DEFS = -DDEBUG_MODE=$(DEBUG) -DDRAW_BOX=$(DRAW_BOX) -DLEGACY=$(LEGACY) -DTPS=$(TPS) -DSCALE=$(SCALE) -DSWAP=$(SWAP) -DPRINT_TO_TERMINAL=$(PRINT_TO_TERMINAL)
+COMPILE_FLAGS = -std=c++14 -Wall -Wextra $(COMPILE_FLAGS_EXTRA) $(DEFS)
+INCLUDES = -I include -I libs/include
+MAKEFLAGS = "-j $(shell grep -c ^processor /proc/cpuinfo)"
 
-HEADERS = $(shell find $(HEADER_PATH) -name '*.$(HEADER_EXT)' -printf '%T@\t%p\n' \
-		    | sort -k 1nr | cut -f2-)
+SOURCES = $(shell find src -name '*.cpp' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
+SOURCES_LIBS = $(shell find libs/src -name '*.cpp' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
 
-all: $(STANDARD_GCH) $(NAME)
+HEADERS = $(shell find include -name '*.h' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
+HEADERS_LIBS = $(shell find libs/include -name '*.h' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
 
-windows: $(STANDARD_GCH)-win $(NAME)-win
+OBJECTS = $(subst .cpp,.o,$(subst src/,obj/, $(SOURCES)))
+OBJECTS_LIBS = $(subst .cpp,.o,$(subst /src/,/obj/, $(SOURCES_LIBS)))
 
-$(NAME): $(SOURCES) $(HEADERS) ./Makefile
-	$(CXX) $(SOURCES) $(COMPILE_FLAGS) $(shell pkg-config --libs --cflags $(LIBS)) $(LIBS2) $(INCLUDES) -H -o $(NAME)
+all: include/Standard.h.gch $(NAME)
 
-$(STANDARD_GCH): $(HEADERS) ./Makefile
-	$(CXX) $(COMPILE_FLAGS) $(INCLUDES) $(STANDARD_H) 
+$(NAME): $(OBJECTS_LIBS) $(OBJECTS) 
+	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -o $@ $^
 
-$(NAME)-win: $(SOURCES) $(HEADERS) ./Makefile
-	x86_64-w64-mingw32-$(CXX) $(SOURCES) $(COMPILE_FLAGS) $(INCLUDES) $(LIBSwin) -H -o $(NAME).exe
+$(OBJECTS) : obj/%.o : src/%.cpp ./Makefile include/Standard.h.gch
+	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $<
 
-$(STANDARD_GCH)-win: $(HEADERS) ./Makefile
-	x86_64-w64-mingw32-$(CXX) $(COMPILE_FLAGS) $(INCLUDES) $(STANDARD_H) 
+$(OBJECTS_LIBS) : libs/obj/%.o : libs/src/%.cpp ./Makefile
+	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $< -Wno-type-limits -Wno-missing-field-initializers
+
+include/Standard.h.gch: $(HEADERS) $(HEADERS_LIBS) ./Makefile
+	$(CXX) $(COMPILE_FLAGS) $(INCLUDES) include/Standard.h 
 
 execute:
-	./$(NAME)
+	cd sandbox; ./../$(NAME)
 
-# clean:
-# 	rm -f $(NAME)
+clean:
+	rm -f build/debug/$(PROGRAM_NAME)
+	rm -f build/release/$(PROGRAM_NAME)
+	rm -f $(OBJECTS)
+	rm -f $(OBJECTS_LIBS)

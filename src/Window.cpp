@@ -39,11 +39,15 @@ namespace Window {
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 	glfwSetWindowPos(window, (mode->width-WIDTH*SCALE)/2, (mode->height-HEIGHT*SCALE)/2);
 
-#if DEBUG_MODE
-	ImGui_ImplGlfwGL3_Init(window, true);
-#endif
+	glfwSetKeyCallback(window, Input::keyCallback);
 
-	// glfwSetKeyCallback(window, Input::keyCallback);
+#if DEBUG_MODE
+	ImGui_ImplGlfwGL3_Init(Window::window, false);
+
+        glfwSetMouseButtonCallback(window, ImGui_ImplGlfwGL3_MouseButtonCallback);
+        glfwSetScrollCallback(window, ImGui_ImplGlfwGL3_ScrollCallback);
+        glfwSetCharCallback(window, ImGui_ImplGlfwGL3_CharCallback);
+#endif
 
 	glfwSwapInterval(SWAP);
 

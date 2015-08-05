@@ -1,8 +1,8 @@
 // ImGui GLFW binding with OpenGL3 + shaders
 // https://github.com/ocornut/imgui
 
-#include <imgui.h>
-#include "imgui_impl_glfw_gl3.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw_gl3.h"
 
 // GL3W/GLFW
 #include <GL/glew.h>

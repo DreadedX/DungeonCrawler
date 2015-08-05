@@ -143,6 +143,7 @@ ButtonEx	libs/imgui/imgui.cpp	/^static bool ButtonEx(const char* label, const Im
 ButtonRepeat	libs/imgui/imgui.cpp	/^    bool                    ButtonRepeat;           \/\/ == ButtonRepeatStack.back() [empty == false]$/;"	m	struct:ImGuiDrawContext	file:	access:public
 ButtonRepeatStack	libs/imgui/imgui.cpp	/^    ImVector<bool>          ButtonRepeatStack;$/;"	m	struct:ImGuiDrawContext	file:	access:public
 CAMERA_H	include/gfx/Camera.h	2;"	d
+COMMAND_H	include/util/Command.h	2;"	d
 COMPILE_FLAGS	GaffMaker/Makefile	/^COMPILE_FLAGS = -std=c++14 -Wall -Wextra -g $(EXTRA)$/;"	m
 COMPILE_FLAGS	Makefile	/^COMPILE_FLAGS = -std=c++14 -Wall -Wextra $(EXTRA) $(DEFS) -g$/;"	m
 CONSOLE	include/Input.h	/^    const int CONSOLE = GLFW_KEY_F4;$/;"	m	namespace:Key
@@ -285,6 +286,12 @@ Combo	libs/imgui/imgui.cpp	/^bool ImGui::Combo(const char* label, int* current_i
 Combo	libs/imgui/imgui.h	/^    IMGUI_API bool          Combo(const char* label, int* current_item, bool (*items_getter)(void* data, int idx, const char** out_text), void* data, int items_count, int height_in_items = -1);$/;"	p	namespace:ImGui	signature:(const char* label, int* current_item, bool (*items_getter)(void* data, int idx, const char** out_text), void* data, int items_count, int height_in_items = -1)
 Combo	libs/imgui/imgui.h	/^    IMGUI_API bool          Combo(const char* label, int* current_item, const char* items_separated_by_zeros, int height_in_items = -1);      \/\/ separate items with \\0, end item-list with \\0\\0$/;"	p	namespace:ImGui	signature:(const char* label, int* current_item, const char* items_separated_by_zeros, int height_in_items = -1)
 Combo	libs/imgui/imgui.h	/^    IMGUI_API bool          Combo(const char* label, int* current_item, const char** items, int items_count, int height_in_items = -1);$/;"	p	namespace:ImGui	signature:(const char* label, int* current_item, const char** items, int items_count, int height_in_items = -1)
+Command	include/util/Command.h	/^namespace Command {$/;"	n
+Command	src/util/Command.cpp	/^namespace Command {$/;"	n	file:
+Command::commandList	include/util/Command.h	/^    const std::string commandList[] = {"hello"};$/;"	m	namespace:Command
+Command::count	include/util/Command.h	/^    const int count = sizeof(commandList)\/sizeof(std::string);$/;"	m	namespace:Command
+Command::run	include/util/Command.h	/^    bool run(std::string command);$/;"	p	namespace:Command	signature:(std::string command)
+Command::run	src/util/Command.cpp	/^    bool run(std::string command) {$/;"	f	namespace:Command	signature:(std::string command)
 Commands	libs/imgui/imgui.cpp	/^    ImVector<const char*> Commands;$/;"	m	struct:ExampleAppConsole	file:	access:public
 Commands	src/util/Console.cpp	/^	ImVector<const char*> Commands;$/;"	m	struct:Console::Console	file:	access:public
 ConfigData	libs/imgui/imgui.h	/^    ImFontConfig*               ConfigData;         \/\/                 \/\/ Pointer within ImFontAtlas->ConfigData$/;"	m	struct:ImFont	access:public
@@ -309,15 +316,15 @@ Console::Console::ScrollToBottom	src/util/Console.cpp	/^	bool                  S
 Console::Console::TextEditCallback	src/util/Console.cpp	/^	int     TextEditCallback(ImGuiTextEditCallbackData* data)$/;"	f	struct:Console::Console	access:public	signature:(ImGuiTextEditCallbackData* data)
 Console::Console::TextEditCallbackStub	src/util/Console.cpp	/^	static int TextEditCallbackStub(ImGuiTextEditCallbackData* data) \/\/ In C++11 you are better off using lambdas for this sort of forwarding callbacks$/;"	f	struct:Console::Console	access:public	signature:(ImGuiTextEditCallbackData* data)
 Console::Console::~Console	src/util/Console.cpp	/^	~Console()$/;"	f	struct:Console::Console	access:public	signature:()
-Console::ImStricmp	src/util/Console.cpp	/^    static int          ImStricmp(const char* str1, const char* str2);$/;"	p	namespace:Console	file:	signature:(const char* str1, const char* str2)
 Console::ImStricmp	src/util/Console.cpp	/^    static int ImStricmp(const char* str1, const char* str2)$/;"	f	namespace:Console	signature:(const char* str1, const char* str2)
-Console::ImStrnicmp	src/util/Console.cpp	/^    static int          ImStrnicmp(const char* str1, const char* str2, int count);$/;"	p	namespace:Console	file:	signature:(const char* str1, const char* str2, int count)
+Console::ImStricmp	src/util/Console.cpp	/^    static int ImStricmp(const char* str1, const char* str2);$/;"	p	namespace:Console	file:	signature:(const char* str1, const char* str2)
 Console::ImStrnicmp	src/util/Console.cpp	/^    static int ImStrnicmp(const char* str1, const char* str2, int count)$/;"	f	namespace:Console	signature:(const char* str1, const char* str2, int count)
-Console::console	src/util/Console.cpp	/^    static Console console;$/;"	m	namespace:Console	file:
-Console::getConsole	src/util/Console.cpp	/^    Console getConsole()$/;"	f	namespace:Console	signature:()
-Console::show	include/util/Console.h	/^    Console show();$/;"	p	namespace:Console	signature:()
-Console::show	include/util/Console.h	/^    void show(bool* opened);$/;"	p	namespace:Console	signature:(bool* opened)
-Console::show	src/util/Console.cpp	/^    void show(bool* opened)$/;"	f	namespace:Console	signature:(bool* opened)
+Console::ImStrnicmp	src/util/Console.cpp	/^    static int ImStrnicmp(const char* str1, const char* str2, int count);$/;"	p	namespace:Console	file:	signature:(const char* str1, const char* str2, int count)
+Console::getConsole	src/util/Console.cpp	/^    Console* getConsole() {$/;"	f	namespace:Console	signature:()
+Console::log	include/util/Console.h	/^    void log(std::string text);$/;"	p	namespace:Console	signature:(std::string text)
+Console::log	src/util/Console.cpp	/^    void log(std::string text) {$/;"	f	namespace:Console	signature:(std::string text)
+Console::show	include/util/Console.h	/^    void show(bool *opened);$/;"	p	namespace:Console	signature:(bool *opened)
+Console::show	src/util/Console.cpp	/^    void show(bool* opened) {$/;"	f	namespace:Console	signature:(bool* opened)
 ContainerAtlas	libs/imgui/imgui.h	/^    ImFontAtlas*                ContainerAtlas;     \/\/ What we has been loaded into$/;"	m	struct:ImFont	access:public
 Contains	libs/imgui/imgui.cpp	/^    bool        Contains(const ImRect& r) const     { return r.Min.x >= Min.x && r.Min.y >= Min.y && r.Max.x < Max.x && r.Max.y < Max.y; }$/;"	f	struct:ImRect	access:public	signature:(const ImRect& r) const
 Contains	libs/imgui/imgui.cpp	/^    bool        Contains(const ImVec2& p) const     { return p.x >= Min.x && p.y >= Min.y && p.x < Max.x && p.y < Max.y; }$/;"	f	struct:ImRect	access:public	signature:(const ImVec2& p) const
@@ -341,14 +348,12 @@ CursorPos	libs/imgui/imgui.h	/^    int                 CursorPos;      \/\/     
 CursorPosPrevLine	libs/imgui/imgui.cpp	/^    ImVec2                  CursorPosPrevLine;$/;"	m	struct:ImGuiDrawContext	file:	access:public
 CursorStartPos	libs/imgui/imgui.cpp	/^    ImVec2                  CursorStartPos;$/;"	m	struct:ImGuiDrawContext	file:	access:public
 DC	libs/imgui/imgui.cpp	/^    ImGuiDrawContext        DC;                                 \/\/ Temporary per-window data, reset at the beginning of the frame$/;"	m	struct:ImGuiWindow	file:	access:public
-DEBUG	Makefile	/^DEBUG = true$/;"	m
 DEBUG	include/Input.h	/^    const int DEBUG = GLFW_KEY_F3;$/;"	m	namespace:Key
 DEBUG	include/util/Log.h	/^const int DEBUG = 0x00;$/;"	v
-DEBUG_I	include/util/Log.h	/^const int DEBUG_I = 0x01;$/;"	v
 DEBUG_MODE	include/Standard.h	5;"	d
 DEFINITION_H	GaffMaker/include/Definitions.h	2;"	d
 DEFINITION_H	include/Definitions.h	2;"	d
-DEFS	Makefile	/^DEFS = -DDEBUG_MODE=$(DEBUG) -DDRAW_BOX=false -DLEGACY=false -DTPS=60 -DSCALE=2 -DSWAP=0$/;"	m
+DEFS	Makefile	/^DEFS = -DDEBUG_MODE=true -DDRAW_BOX=false -DLEGACY=false -DTPS=60 -DSCALE=2 -DSWAP=0 -DPRINT_TO_TERMINAL=false$/;"	m
 DESTDIR	GaffMaker/Makefile	/^DESTDIR = \/$/;"	m
 DESTDIR	Makefile	/^DESTDIR = \/$/;"	m
 DOWN	include/Input.h	/^    const int DOWN = GLFW_KEY_S;$/;"	m	namespace:Key
@@ -581,8 +586,9 @@ Game::render	src/Game.cpp	/^    void render() {$/;"	f	namespace:Game	signature:(
 Game::render	src/Game.cpp	/^    void render();$/;"	p	namespace:Game	file:	signature:()
 Game::renderDebug	src/Game.cpp	/^    void renderDebug() {$/;"	f	namespace:Game	signature:()
 Game::renderDebug	src/Game.cpp	/^    void renderDebug();$/;"	p	namespace:Game	file:	signature:()
-Game::showConsole	src/Game.cpp	/^    bool showConsole = true;$/;"	m	namespace:Game	file:
+Game::showConsole	src/Game.cpp	/^    bool showConsole = false;$/;"	m	namespace:Game	file:
 Game::showDebug	src/Game.cpp	/^    bool showDebug = false;$/;"	m	namespace:Game	file:
+Game::switchInput	src/Game.cpp	/^    bool switchInput = false;$/;"	m	namespace:Game	file:
 Game::tick	src/Game.cpp	/^    void tick() {$/;"	f	namespace:Game	signature:()
 Game::tick	src/Game.cpp	/^    void tick();$/;"	p	namespace:Game	file:	signature:()
 Game::ticks	src/Game.cpp	/^    int ticks = 0;$/;"	m	namespace:Game	file:
@@ -760,8 +766,8 @@ IMGUI_API	libs/imgui/imgui.h	28;"	d
 IMGUI_ONCE_UPON_A_FRAME	libs/imgui/imgui.h	811;"	d
 IMGUI_STB_NAMESPACE	libs/imgui/imgui.cpp	/^namespace IMGUI_STB_NAMESPACE$/;"	n	file:
 IMGUI_VERSION	libs/imgui/imgui.h	18;"	d
+IM_ARRAYSIZE	include/util/Console.h	3;"	d
 IM_ARRAYSIZE	libs/imgui/imgui.cpp	755;"	d	file:
-IM_ARRAYSIZE	src/util/Console.cpp	2;"	d	file:
 IM_ASSERT	libs/imgui/imgui.h	23;"	d
 IM_INT_MAX	libs/imgui/imgui.cpp	761;"	d	file:
 IM_INT_MAX	libs/imgui/imgui.cpp	764;"	d	file:
@@ -2298,16 +2304,16 @@ ImStrdup	libs/imgui/imgui.cpp	/^static char*        ImStrdup(const char* str);$/
 ImStrdup	libs/imgui/imgui.cpp	/^static char* ImStrdup(const char *str)$/;"	f	file:	signature:(const char *str)
 ImStricmp	libs/imgui/imgui.cpp	/^static int          ImStricmp(const char* str1, const char* str2);$/;"	p	file:	signature:(const char* str1, const char* str2)
 ImStricmp	libs/imgui/imgui.cpp	/^static int ImStricmp(const char* str1, const char* str2)$/;"	f	file:	signature:(const char* str1, const char* str2)
-ImStricmp	src/util/Console.cpp	/^    static int          ImStricmp(const char* str1, const char* str2);$/;"	p	namespace:Console	file:	signature:(const char* str1, const char* str2)
 ImStricmp	src/util/Console.cpp	/^    static int ImStricmp(const char* str1, const char* str2)$/;"	f	namespace:Console	signature:(const char* str1, const char* str2)
+ImStricmp	src/util/Console.cpp	/^    static int ImStricmp(const char* str1, const char* str2);$/;"	p	namespace:Console	file:	signature:(const char* str1, const char* str2)
 ImStristr	libs/imgui/imgui.cpp	/^static const char*  ImStristr(const char* haystack, const char* needle, const char* needle_end);$/;"	p	file:	signature:(const char* haystack, const char* needle, const char* needle_end)
 ImStristr	libs/imgui/imgui.cpp	/^static const char* ImStristr(const char* haystack, const char* needle, const char* needle_end)$/;"	f	file:	signature:(const char* haystack, const char* needle, const char* needle_end)
 ImStrlenW	libs/imgui/imgui.cpp	/^static int          ImStrlenW(const ImWchar* str);$/;"	p	file:	signature:(const ImWchar* str)
 ImStrlenW	libs/imgui/imgui.cpp	/^static int ImStrlenW(const ImWchar* str)$/;"	f	file:	signature:(const ImWchar* str)
 ImStrnicmp	libs/imgui/imgui.cpp	/^static int          ImStrnicmp(const char* str1, const char* str2, int count);$/;"	p	file:	signature:(const char* str1, const char* str2, int count)
 ImStrnicmp	libs/imgui/imgui.cpp	/^static int ImStrnicmp(const char* str1, const char* str2, int count)$/;"	f	file:	signature:(const char* str1, const char* str2, int count)
-ImStrnicmp	src/util/Console.cpp	/^    static int          ImStrnicmp(const char* str1, const char* str2, int count);$/;"	p	namespace:Console	file:	signature:(const char* str1, const char* str2, int count)
 ImStrnicmp	src/util/Console.cpp	/^    static int ImStrnicmp(const char* str1, const char* str2, int count)$/;"	f	namespace:Console	signature:(const char* str1, const char* str2, int count)
+ImStrnicmp	src/util/Console.cpp	/^    static int ImStrnicmp(const char* str1, const char* str2, int count);$/;"	p	namespace:Console	file:	signature:(const char* str1, const char* str2, int count)
 ImTextCharFromUtf8	libs/imgui/imgui.cpp	/^static int          ImTextCharFromUtf8(unsigned int* out_char, const char* in_text, const char* in_text_end);          \/\/ return input UTF-8 bytes count$/;"	p	file:	signature:(unsigned int* out_char, const char* in_text, const char* in_text_end)
 ImTextCharFromUtf8	libs/imgui/imgui.cpp	/^static int ImTextCharFromUtf8(unsigned int* out_char, const char* in_text, const char* in_text_end)$/;"	f	file:	signature:(unsigned int* out_char, const char* in_text, const char* in_text_end)
 ImTextCharToUtf8	libs/imgui/imgui.cpp	/^static inline int   ImTextCharToUtf8(char* buf, int buf_size, unsigned int in_char);                                   \/\/ return output UTF-8 bytes count$/;"	p	file:	signature:(char* buf, int buf_size, unsigned int in_char)
@@ -2689,6 +2695,7 @@ OverlayDrawList	libs/imgui/imgui.cpp	/^    ImDrawList              OverlayDrawLi
 OversampleH	libs/imgui/imgui.h	/^    int             OversampleH, OversampleV;   \/\/ 3, 1     \/\/ Rasterize at higher quality for sub-pixel positioning. We don't use sub-pixel positions on the Y axis.$/;"	m	struct:ImFontConfig	access:public
 OversampleV	libs/imgui/imgui.h	/^    int             OversampleH, OversampleV;   \/\/ 3, 1     \/\/ Rasterize at higher quality for sub-pixel positioning. We don't use sub-pixel positions on the Y axis.$/;"	m	struct:ImFontConfig	access:public
 PAUSE	include/Input.h	/^    const int PAUSE = GLFW_KEY_ESCAPE;$/;"	m	namespace:Key
+PRINT_TO_TERMINAL	include/Standard.h	23;"	d
 Pair	libs/imgui/imgui.h	/^        Pair(ImGuiID _key, float _val_f) { key = _key; val_f = _val_f; } $/;"	f	struct:ImGuiStorage::Pair	access:public	signature:(ImGuiID _key, float _val_f)
 Pair	libs/imgui/imgui.h	/^        Pair(ImGuiID _key, int _val_i) { key = _key; val_i = _val_i; } $/;"	f	struct:ImGuiStorage::Pair	access:public	signature:(ImGuiID _key, int _val_i)
 Pair	libs/imgui/imgui.h	/^        Pair(ImGuiID _key, void* _val_p) { key = _key; val_p = _val_p; } $/;"	f	struct:ImGuiStorage::Pair	access:public	signature:(ImGuiID _key, void* _val_p)
@@ -3573,12 +3580,13 @@ clear	libs/imgui/imgui.h	/^    void                clear() { Buf.clear(); Buf.pu
 clear	src/gfx/Render.cpp	/^    void clear() {$/;"	f	namespace:Render	signature:()
 clear	src/legacy/Render.cpp	/^    void clear() {$/;"	f	namespace:Render	signature:()
 col	libs/imgui/imgui.h	/^    ImU32   col;$/;"	m	struct:ImDrawVert	access:public
+commandList	include/util/Command.h	/^    const std::string commandList[] = {"hello"};$/;"	m	namespace:Command
 compileShader	src/gfx/ShaderLoader.cpp	/^    GLuint compileShader(std::string name, GLenum shaderType) {$/;"	f	namespace:Shader	signature:(std::string name, GLenum shaderType)
 compileShader	src/gfx/ShaderLoader.cpp	/^    GLuint compileShader(std::string name, GLenum shaderType);$/;"	p	namespace:Shader	file:	signature:(std::string name, GLenum shaderType)
-console	src/util/Console.cpp	/^    static Console console;$/;"	m	namespace:Console	file:
 const_iterator	libs/imgui/imgui.h	/^    typedef const value_type*   const_iterator;$/;"	t	class:ImVector	access:public
 control	src/Game.cpp	/^    void control() {$/;"	f	namespace:Game	signature:()
 control	src/Game.cpp	/^    void control();$/;"	p	namespace:Game	file:	signature:()
+count	include/util/Command.h	/^    const int count = sizeof(commandList)\/sizeof(std::string);$/;"	m	namespace:Command
 counter	GaffMaker/src/Writer.cpp	/^int counter = 0;$/;"	v
 create	include/Window.h	/^    void create();$/;"	p	namespace:Window	signature:()
 create	include/level/Tile.h	/^    void create(std::string name, byte id);$/;"	p	namespace:Tile	signature:(std::string name, byte id)
@@ -3677,7 +3685,7 @@ g_tile_uv_buffer_data	src/gfx/Render.cpp	/^    static const GLfloat g_tile_uv_bu
 g_tile_vertex_buffer_data	src/gfx/Render.cpp	/^    static const GLfloat g_tile_vertex_buffer_data[] = {$/;"	m	namespace:Render	file:
 gameLoop	src/Game.cpp	/^    void gameLoop() {$/;"	f	namespace:Game	signature:()
 gameLoop	src/Game.cpp	/^    void gameLoop();$/;"	p	namespace:Game	file:	signature:()
-getConsole	src/util/Console.cpp	/^    Console getConsole()$/;"	f	namespace:Console	signature:()
+getConsole	src/util/Console.cpp	/^    Console* getConsole() {$/;"	f	namespace:Console	signature:()
 getId	include/io/Reader.h	/^	uint getId(std::string);$/;"	p	namespace:IO::Reader	signature:(std::string)
 getId	src/io/Reader.cpp	/^	uint getId(string name) {$/;"	f	namespace:IO::Reader	signature:(string name)
 getImageSize	include/io/Reader.h	/^	vec2 getImageSize(int id);$/;"	p	namespace:IO::Reader	signature:(int id)
@@ -3766,6 +3774,8 @@ loadFile	src/io/Reader.cpp	/^	void loadFile(std::string fileName) {$/;"	f	namesp
 loadPNG	GaffMaker/include/LoadPNG.h	/^image loadPNG(char *name);$/;"	p	signature:(char *name)
 loadPNG	GaffMaker/src/LoadPNG.cpp	/^image loadPNG(char *name) {$/;"	f	signature:(char *name)
 loca	libs/imgui/stb_truetype.h	/^   int loca,head,glyf,hhea,hmtx,kern; \/\/ table locations as offset from start of .ttf$/;"	m	struct:stbtt_fontinfo	access:public
+log	include/util/Console.h	/^    void log(std::string text);$/;"	p	namespace:Console	signature:(std::string text)
+log	src/util/Console.cpp	/^    void log(std::string text) {$/;"	f	namespace:Console	signature:(std::string text)
 main	GaffMaker/src/Writer.cpp	/^int main() {$/;"	f	signature:()
 main	include/Game.h	/^    void main();$/;"	p	namespace:Game	signature:()
 main	libs/imgui/stb_truetype.h	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
@@ -3885,6 +3895,8 @@ renderDebug	src/Game.cpp	/^    void renderDebug() {$/;"	f	namespace:Game	signatu
 renderDebug	src/Game.cpp	/^    void renderDebug();$/;"	p	namespace:Game	file:	signature:()
 reserve	libs/imgui/imgui.h	/^    inline void                 reserve(int new_capacity)    $/;"	f	class:ImVector	access:public	signature:(int new_capacity)
 resize	libs/imgui/imgui.h	/^    inline void                 resize(int new_size)            { if (new_size > Capacity) reserve(_grow_capacity(new_size)); Size = new_size; }$/;"	f	class:ImVector	access:public	signature:(int new_size)
+run	include/util/Command.h	/^    bool run(std::string command);$/;"	p	namespace:Command	signature:(std::string command)
+run	src/util/Command.cpp	/^    bool run(std::string command) {$/;"	f	namespace:Command	signature:(std::string command)
 s	GaffMaker/include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
 s	include/Definitions.h	/^    unsigned short s;$/;"	m	union:byteShort	access:public
 s0	libs/imgui/stb_truetype.h	/^   float x0,y0,s0,t0; \/\/ top-left$/;"	m	struct:__anon8	access:public
@@ -3896,10 +3908,9 @@ setState	src/Input.cpp	/^    void setState(int key, bool state) {$/;"	f	namespac
 shouldClose	include/Window.h	/^    bool shouldClose();$/;"	p	namespace:Window	signature:()
 shouldClose	src/Window.cpp	/^    bool shouldClose() {$/;"	f	namespace:Window	signature:()
 shouldClose	src/legacy/Window.cpp	/^    bool shouldClose() {$/;"	f	namespace:Window	signature:()
-show	include/util/Console.h	/^    Console show();$/;"	p	namespace:Console	signature:()
-show	include/util/Console.h	/^    void show(bool* opened);$/;"	p	namespace:Console	signature:(bool* opened)
-show	src/util/Console.cpp	/^    void show(bool* opened)$/;"	f	namespace:Console	signature:(bool* opened)
-showConsole	src/Game.cpp	/^    bool showConsole = true;$/;"	m	namespace:Game	file:
+show	include/util/Console.h	/^    void show(bool *opened);$/;"	p	namespace:Console	signature:(bool *opened)
+show	src/util/Console.cpp	/^    void show(bool* opened) {$/;"	f	namespace:Console	signature:(bool* opened)
+showConsole	src/Game.cpp	/^    bool showConsole = false;$/;"	m	namespace:Game	file:
 showDebug	src/Game.cpp	/^    bool showDebug = false;$/;"	m	namespace:Game	file:
 single_line	libs/imgui/stb_textedit.h	/^   unsigned char single_line;$/;"	m	struct:__anon4	access:public
 size	GaffMaker/include/Definitions.h	/^	    byteInt size;$/;"	m	struct:Gaff::fileInfo	access:public
@@ -4205,6 +4216,7 @@ swap	include/Window.h	/^    void swap();$/;"	p	namespace:Window	signature:()
 swap	libs/imgui/imgui.h	/^    inline void                 swap(ImVector<T>& rhs)          { int rhs_size = rhs.Size; rhs.Size = Size; Size = rhs_size; int rhs_cap = rhs.Capacity; rhs.Capacity = Capacity; Capacity = rhs_cap; value_type* rhs_data = rhs.Data; rhs.Data = Data; Data = rhs_data; }$/;"	f	class:ImVector	access:public	signature:(ImVector<T>& rhs)
 swap	src/Window.cpp	/^    void swap() {$/;"	f	namespace:Window	signature:()
 swap	src/legacy/Window.cpp	/^    void swap() {$/;"	f	namespace:Window	signature:()
+switchInput	src/Game.cpp	/^    bool switchInput = false;$/;"	m	namespace:Game	file:
 sy	libs/imgui/stb_truetype.h	/^   float sy;$/;"	m	struct:stbtt__active_edge	access:public
 t0	libs/imgui/stb_truetype.h	/^   float x0,y0,s0,t0; \/\/ top-left$/;"	m	struct:__anon8	access:public
 t1	libs/imgui/stb_truetype.h	/^   float x1,y1,s1,t1; \/\/ bottom-right$/;"	m	struct:__anon8	access:public

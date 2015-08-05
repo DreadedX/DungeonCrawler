@@ -1,10 +1,9 @@
 # include "Standard.h"
-#define IM_ARRAYSIZE(_ARR)          ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 namespace Console {
 
-    static int          ImStricmp(const char* str1, const char* str2);
-    static int          ImStrnicmp(const char* str1, const char* str2, int count);
+    static int ImStricmp(const char* str1, const char* str2);
+    static int ImStrnicmp(const char* str1, const char* str2, int count);
 
     struct Console
     {
@@ -19,10 +18,14 @@ namespace Console {
 	{
 	    ClearLog();
 	    HistoryPos = -1;
-	    Commands.push_back("HELP");
-	    Commands.push_back("HISTORY");
-	    Commands.push_back("CLEAR");
-	    Commands.push_back("CLASSIFY");  // "classify" is here to provide an example of "C"+[tab] completing to "CL" and displaying matches.
+	    Commands.push_back("help");
+	    // Commands.push_back("histoy");
+	    // Commands.push_back("clear");
+	    Commands.push_back("exit");
+	    for (int i = 0; i < Command::count; i++) {
+		Commands.push_back(Command::commandList[i].c_str());
+	    }
+
 	}
 	~Console()
 	{
@@ -54,27 +57,21 @@ namespace Console {
 	void    Run(const char* title, bool* opened)
 	{
 	    ImGui::SetNextWindowSize(ImVec2(520,600), ImGuiSetCond_FirstUseEver);
-	    if (!ImGui::Begin(title, opened))
+	    if (!ImGui::Begin(title, opened, ImGuiWindowFlags_NoTitleBar))
 	    {
 		ImGui::End();
 		return;
 	    }
 
-	    ImGui::TextWrapped("This example implements a console with basic coloring, completion and history. A more elaborate implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
-	    ImGui::TextWrapped("Enter 'HELP' for help, press TAB to use text completion.");
-
 	    // TODO: display items starting from the bottom
 
-	    if (ImGui::SmallButton("Add Dummy Text")) { AddLog("%d some text", Items.Size); AddLog("some more text"); AddLog("display very important message here!"); } ImGui::SameLine(); 
-	    if (ImGui::SmallButton("Add Dummy Error")) AddLog("[error] something went wrong"); ImGui::SameLine(); 
-	    if (ImGui::SmallButton("Clear")) ClearLog();
 	    //static float t = 0.0f; if (ImGui::GetTime() - t > 0.02f) { t = ImGui::GetTime(); AddLog("Spam %f", t); }
 
 	    ImGui::Separator();
 
 	    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0,0));
 	    static ImGuiTextFilter filter;
-	    filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
+	    filter.Draw("Filter", 180);
 	    ImGui::PopStyleVar();
 	    ImGui::Separator();
 
@@ -82,11 +79,6 @@ namespace Console {
 	    // NB- if you have thousands of entries this approach may be too inefficient. You can seek and display only the lines that are visible - CalcListClipping() is a helper to compute this information.
 	    // If your items are of variable size you may want to implement code similar to what CalcListClipping() does. Or split your data into fixed height items to allow random-seeking into your list.
 	    ImGui::BeginChild("ScrollingRegion", ImVec2(0,-ImGui::GetItemsLineHeightWithSpacing()));
-	    if (ImGui::BeginPopupContextWindow())
-	    {
-		if (ImGui::Selectable("Clear")) ClearLog();
-		ImGui::EndPopup();
-	    }
 	    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4,1)); // Tighten spacing
 	    for (int i = 0; i < Items.Size; i++)
 	    {
@@ -94,7 +86,11 @@ namespace Console {
 		if (!filter.PassFilter(item))
 		    continue;
 		ImVec4 col = ImColor(255,255,255); // A better implementation may store a type per-item. For the sample let's just parse the text.
-		if (strstr(item, "[error]")) col = ImColor(255,100,100);
+		if (strstr(item, "[COMMAND]")) col = ImColor(120,120,120);
+		if (strstr(item, "[DEBUG]")) col = ImColor(100,100,100);
+		if (strstr(item, "[INFO]")) col = ImColor(255,255,255);
+		if (strstr(item, "[WARNING]")) col = ImColor(255,150,100);
+		if (strstr(item, "[ERROR]")) col = ImColor(255,100,100);
 		else if (strncmp(item, "# ", 2) == 0) col = ImColor(255,200,150);
 		ImGui::PushStyleColor(ImGuiCol_Text, col);
 		ImGui::TextUnformatted(item);
@@ -126,8 +122,6 @@ namespace Console {
 
 	void    ExecCommand(const char* command_line)
 	{
-	    AddLog("# %s\n", command_line);
-
 	    // Insert into history. First find match and delete it so it can be pushed to the back. This isn't trying to be smart or optimal.
 	    HistoryPos = -1;
 	    for (int i = History.Size-1; i >= 0; i--)
@@ -140,24 +134,31 @@ namespace Console {
 	    History.push_back(strdup(command_line));
 
 	    // Process command
-	    if (ImStricmp(command_line, "CLEAR") == 0)
+	    if (ImStricmp(command_line, "help") == 0)
 	    {
-		ClearLog();
-	    }
-	    else if (ImStricmp(command_line, "HELP") == 0)
-	    {
-		AddLog("Commands:");
+		AddLog("[COMMAND] Available commands:");
 		for (int i = 0; i < Commands.Size; i++)
-		    AddLog("- %s", Commands[i]);
+		    AddLog("[COMMAND] %s", Commands[i]);
 	    }
-	    else if (ImStricmp(command_line, "HISTORY") == 0)
+	    // else if (ImStricmp(command_line, "clear") == 0)
+	    // {
+		// ClearLog();
+	    // }
+	    // else if (ImStricmp(command_line, "history") == 0)
+	    // {
+		// for (int i = History.Size >= 10 ? History.Size - 10 : 0; i < History.Size; i++)
+		//     AddLog("%3d: %s\n", i, History[i]);
+	    // }
+	    else if (ImStricmp(command_line, "exit") == 0)
 	    {
-		for (int i = History.Size >= 10 ? History.Size - 10 : 0; i < History.Size; i++)
-		    AddLog("%3d: %s\n", i, History[i]);
+		exit(0);
+		return;
 	    }
 	    else
 	    {
-		AddLog("Unknown command: '%s'\n", command_line);
+		if (!Command::run(command_line)) {
+		    AddLog("[COMMAND] Unknown command: '%s'\n", command_line);
+		}
 	    }
 	}
 
@@ -196,7 +197,7 @@ namespace Console {
 			if (candidates.Size == 0)
 			{
 			    // No match
-			    AddLog("No match for \"%.*s\"!\n", word_end-word_start, word_start);
+			    // AddLog("No match for \"%.*s\"!\n", word_end-word_start, word_start);
 			}
 			else if (candidates.Size == 1)
 			{
@@ -230,9 +231,9 @@ namespace Console {
 			    }
 
 			    // List matches
-			    AddLog("Possible matches:\n");
-			    for (int i = 0; i < candidates.Size; i++)
-				AddLog("- %s\n", candidates[i]);
+			    // AddLog("Possible matches:\n");
+			    // for (int i = 0; i < candidates.Size; i++)
+				// AddLog("- %s\n", candidates[i]);
 			}
 
 			break;
@@ -266,19 +267,23 @@ namespace Console {
 	    }
 	    return 0;
 	}
+
     };
-
-    void show(bool* opened)
-    {
+    
+    Console* getConsole() {
 	static Console console;
-
-	console.Run("Console", opened);
+	return &console;
     }
 
-    // Console getConsole()
-    // {
-	// return console;
-    // }
+    void show(bool* opened) {
+	static Console *console = getConsole();
+	console->Run("Console", opened);
+    }
+
+    void log(std::string text) {
+	static Console *console = getConsole();
+	console->AddLog(text.c_str());
+    }
 
     static int ImStricmp(const char* str1, const char* str2)
     {

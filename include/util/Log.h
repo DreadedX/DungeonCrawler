@@ -2,7 +2,6 @@
 #define LOG_H
 
 const int DEBUG = 0x00;
-const int DEBUG_I = 0x01;
 const int INFO = 0x02;
 const int WARNING = 0x03;
 const int ERROR = 0x04;

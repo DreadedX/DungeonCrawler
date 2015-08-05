@@ -16,7 +16,8 @@ namespace Game {
     bool paused = false;
 #if DEBUG_MODE
     bool showDebug = false;
-    bool showConsole = true;
+    bool showConsole = false;
+    bool switchInput = false;
 #endif
 #if DEBUG_MODE && __linux__
     struct proc_t proc;
@@ -41,9 +42,14 @@ namespace Game {
 
 	Window::create();
 
-	Log::print(String::format("Vendor: %s", glGetString(GL_VENDOR)), DEBUG_I);
-	Log::print(String::format("GPU: %s", glGetString(GL_RENDERER)), DEBUG_I);
-	Log::print(String::format("OpenGL: %s", glGetString(GL_VERSION)), DEBUG_I);
+	Log::print(String::format("Vendor: %s", glGetString(GL_VENDOR)), DEBUG);
+	Log::print(String::format("GPU: %s", glGetString(GL_RENDERER)), DEBUG);
+	Log::print(String::format("OpenGL: %s", glGetString(GL_VERSION)), DEBUG);
+
+	// Log::print("Debug", DEBUG);
+	// Log::print("Info", INFO);
+	// Log::print("Warning", WARNING);
+	// Log::print("Error", ERROR);
 
 	Render::init();
 
@@ -61,7 +67,11 @@ namespace Game {
 	Level::end();
 	IO::Reader::freeReader();
 #if DEBUG_MODE
+#if LEGACY
+	ImGui_ImplGlfw_Shutdown();
+#else
 	ImGui_ImplGlfwGL3_Shutdown();
+#endif
 #endif
     }
 
@@ -107,7 +117,7 @@ namespace Game {
 
 	    lastTick = glfwGetTime();
 #if DEBUG_MODE && __linux__
-	look_up_our_self(&proc);
+	    look_up_our_self(&proc);
 	vsize = proc.vsize / 1000000;
 #endif
 	}
@@ -129,6 +139,7 @@ namespace Game {
 	    if(Input::isPressed(Key::CONSOLE)) {
 		Input::setState(Key::CONSOLE, false);
 		showConsole = !showConsole;
+		switchInput = true;
 	    }
 #endif
 
@@ -163,10 +174,14 @@ namespace Game {
     }
 
     void renderDebug() {
+#if DEBUG_MODE
+#if LEGACY
+	ImGui_ImplGlfw_NewFrame();
+#else
 	ImGui_ImplGlfwGL3_NewFrame();
+#endif
 	if (showDebug) {
-	    ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiSetCond_FirstUseEver);
-	    ImGui::Begin("Debug information");
+	    ImGui::Begin("Debug infomation", &showDebug, ImVec2(0,0), 0.3f, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_NoInputs);
 	    ImGui::Text("FPS: %i, TPS: %i", actualFPS, actualTPS);
 	    ImGui::Text("minFT: %.4f, avgFT: %.4f, maxFT: %.4f", minFT, avgFT, maxFT);
 	    ImGui::Separator();
@@ -189,5 +204,6 @@ namespace Game {
 	}
 
 	ImGui::Render();
+#endif
     }
 }

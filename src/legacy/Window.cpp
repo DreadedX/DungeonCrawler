@@ -5,8 +5,6 @@ namespace Window {
 
     GLFWwindow* window;
 
-    void tweakBarInit();
-
     void create() {
 
 	if(!glfwInit()) {
@@ -47,25 +45,23 @@ namespace Window {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glfwSwapInterval(0);
+#if DEBUG_MODE
+#if LEGACY
+	ImGui_ImplGlfw_Init(Window::window, false);
 
-	tweakBarInit();
-    }
+        glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
+        glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
+        glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
+#else
+	ImGui_ImplGlfwGL3_Init(Window::window, false);
 
-    void tweakBarInit() {
-	TwInit(TW_OPENGL_CORE, NULL);
-	TwWindowSize(WIDTH, HEIGHT);
+        glfwSetMouseButtonCallback(window, ImGui_ImplGlfwGL3_MouseButtonCallback);
+        glfwSetScrollCallback(window, ImGui_ImplGlfwGL3_ScrollCallback);
+        glfwSetCharCallback(window, ImGui_ImplGlfwGL3_CharCallback);
+#endif
+#endif
 
-	// after GLFW initialization
-	// directly redirect GLFW events to AntTweakBar
-	glfwSetMouseButtonCallback((GLFWmousebuttonfun)TwEventMouseButtonGLFW);
-	glfwSetMousePosCallback((GLFWmouseposfun)TwEventMousePosGLFW);
-	glfwSetMouseWheelCallback((GLFWmousewheelfun)TwEventMouseWheelGLFW);
-	glfwSetKeyCallback((GLFWkeyfun)TwEventKeyGLFW);
-	glfwSetCharCallback((GLFWcharfun)TwEventCharGLFW);
-
-	// send window size events to AntTweakBar
-	glfwSetWindowSizeCallback(MyResize); // and call TwWindowSize in the function MyResize
+	glfwSwapInterval(SWAP);
     }
 
     bool shouldClose() {

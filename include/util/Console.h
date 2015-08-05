@@ -1,13 +1,12 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
+#define IM_ARRAYSIZE(_ARR)          ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 namespace Console {
 
-    struct Console;
-
-    void show(bool* opened);
-    // Console show();
-};
+    void show(bool *opened);
+    void log(std::string text);
+}
 
 #endif
 
