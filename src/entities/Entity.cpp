@@ -25,10 +25,18 @@ void Entity::tick() {
     if ((velocity.y > -0.05f) && (velocity.y < 0.05f) && velocity.y != 0) velocity.y = 0;
 
     // Move on given input
-    if (Input::isPressed(Key::UP)) velocity.y += acceleration;
-    if (Input::isPressed(Key::DOWN)) velocity.y -= acceleration;
-    if (Input::isPressed(Key::LEFT)) velocity.x -= acceleration;
-    if (Input::isPressed(Key::RIGHT)) velocity.x += acceleration;
+    if (Input::isPressed(Key::UP)) {
+	velocity.y += acceleration;
+    }
+    if (Input::isPressed(Key::DOWN)) {
+	velocity.y -= acceleration;
+    }
+    if (Input::isPressed(Key::LEFT)) {
+	velocity.x -= acceleration;
+    }
+    if (Input::isPressed(Key::RIGHT)) {
+	velocity.x += acceleration;
+    }
 
     // Translate
     mat4 move = translate(IDENTITY, vec3(velocity.x, velocity.y, velocity.z));

@@ -88,7 +88,7 @@ namespace Render {
 	glBindBuffer(GL_ARRAY_BUFFER, tileUVBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_tile_uv_buffer_data), g_tile_uv_buffer_data, GL_STATIC_DRAW);
 
-	tileProgramID = Shader::load("shaders/tile.vsh", "shaders/tile.fsh");
+	tileProgramID = Shader::load("shaders/tile_vertex", "shaders/tile_fragment");
 	tileMatrixID = glGetUniformLocation(tileProgramID, "mvpMatrix");
 
 	tileTextureHandler = glGetUniformLocation(tileProgramID, "textureSampler");
@@ -101,7 +101,7 @@ namespace Render {
 	glBindBuffer(GL_ARRAY_BUFFER, fontUVBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_font_uv_buffer_data), g_font_uv_buffer_data, GL_STATIC_DRAW);
 
-	fontProgramID = Shader::load("shaders/font.vsh", "shaders/font.fsh");
+	fontProgramID = Shader::load("shaders/font_vertex", "shaders/font_fragment");
 	fontMatrixID = glGetUniformLocation(fontProgramID, "mvpMatrix");
 
 	fontTextureHandler = glGetUniformLocation(fontProgramID, "textureSampler");

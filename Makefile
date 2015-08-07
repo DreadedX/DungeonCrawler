@@ -25,7 +25,7 @@ COMPILE_FLAGS_EXTRA = -O3
 endif
 
 # Libraries
-LIBS_EXTERN = libprocps glew glfw3 $(shell pkg-config --print-requires --print-requires-private glfw3)
+LIBS_EXTERN = libprocps zlib glew glfw3 $(shell pkg-config --print-requires --print-requires-private glfw3)
 #### END PROJECT SETTINGS ####
 #
 #
@@ -66,8 +66,11 @@ $(OBJECTS_LIBS) : libs/obj/%.o : libs/src/%.cpp ./Makefile
 include/Standard.h.gch: $(HEADERS) $(HEADERS_LIBS) ./Makefile
 	$(CXX) $(COMPILE_FLAGS) $(INCLUDES) include/Standard.h 
 
-execute:
+run:
 	cd sandbox; ./../$(NAME)
+
+debug:
+	cd sandbox; gdb ../$(NAME) -ex run -ex bt -ex quit --silent
 
 clean:
 	rm -f build/debug/$(PROGRAM_NAME)

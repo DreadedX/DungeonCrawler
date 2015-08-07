@@ -20,13 +20,12 @@ namespace Texture {
 	    id = IO::Reader::getId("tile/void");
 	}
 
-	Log::print(String::format("Loaded: %s with id: %i", name.c_str(), tex), DEBUG);
-
 	vec2 imageSize = IO::Reader::getImageSize(id);
 	byte pixels[(int) (imageSize.x * imageSize.y * 4)];
 	IO::Reader::read(id, pixels);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageSize.x, imageSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
+	Log::print(String::format("Loaded texture: %s @ %i", name.c_str(), tex), DEBUG);
 	return tex;
     }
 }

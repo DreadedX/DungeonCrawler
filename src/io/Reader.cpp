@@ -113,11 +113,26 @@ namespace IO {
 	    return imageSize;
 	}
 
-	void read(int id, byte data[]) {
+	void read(int id, byte *data) {
 
 	    ifstream file (files[id].origin, ios::in | ios::binary);
 	    file.seekg(files[id].offset.i, ios::beg);
-	    file.read(reinterpret_cast<char*>(data), files[id].size.i);
+	    byte compressedData[files[id].size.i];
+	    // TODO: Make the size adjust automatically
+	    byte uncompressedData[MAX_FILE_SIZE];
+	    file.read(reinterpret_cast<char*>(compressedData), files[id].size.i);
+	    long unsigned int length = MAX_FILE_SIZE;
+	    long unsigned int lengthSource = files[id].size.i;
+	    int result = uncompress(uncompressedData, &length, compressedData, lengthSource);
+	    if (result != Z_OK) {
+		Log::print(String::format("Decompression of: %s failed: %i", files[id].name.c_str(), result), ERROR);
+		exit(-1);
+	    }
+	    for (uint i = 0; i < length; i++) {
+	    	data[i] = uncompressedData[i];
+	    }
+
+	    Log::print(String::format("Decompressed: %s", files[id].name.c_str()), DEBUG);
 	}
 
 	void freeReader() {

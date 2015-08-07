@@ -43,6 +43,8 @@
 #include <glm/ext.hpp>
 using namespace glm;
 
+#include <zlib.h>
+
 #include "imgui/imgui.h"
 #if LEGACY
 #include "imgui/imgui_impl_glfw.h"

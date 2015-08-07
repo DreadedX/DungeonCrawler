@@ -2,7 +2,6 @@
 
 namespace Shader {
 
-    void readShader(std::string fileName, std::vector<char> &buffer);
     GLuint compileShader(std::string name, GLenum shaderType);
 
     GLuint load(const char *nameVert, const char *nameFrag) {
@@ -18,38 +17,19 @@ namespace Shader {
 	glDeleteShader(fragmentShader);
 
 	glLinkProgram(shaderProgram);
-	// glUseProgram(shaderProgram);
 
-	Log::print(String::format("Succesfully compiled shader: %s, %s", nameVert, nameFrag), DEBUG);
+	Log::print(String::format("Compiled shader: %s, %s", nameVert, nameFrag), DEBUG);
 
 	return shaderProgram;
     }
 
-    void readShader(std::string fileName, std::vector<char> &buffer) {
-
-	// TODO: Make shaders load from asset file
-	// TODO: Add error handeling to opening files
-	std::ifstream file(fileName, std::ios::in | std::ios::binary);
-
-	if(!file.is_open()) {
-	    Log::print(String::format("Failed to open shader: %s", fileName.c_str()), ERROR);
-	}
-
-	file.seekg(0, std::ios::end);
-	int length = file.tellg();
-	file.seekg(0, std::ios::beg);
-
-	buffer.resize(length + 1);
-	file.read(&buffer[0], length);
-	file.close();
-	buffer[length] = '\0';
-    }
-
     GLuint compileShader(std::string name, GLenum shaderType) {
 
-	std::vector<char> buffer;
-	readShader(name, buffer);
-	const char *src = &buffer[0];
+	// Make the max size automatically adjust depending on the size of the shader
+	byte buffer[1000] = {0x00};
+	int id = IO::Reader::getId(name);
+	IO::Reader::read(id, buffer);
+	const char *src = (const char*)buffer;
 
 	GLuint shader = glCreateShader(shaderType);
 	glShaderSource(shader, 1, &src, NULL);

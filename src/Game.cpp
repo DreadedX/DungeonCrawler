@@ -50,7 +50,7 @@ namespace Game {
 	// Log::print("Info", INFO);
 	// Log::print("Warning", WARNING);
 	// Log::print("Error", ERROR);
-
+	
 	Render::init();
 
 	Level::init();

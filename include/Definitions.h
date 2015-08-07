@@ -1,6 +1,9 @@
 #ifndef DEFINITION_H
 #define DEFINITION_H
 
+#define MAX_SHADER_SIZE 1000
+#define MAX_FILE_SIZE 4000000
+
 typedef unsigned char byte;
 typedef unsigned int uint;
 
