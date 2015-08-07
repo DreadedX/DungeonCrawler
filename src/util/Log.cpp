@@ -26,6 +26,9 @@ namespace Log {
 	    case ERROR:
 		prefix = "ERROR";
 		color = "\033[31m";
+#if !PRINT_TO_TERMINAL
+		std::cout << color << "[" << prefix << "] " << msg << "\u001B[0m" << std::endl;
+#endif
 		break;
 	    default:
 		prefix = "Unknown";
