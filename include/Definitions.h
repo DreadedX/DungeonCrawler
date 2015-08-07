@@ -17,6 +17,8 @@ union byteShort {
 };
 
 // 0000 0001
+const byte TYPE_UNDEF = 0x00;
+// 0000 0001
 const byte TYPE_TILE = 0x01;
 // 0000 0010
 const byte TYPE_SOLID = 0x02;

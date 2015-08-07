@@ -16,46 +16,15 @@ namespace Level {
 	uint idList[255] {0x00};
 	IO::Reader::getWithType(TYPE_TILE, idList);
 
-	// for (uint i = 0; i < sizeof(idList)/sizeof(uint); i++) {
-	// std::string name = IO::Reader::getName(idList[i]);
-	//
-	// if (name == IO::Reader::getName(0) && i != 0) {
-	//     break;
-	// }
-	//
-	// Tile::create(name, i);
-	// }
-	// TODO: This is only hardcoded because else it can't load the existing debug_level, convert the test level to new format
-	Tile::create("tile/void", 0);
-	Tile::create("tile/grid", 1);
-	Tile::create("tile/brickDark", 2);
-	Tile::create("tile/brickLight", 3);
-	Tile::create("tile/window00", 4);
-	Tile::create("tile/window01", 5);
-	Tile::create("tile/window02", 6);
-	Tile::create("tile/window03", 7);
-	Tile::create("tile/window04", 8);
-	Tile::create("tile/window05", 9);
-	Tile::create("tile/window06", 10);
-	Tile::create("tile/window07", 11);
-	Tile::create("tile/window08", 12);
-	Tile::create("tile/window09", 13);
-	Tile::create("tile/window10", 14);
-	Tile::create("tile/window11", 15);
-	Tile::create("tile/flag00", 16);
-	Tile::create("tile/flag01", 17);
-	Tile::create("tile/flag02", 18);
-	Tile::create("tile/flag03", 19);
-	Tile::create("tile/flag04", 20);
-	Tile::create("tile/flag05", 21);
-	Tile::create("tile/flag06", 22);
-	Tile::create("tile/flag07", 23);
-	Tile::create("tile/flag08", 24);
-	Tile::create("tile/flag09", 25);
-	Tile::create("tile/flag10", 26);
-	Tile::create("tile/flag11", 27);
-	Tile::create("tile/pillar", 28);
-	Tile::create("tile/block", 29);
+	for (uint i = 0; i < sizeof(idList)/sizeof(uint); i++) {
+	    std::string name = IO::Reader::getName(idList[i]);
+
+	    if (name == IO::Reader::getName(0) && i != 0) {
+		break;
+	    }
+
+	    Tile::create(name, i);
+	}
 
 	int layoutID = IO::Reader::getId("level");
 	// TODO: Load width and height from file
@@ -92,8 +61,6 @@ namespace Level {
 	for (int y = 0; y < height; y++) {
 	    for (int x = 0; x < width; x++) {
 		vec4 position = vec4 (x, height-y, 0, 1);
-		// TODO: This should be done by the shader
-		// position = tileOffset * tileScale * position;
 
 		if (!Input::isPressed(GLFW_KEY_2)) {
 		    Tile::render(position, layout0[y][x]);
@@ -101,7 +68,6 @@ namespace Level {
 		if (!Input::isPressed(GLFW_KEY_1)) {
 		    Tile::render(position, layout[y][x]);
 		}
-		// position.z -= 0.0001f;
 	    }
 
 	}

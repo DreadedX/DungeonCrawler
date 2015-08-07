@@ -132,7 +132,7 @@ namespace IO {
 	    	data[i] = uncompressedData[i];
 	    }
 
-	    Log::print(String::format("Decompressed: %s", files[id].name.c_str()), DEBUG);
+	    Log::print(String::format("Decompressed file: %s", files[id].name.c_str()), DEBUG);
 	}
 
 	void freeReader() {

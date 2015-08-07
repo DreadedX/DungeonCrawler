@@ -155,6 +155,19 @@ namespace Game {
     void render() {
 	Render::clear();
 
+	static GLuint background_2 = Texture::load("background/mountain_2");
+	Render::background(vec4(0,0,-40, 0), background_2);
+	Render::background(vec4(-272,0,-40, 0), background_2);
+	Render::background(vec4(272,0,-40, 0), background_2);
+	static GLuint background_3 = Texture::load("background/mountain_3");
+	Render::background(vec4(0,0,-20, 0), background_3);
+	Render::background(vec4(-272,0,-20, 0), background_3);
+	Render::background(vec4(272,0,-20, 0), background_3);
+	static GLuint background_4 = Texture::load("background/mountain_4");
+	Render::background(vec4(0,0,-10, 0), background_4);
+	Render::background(vec4(-272,0,-10, 0), background_4);
+	Render::background(vec4(272,0,-10, 0), background_4);
+
 	Level::render();
 	Camera::render();
 
