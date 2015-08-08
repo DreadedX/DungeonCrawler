@@ -59,15 +59,15 @@ namespace Game {
 
 	// Load the gaff files
 	std::string fileName[] = {"test.gaff"};
-	IO::Reader::load(fileName);
+	IO::Reader::load(fileName, sizeof(fileName)/sizeof(std::string));
 
+	// Create GLFW window with OpenGL context
+	Window::create();
+	
 	// Print debug information about the system
 	Log::print(String::format("Vendor: %s", glGetString(GL_VENDOR)), DEBUG);
 	Log::print(String::format("GPU: %s", glGetString(GL_RENDERER)), DEBUG);
 	Log::print(String::format("OpenGL: %s", glGetString(GL_VERSION)), DEBUG);
-
-	// Create GLFW window with OpenGL context
-	Window::create();
 
 	// Initialize the renderer
 	Render::init();

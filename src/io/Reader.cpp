@@ -28,11 +28,9 @@ namespace IO {
 
 	static void loadFile(std::string fileName);
 
-	void load(string fileName[]) {
+	void load(string fileName[], int count) {
 
 	    // TODO: Add error handeling to opening files
-	    // TODO: Make this not hardcoded
-	    int count = 1;
 	    for (int i = 0; i < count; i++) {
 		Log::print(String::format("Loading: %s", fileName[i].c_str()), DEBUG);
 		loadFile(fileName[i]);
@@ -121,7 +119,6 @@ namespace IO {
 		    return i;
 		}
 	    }
-	    // TODO: Find a better way to deal with this
 	    return FILE_NOT_FOUND;
 	}
 
