@@ -45,9 +45,16 @@ using namespace glm;
 // Zlib
 #include <zlib.h>
 
+#if DEBUG_MODE
 // Debug UI using imgui
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw_gl3.h"
+#endif
+
+#if DEBUG_MODE
+// Leak checker
+#include "leakage/debug_new.h"
+#endif
 
 // Project includes
 #include "Definitions.h"

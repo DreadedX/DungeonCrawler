@@ -30,14 +30,16 @@ namespace Console {
 	~Console()
 	{
 	    ClearLog();
-	    for (int i = 0; i < Items.Size; i++) 
-		free(History[i]); 
+	    // for (int i = 0; i < Items.Size; i++) 
+		// TODO: !!
+		// free(History[i]); 
 	}
 
 	void    ClearLog()
 	{
 	    for (int i = 0; i < Items.Size; i++) 
-		free(Items[i]); 
+		// TODO: !!
+		// free(Items[i]); 
 	    Items.clear();
 	    ScrollToBottom = true;
 	}
@@ -127,7 +129,8 @@ namespace Console {
 	    for (int i = History.Size-1; i >= 0; i--)
 		if (ImStricmp(History[i], command_line) == 0)
 		{
-		    free(History[i]);
+		    // TODO: !!
+		    // free(History[i]);
 		    History.erase(History.begin() + i);
 		    break;
 		}

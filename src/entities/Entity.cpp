@@ -40,8 +40,6 @@ void Entity::tick() {
 	velocity.x += acceleration;
     }
 
-    Log::print(String::format("%f", velocity.x), DEBUG);
-
     // Translate
     mat4 move = translate(IDENTITY, vec3(velocity.x, velocity.y, velocity.z));
     position = move * position;

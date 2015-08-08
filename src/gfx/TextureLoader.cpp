@@ -40,6 +40,9 @@ namespace Texture {
 	    // Set the image size
 	    imageSize = IO::Reader::getImageSize(id);
 
+	    // Free memory
+	    delete[] pixels;
+
 	    // Read the image data
 	    pixels = new byte[(int) (imageSize.x * imageSize.y * 4)];
 	    IO::Reader::read(id, pixels);

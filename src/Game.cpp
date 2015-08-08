@@ -95,6 +95,10 @@ namespace Game {
 	// Deinitialize level
 	Level::end();
 
+#if DEBUG_MODE
+	// stb_leakcheck_dumpmem();
+#endif
+
 	// Free allocated memory
 	// Function does not yet exist
     }
