@@ -35,8 +35,8 @@ namespace Level {
 
 	// TODO: Create an actual level format
 	// Get the layout ids
-	int layoutID = IO::Reader::getId("level");
-	int layout0ID = IO::Reader::getId("level0");
+	uint layoutID = IO::Reader::getId("level");
+	uint layout0ID = IO::Reader::getId("level0");
 
 	// Get the layout sizes
 	vec2 layoutSize = IO::Reader::getImageSize(layoutID);

@@ -2,16 +2,16 @@
 
 namespace Game {
 
-    float lastTick;
+    double lastTick;
 
     int ticks  = 0;
     int frames = 0;
 
     int actualTPS = 0;
     int actualFPS = 0;
-    float minFT   = 10;
-    float maxFT   = 0;
-    float avgFT   = 0;
+    double minFT   = 10;
+    double maxFT   = 0;
+    double avgFT   = 0;
 
     bool paused = false;
 #if DEBUG_MODE
@@ -58,7 +58,7 @@ namespace Game {
     void init() {
 
 	// Load the gaff files
-	std::string fileName[] {"test.gaff"};
+	std::string fileName[] = {"test.gaff"};
 	IO::Reader::load(fileName);
 
 	// Print debug information about the system
@@ -111,19 +111,19 @@ namespace Game {
 	    }
 
 	    // Run a tick every 1/TPS seconds
-	    for (float delta = glfwGetTime() - lastTick; delta > FT*ticks; delta -= FT) {
+	    for (double delta = glfwGetTime() - lastTick; delta > FT*ticks; delta -= FT) {
 
 		tick();
 	    }
 
 	    // Start frametime timer
-	    float timerStart = glfwGetTime();
+	    double timerStart = glfwGetTime();
 
 	    // Render frame
 	    render();
 
 	    // Calculate frametime
-	    float time = glfwGetTime() - timerStart;
+	    double time = glfwGetTime() - timerStart;
 
 	    // Set min and max frametimes
 	    if (time > maxFT) {
