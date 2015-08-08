@@ -91,6 +91,7 @@ namespace IO {
 	    file.close();
 	}
 
+	// TODO: Make this work without setting the size of the array
 	void getWithType(byte type, uint *idList) {
 
 	    int counter = 0;
@@ -100,6 +101,18 @@ namespace IO {
 		    counter++;
 		}
 	    }
+	}
+
+	int countWithType(byte type) {
+
+	    int counter = 0;
+	    for (uint i = 0; i < sizeof(files)/sizeof(FileInfo); i++) {
+		if ((files[i].type | type) == files[i].type) {
+		    counter++;
+		}
+	    }
+	    
+	    return counter;
 	}
 
 	string getName(uint id) {
@@ -131,6 +144,7 @@ namespace IO {
 	    return imageSize;
 	}
 
+	// TODO: Make this work without setting the size of the array
 	void read(int id, byte *data) {
 
 	    ifstream file (files[id].origin, ios::in | ios::binary);

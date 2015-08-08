@@ -11,23 +11,26 @@ namespace Level {
 
     void init() {
 
+	// Get a count of all tiles
+	int tileCount = IO::Reader::countWithType(TYPE_TILE);
+	//
 	// Make a list of all files classified as tiles
-	uint idList[TILE_COUNT] {0x00};
+	uint idList[tileCount];
 	IO::Reader::getWithType(TYPE_TILE, idList);
 
+	// Initialize the tiles
+	Tile::init(tileCount);
+
+	Log::print(String::format("Tile count: %i", tileCount), DEBUG);
+
 	// Load each tile
-	for (uint i = 0; i < TILE_COUNT; i++) {
+	for (int i = 0; i < tileCount; i++) {
 
 	    // Get the name associated with the id
 	    std::string name = IO::Reader::getName(idList[i]);
 
 	    // Get tile type
 	    byte type = IO::Reader::getType(idList[i]);
-
-	    // TODO: Check if this is really needed, if yes find a better solution
-	    // if (name == IO::Reader::getName(0) && i != 0) {
-		// break;
-	    // }
 
 	    // Create a tile
 	    Tile::create(name, type, i);
@@ -121,9 +124,6 @@ namespace Level {
 
 	// Render the player
 	player.render();
-
-	// TODO: This function needs to be rewritten
-	// Render::outline(tileScale * vec4(width/2, height/2, 0, 1), vec2(16*width, 16*height), vec4(1, 0, 0, 1));
     }
 
     Entity* getPlayer() {
@@ -134,13 +134,16 @@ namespace Level {
 
     void end() {
 
+	// Free memory
 	for (int i = 0; i < levelSize.y; i++) {
-	    // Create 2d layout0 array (x-component)
+
 	    delete[] layout[i];
 	    delete[] layout0[i];
 	}
-
 	delete[] layout;
 	delete[] layout0;
+
+	// Deinitialize tiles
+	Tile::end();
     }
 }

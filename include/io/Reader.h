@@ -6,6 +6,7 @@ namespace IO {
 
 	void load(std::string *fileName, int count);
 	void getWithType(byte type, uint *idList);
+	int countWithType(byte type);
 	std::string getName(uint id);
 	byte getType(uint id);
 	uint getId(std::string);

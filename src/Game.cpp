@@ -51,7 +51,8 @@ namespace Game {
     }
 
     void stop(int exitCode) {
-	Window::destroy();
+	end();
+
 	exit(exitCode);
     }
 

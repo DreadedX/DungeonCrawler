@@ -2,8 +2,11 @@
 
 namespace Tile {
     
-    // TODO: Make this automatically determine size
-    TileData tiles[TILE_COUNT];
+    TileData *tiles;
+
+    void init(int tileCount) {
+	tiles = new TileData[tileCount];
+    }
 
     void create(std::string name, byte type, byte id) {
 	
@@ -28,5 +31,11 @@ namespace Tile {
 	    // Render tile
 	    Render::tile(position, tiles[id].tex);
 	}
+    }
+
+    void end() {
+
+	// Free tiles
+	delete[] tiles;
     }
 }
