@@ -1,15 +1,32 @@
 #include "Standard.h"
 
-// TODO: Make this automatically determine size
-uint tiles[256] = {0x00};
+namespace Tile {
+    
+    // TODO: Make this automatically determine size
+    TileData tiles[TILE_COUNT];
 
-void Tile::create(std::string name, byte id) {
-    tiles[id] = Texture::load(name) - 1;
-    Log::print(String::format("Created tile: %s @ %i", name.c_str(), id), DEBUG);
-}
+    void create(std::string name, byte type, byte id) {
+	
+	// Load tile texture
+	tiles[id].tex = Texture::load(name);
 
-void Tile::render(vec4 position, byte id) {
-    if (id != 1) {
-	Render::tile(position, tiles[id] + 1);
+	// Set tile name
+	tiles[id].name = name;
+
+	// Set tile type
+	tiles[id].type = type;
+
+	// Print debug message
+	Log::print(String::format("Created tile: %s @ %i", name.c_str(), id), DEBUG);
+    }
+
+    void render(vec4 position, byte id) {
+
+	// If the tile is the grid tile, do not render it
+	if (id != 1) {
+
+	    // Render tile
+	    Render::tile(position, tiles[id].tex);
+	}
     }
 }

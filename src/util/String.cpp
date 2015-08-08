@@ -3,6 +3,7 @@
 namespace String {
 
     // TODO: Improve this code!
+    // NOTE: Not commented
     std::string format(const char *fmt, ...) {
 	int size = 512;
 	char *buffer = 0;

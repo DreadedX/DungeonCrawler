@@ -7,10 +7,10 @@ namespace IO {
 	void load(std::string*);
 	void getWithType(byte type, uint *idList);
 	std::string getName(uint id);
+	byte getType(uint id);
 	uint getId(std::string);
 	vec2 getImageSize(int id);
 	void read(int id, byte*);
-	void freeReader();
     };
 };
 

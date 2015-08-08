@@ -1,15 +1,13 @@
 #include "Standard.h"
-// #include <gtkmm/main.h>
-// #include <gtkmm/messagedialog.h>
+
+// NOTE: This is placeholder code
 
 int main() {
-    // Gtk::Main kit(argc, argv);
-    // Gtk::MessageDialog Hello("Hello world!", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
-    // Hello.set_secondary_text("This is an example diablog");
-    // Hello.run();
 
-    // This is placholder launcher code
+    // Print that the game is being launched
     Log::print("Launching game", INFO);
+
+    // Start game
     Game::main();
 
     return 0;

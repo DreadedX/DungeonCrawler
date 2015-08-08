@@ -1,8 +1,10 @@
 #include "Standard.h"
 
+// NOTE: Because this is a temporary test class it is not commented
+
 static int tex = 0;
 
-const float frictionFloat = pow(0.8f, VT);
+const float frictionFloat = pow(0.8f, 1/VT);
 const float acceleration = (10.0f/16) / (1 / (1 - frictionFloat)) * VT;
 // NOTE: When implementing jump there can be a different friction on the y-axis
 const mat4 friction = scale(mat4(IDENTITY), vec3(frictionFloat));
@@ -37,6 +39,8 @@ void Entity::tick() {
     if (Input::isPressed(Key::RIGHT)) {
 	velocity.x += acceleration;
     }
+
+    Log::print(String::format("%f", velocity.x), DEBUG);
 
     // Translate
     mat4 move = translate(IDENTITY, vec3(velocity.x, velocity.y, velocity.z));

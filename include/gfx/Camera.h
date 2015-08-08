@@ -5,7 +5,6 @@ namespace Camera {
 
     void init();
     void tick();
-    void render();
 };
 
 #endif
