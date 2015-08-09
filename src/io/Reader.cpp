@@ -5,22 +5,6 @@ using namespace std;
 namespace IO {
     namespace Reader {
 
-	struct FileInfo {
-	    std::string origin = "";
-	    byte nameSize = 0x00;
-	    std::string name = "";
-	    byte type = 0x00;
-	    // Example:
-	    // Image = 0001 0000 | Text = 0010 0000 | Audio = 0011 0000
-	    // Tile: 0010 | Solid: 0001
-	    // => ImageSolidTile = 0001 0011 | 0xA3
-	    byteInt extra;
-	    byteInt offset;
-	    byteInt size;
-	};
-
-	static constexpr byte MAGIC[5] = {"GAFF"};
-	static const byte VERSION = 0x01;
 	// TODO: Make this allocate the correct size
 	static FileInfo files[256];
 	// TODO: Give this variable a better name;
@@ -157,7 +141,7 @@ namespace IO {
 	    long unsigned int lengthSource = files[id].size.i;
 	    int result = uncompress(uncompressedData, &length, compressedData, lengthSource);
 	    if (result != Z_OK) {
-		Log::print(String::format("Decompression of: %s failed: %i", files[id].name.c_str(), result), ERROR);
+		Log::print(String::format("Decompression of: %s (%i) failed: %i", files[id].name.c_str(), id, result), ERROR);
 		Game::stop(ERROR_ZLIB);
 	    }
 	    for (uint i = 0; i < length; i++) {

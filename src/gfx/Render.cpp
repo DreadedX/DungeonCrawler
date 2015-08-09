@@ -115,10 +115,9 @@ namespace Render {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_CULL_FACE);
-	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor(171.0f/255.0f, 106.0f/255.0f, 140.0f/255.0f, 1.0f);
+	glClearColor(33.0f/255.0f, 30.0f/255.0f, 39.0f/255.0f, 1.0f);
 
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
@@ -178,6 +177,7 @@ namespace Render {
     void tile(vec4 position, GLuint tex) {
 
 	glUseProgram(tileProgramID);
+	glBindVertexArray(VertexArrayID);
 
 	mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
 	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;

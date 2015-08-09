@@ -21,14 +21,33 @@ union byteShort {
     unsigned short s;
 };
 
+struct FileInfo {
+    std::string origin = "";
+    byte nameSize = 0x00;
+    std::string name = "";
+    byte type = 0x00;
+    // Example:
+    // Image = 0001 0000 | Text = 0010 0000 | Audio = 0011 0000
+    // Tile: 0010 | Solid: 0001
+    // => ImageSolidTile = 0001 0011 | 0xA3
+    byteInt extra;
+    byteInt offset;
+    byteInt size;
+};
+static constexpr byte MAGIC[5] = {"GAFF"};
+static const byte VERSION = 0x01;
+
+
+#ifdef TPS
 const float VT = 60.0f/TPS;
 const float FT = 1.0f/TPS;
 
 const int WIDTH = 608;
 const int HEIGHT = (WIDTH / 4 * 3);
-const char NAME[] = "Platformer";
+const char NAME[] = "Dungeon Crawler";
 
 const mat4 IDENTITY = mat4(1.0f);
+#endif
 
 // File types
 // 0000 0001
