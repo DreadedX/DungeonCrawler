@@ -58,12 +58,20 @@ using namespace glm;
 
 // Project includes
 #include "Definitions.h"
+
+#include "item/ItemUsage.h"
+#include "item/Item.h"
+
+#include "entity/player/Player.h"
+    #include "entity/player/class/Mage.h"
+
 #include "Game.h"
 #include "Input.h"
+#include "Randomizer.h"
 #include "Script.h"
 #include "Window.h"
+
 #include "audio/Audio.h"
-#include "entities/Entity.h"
 #include "gfx/Camera.h"
 // #include "gfx/Font.h"
 #include "gfx/Render.h"

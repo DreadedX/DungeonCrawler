@@ -16,7 +16,7 @@ namespace Key {
     const int LEFT = GLFW_KEY_A;
     const int DOWN = GLFW_KEY_S;
     const int RIGHT = GLFW_KEY_D;
-    const int JUMP = GLFW_KEY_SPACE;
+    const int ATTACK = GLFW_KEY_SPACE;
     // const int DASH = GLFW_KEY_W;
     const int PAUSE = GLFW_KEY_ESCAPE;
 

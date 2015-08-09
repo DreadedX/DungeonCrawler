@@ -24,8 +24,6 @@ namespace Game {
     float vsize = proc.vsize / 1000000;
 #endif
 
-    Entity *player = Level::getPlayer();
-
     inline void init();
     inline void gameLoop();
     inline void end();
@@ -69,6 +67,8 @@ namespace Game {
 	Log::print(String::format("Vendor: %s", glGetString(GL_VENDOR)), DEBUG);
 	Log::print(String::format("GPU: %s", glGetString(GL_RENDERER)), DEBUG);
 	Log::print(String::format("OpenGL: %s", glGetString(GL_VERSION)), DEBUG);
+
+	Randomizer::init();
 
 	// Initialize the renderer
 	Render::init();

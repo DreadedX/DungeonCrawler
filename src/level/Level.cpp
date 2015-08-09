@@ -2,7 +2,7 @@
 
 namespace Level {
 
-    Entity player;
+    Player *player;
 
     byte *layout;
 
@@ -45,8 +45,12 @@ namespace Level {
 	layout = new byte[(int)(levelSize.x * levelSize.y)];
 	IO::Reader::read(room_test, layout);
 
+	// TODO: Make player selection
+	// Create the player
+	player = new Mage;
+
 	// Initialize the player
-	player.init();
+	player->init();
     }
 
     void tick() {
@@ -55,7 +59,7 @@ namespace Level {
 	Camera::tick();
 
 	// Run player logic
-	player.tick();
+	player->tick();
     }
 
     void render() {
@@ -74,19 +78,20 @@ namespace Level {
 	}
 
 	// Render the player
-	player.render();
+	player->render();
     }
 
-    Entity* getPlayer() {
+    Player *getPlayer() {
 
 	// Return a pointer to the player
-	return &player;
+	return player;
     }
 
     void end() {
 
 	// Free memory
 	delete[] layout;
+	delete player;
 
 	// Deinitialize tiles
 	Tile::end();

@@ -22,4 +22,4 @@ namespace String {
 	delete[] buffer;
 	return ret;
     }
-}
+};

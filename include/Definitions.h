@@ -8,6 +8,8 @@
 #define BUFFER_COUNT_GL 8
 #define BUFFER_COUNT_AL 8
 
+#define INVENTORY_SIZE 16
+
 typedef unsigned char byte;
 typedef unsigned int uint;
 

@@ -2,7 +2,7 @@
 
 namespace Camera {
 
-    Entity *player;
+    Player *player;
 
     vec4 positionLast = vec4(0, 0, 0, 0);
     vec4 toMove       = vec4(0, 0, 0, 0);
