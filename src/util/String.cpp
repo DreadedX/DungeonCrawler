@@ -13,13 +13,14 @@ namespace String {
 	int nsize = vsnprintf(buffer, size, fmt, vl);
 	if(size <= nsize) {
 	    delete[] buffer;
-	    buffer = 0;
+	    buffer = nullptr;
 	    buffer = new char[nsize+1];
 	    nsize = vsnprintf(buffer, size, fmt, vl);
 	}
 	std::string ret(buffer);
 	va_end(vl);
 	delete[] buffer;
+	buffer = nullptr;
 	return ret;
     }
 };

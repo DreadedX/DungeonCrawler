@@ -1,20 +1,16 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-class Player {
+class Player: public Entity {
 
     public:
 
-	Player();
+	Player(vec4 position);
 	virtual ~Player();
 
-	vec4 position = vec4(5, 5, 0.0f, 1.0f);
-
-	virtual void init() = 0;
 	void tick();
 	void render();
 
-	// bool addItem(const ItemTypeData *itemType, const ModifierData *modifier, const EnchanmentData *enchantment);
 	bool addItem(Item item);
 	void removeItem(int slot);
 
@@ -23,10 +19,16 @@ class Player {
 	//NOTE: This is for testing
 	void listInventory();
 
+	virtual void attack() = 0;
+
     protected:
 
-	void init(std::string texture);
-	virtual void attack() = 0;
+	void init(std::string texture, vec4 scale);
+	GLuint tex = 0;
+
+    private:
+
+	vec4 scale = vec4(1, 1, 1, 0);
 };
 
 #endif

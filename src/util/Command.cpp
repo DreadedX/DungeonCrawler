@@ -19,13 +19,6 @@ namespace Command {
 		    break;
 		}
 	    }
-
-	    // Item item = Randomizer::item();
-	    // if (!Level::getPlayer()->addItem(item)) {
-	    // // if (!Level::getPlayer()->addItem(&ItemType::BOW, &Modifier::AWESOME, &Enchantment::FLAMING)) {
-            //
-		// Log::print("Inventory is full", DEBUG);
-	    // }
 	// If the command is "remove"
 	} else if (command == commandList[2]) {
 

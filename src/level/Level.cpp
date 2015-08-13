@@ -2,11 +2,16 @@
 
 namespace Level {
 
-    Player *player;
+    std::vector<Entity*> entities;
+    Entity *player = nullptr;
 
-    byte *layout;
+    uint *layout   = nullptr;
+    // vec2 levelSize = vec2(256, 256);
+    vec2 size = vec2(25, 25);
+    // vec2 levelSize = vec2(25, 25);
+    vec2 levelSize = size * 5;
 
-    vec2 levelSize;
+    void newLevel();
 
     void init() {
 
@@ -36,21 +41,29 @@ namespace Level {
 	}
 
 	// TODO: Now one room is loaded as an entire level, in the future the level generator needs to create a level using rooms
-	uint room_test = IO::Reader::getId("room_test");
+	// uint room_test = IO::Reader::getId("room_test");
 
 	// Get the layout sizes
-	levelSize = IO::Reader::getImageSize(room_test);
+	// levelSize = IO::Reader::getImageSize(room_test);
 
 	// Read the layout data
-	layout = new byte[(int)(levelSize.x * levelSize.y)];
-	IO::Reader::read(room_test, layout);
+	// layout = new byte[(int)(levelSize.x * levelSize.y)];
+	// IO::Reader::read(room_test, layout);
+	
+	newLevel();
 
 	// TODO: Make player selection
 	// Create the player
-	player = new Mage;
+	entities.push_back(new Mage(vec4(levelSize.x/2, levelSize.y/2, 0, 1)));
+	player = entities[0];
 
-	// Initialize the player
-	player->init();
+	// entities.push_back(new Enemy(vec4(10, 10, 0, 1)));
+
+	// Initialize all entities
+	for (Entity *entity : entities) {
+
+	    entity->init();
+	}
     }
 
     void tick() {
@@ -58,40 +71,83 @@ namespace Level {
 	// Run camera logic
 	Camera::tick();
 
-	// Run player logic
-	player->tick();
+	// Run all entity logic
+	for (Entity *entity : entities) {
+
+	    entity->tick();
+	}
+
+	if (Input::isPressed(GLFW_KEY_R)) {
+		Input::setState(GLFW_KEY_R, false);
+
+		delete[] layout;
+
+		newLevel();
+	}
     }
 
     void render() {
 
-	// Render all tiles
-	for (int y = 0; y < levelSize.y; y++) {
+	Render::startTile();
 
-	    for (int x = 0; x < levelSize.x; x++) {
+	// for (int y = min((int)(Render::getPosition().y)+VIEW_DISTANCE, (int)levelSize.y-1); y >= max((int)(Render::getPosition().y)-VIEW_DISTANCE, 0); y--) {
+	for (int y = (int)levelSize.y-1; y >= 0; y--) {
+
+	    // for (int x = max((int)Render::getPosition().x-VIEW_DISTANCE, 0); x < min((int)Render::getPosition().x+VIEW_DISTANCE, (int)levelSize.x); x++) {
+	    for (int x = 0; x < (int)levelSize.x; x++) {
 
 		// Create location vector
-		vec4 position = vec4 (x, levelSize.y-y, 0, 1);
+		vec4 position = vec4 (x, y, 0, 1);
 
 		// Render each tile
 		Tile::render(position, layout[(int)(x + y * levelSize.y)]);
 	    }
 	}
 
+	Render::endTile();
+
 	// Render the player
-	player->render();
+	Render::startEntity();
+
+	for (Entity *entity : entities) {
+
+	    entity->render();
+	}
+	Render::endEntity();
     }
 
     Player *getPlayer() {
 
 	// Return a pointer to the player
-	return player;
+	return (Player *)player;
+    }
+
+    void newLevel() {
+
+	double timerStart = glfwGetTime();
+	layout = BlueprintGenerator::generate(LevelGenerator::generate(size), size, levelSize);
+	for (int i = 0; i < levelSize.x * levelSize.y; i++) {
+
+	    layout[i] = BlueprintGenerator::getTile(layout[i]);
+	}
+	double time = glfwGetTime() - timerStart;
+
+	Log::print(String::format("Generation time: %.3fms", time*1000), DEBUG);
     }
 
     void end() {
 
 	// Free memory
 	delete[] layout;
-	delete player;
+	layout = nullptr;
+
+	for (Entity *entity : entities) {
+
+	    delete entity;
+	}
+
+	entities.clear();
+	player = nullptr;
 
 	// Deinitialize tiles
 	Tile::end();

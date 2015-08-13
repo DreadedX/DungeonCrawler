@@ -1,31 +1,26 @@
 #include "Standard.h"
 
-int tex = 0;
-
 const float frictionFloat = pow(0.8f, 1/VT);
-float acceleration = (3.0f/16) / (1 / (1 - frictionFloat)) * VT;
+float acceleration = (1.5f/16) / (1 / (1 - frictionFloat)) * VT;
 const mat4 friction = scale(mat4(IDENTITY), vec3(frictionFloat));
 vec4 velocity = vec4(0, 0, 0, 0);
 
-Item *inventory[INVENTORY_SIZE];
+Item *inventory[INVENTORY_SIZE] = {nullptr};
 float money = 0;
 
-Player::Player() {
+Player::Player(vec4 position): Entity(position) {
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
 
-	inventory[i] = new Item(&ItemType::NONE, &Modifier::NONE, &Enchantment::NONE);
+	inventory[i] = new Item();
     }
 
 }
 
-// Called by classes that inherent this class
-void Player::init(std::string texture) {
+void Player::init(std::string texture, vec4 scale) {
 
-    // Load the appropriate texture
     tex = Texture::load(texture);
-
-    // inventory[0] = new
+    this->scale = scale;
 }
 
 void Player::tick() {
@@ -79,20 +74,6 @@ void Player::tick() {
     position = move * position;
 }
 
-// bool Player::addItem(const ItemTypeData *itemType, const ModifierData *modifier, const EnchanmentData *enchantment) {
-//
-//     for (int i = 0; i < INVENTORY_SIZE; i++) {
-//
-// 	if (inventory[i]->getName() == "Empty") {
-//
-// 	    inventory[i] = new Item(itemType, modifier, enchantment);
-// 	    return true;
-// 	}
-//     }
-//
-//     return false;
-// }
-
 bool Player::addItem(Item item) {
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
@@ -109,7 +90,9 @@ bool Player::addItem(Item item) {
 
 void Player::removeItem(int slot) {
 
-    inventory[slot] = new Item(&ItemType::NONE, &Modifier::NONE, &Enchantment::NONE);
+    delete inventory[slot];
+    inventory[slot] = nullptr;
+    inventory[slot] = new Item;
 }
 
 bool Player::changeMoney(float change) {
@@ -131,7 +114,8 @@ void Player::listInventory() {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
     	
 	if (inventory[i]->getName() != "Empty") {
-	    Log::print(String::format("%i: %s, $%.1f, %.1f", i, inventory[i]->getName().c_str(), inventory[i]->getValue(), inventory[i]->getWeight()), DEBUG);
+	
+	    Log::print(String::format("%i: %s, $%.1f, %.1f (lvl. %i)", i, inventory[i]->getName().c_str(), inventory[i]->getValue(), inventory[i]->getWeight(), inventory[i]->getLevel()), DEBUG);
 	}
     }
 
@@ -140,13 +124,14 @@ void Player::listInventory() {
 void Player::render() {
 
     // Render the player texture at it's location
-    Render::tile(position, tex);
+    Render::entity(position, scale/2, tex);
 }
 
 Player::~Player() {
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-    	
+
 	delete inventory[i];
+	inventory[i] = nullptr;
     }
 }

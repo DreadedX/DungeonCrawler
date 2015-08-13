@@ -22,45 +22,27 @@ namespace Render {
 	0.0f, 0.0f
     };
 
-    // static const GLfloat g_font_vertex_buffer_data[] = {
-	// 0.0f, 0.0f, 0.0f,
-	// 0.8f, 0.0f, 0.0f,
-	// 0.8f, 1.0f, 0.0f,
-    //
-	// 0.8f, 1.0f, 0.0f,
-	// 0.0f, 1.0f, 0.0f,
-	// 0.0f, 0.0f, 0.0f
-    // };
+    static const GLfloat g_entity_vertex_buffer_data[] = {
+	-0.5f, -0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	0.5f, 0.5f, 0.0f,
 
-    // static const GLfloat g_font_uv_buffer_data[] = {
-	// 0.0f, 0.0f,
-	// 0.012195f, 0.0f,
-	// 0.012195f, 1.0f,
-    //
-	// 0.012195f, 1.0f,
-	// 0.0f, 1.0f,
-	// 0.0f, 0.0f
-    // };
-
-    static const GLfloat g_background_vertex_buffer_data[] = {
-	-85.0f, 0.0f, 0.0f,
-	85.0f, 0.0f, 0.0f,
-	85.0f, 100.0f, 0.0f,
-
-	85.0f, 100.0f, 0.0f,
-	-85.0f, 100.0f, 0.0f,
-	-85.0f, 0.0f, 0.0f
+	0.5f, 0.5f, 0.0f,
+	-0.5f, 0.5f, 0.0f,
+	-0.5f, -0.5f, 0.0f
     };
 
-    static const GLfloat g_floor_vertex_buffer_data[] = {
-	-85.0f, 0.0f, 0.0f,
-	85.0f, 0.0f, 0.0f,
-	85.0f, 0.0f, -100.0f,
+    static const GLfloat g_entity_uv_buffer_data[] = {
+	0.0f, 0.0f,
+	1.0f, 0.0f,
+	1.0f, 1.0f,
 
-	85.0f, 0.0f, -100.0f,
-	-85.0f, 0.0f, -100.0f,
-	-85.0f, 0.0f, 0.0f
+	1.0f, 1.0f,
+	0.0f, 1.0f,
+	0.0f, 0.0f
     };
+
+    static uint activeTexture = 0;
 
     vec4 view = vec4(0, 0, 10, 1);
     // mat4 viewMatrix = translate(IDENTITY, vec3(0));
@@ -80,35 +62,15 @@ namespace Render {
     GLuint tileMatrixID;
 
     GLuint tileTextureHandler;
-
-    // Font
-    // GLuint fontVertexBuffer;
-    // GLuint fontUVBuffer;
-    //
-    // GLuint fontProgramID;
-    // GLuint fontMatrixID;
-    //
-    // GLuint fontTextureHandler;
-    // GLuint fontColor;
-    // GLuint fontIndex;
-
-    // Background
-    GLuint backgroundVertexBuffer;
-    GLuint backgroundUVBuffer;
-
-    GLuint backgroundProgramID;
-    GLuint backgroundMatrixID;
-
-    GLuint backgroundTextureHandler;
     
-    // Background
-    GLuint floorVertexBuffer;
-    GLuint floorUVBuffer;
+    // Entity
+    GLuint entityVertexBuffer;
+    GLuint entityUVBuffer;
 
-    GLuint floorProgramID;
-    GLuint floorMatrixID;
+    GLuint entityProgramID;
+    GLuint entityMatrixID;
 
-    GLuint floorTextureHandler;
+    GLuint entityTextureHandler;
 
     void init() {
 	
@@ -130,37 +92,25 @@ namespace Render {
 	glGenBuffers(1, &tileUVBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, tileUVBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_tile_uv_buffer_data), g_tile_uv_buffer_data, GL_STATIC_DRAW);
-
-	tileProgramID = Shader::load("shaders/tile_vertex", "shaders/tile_fragment");
+	
+	tileProgramID = Shader::load("shaders/tile_vert", "shaders/tile_frag");
 	tileMatrixID = glGetUniformLocation(tileProgramID, "mvpMatrix");
 
 	tileTextureHandler = glGetUniformLocation(tileProgramID, "textureSampler");
+	
+	// Entity
+	glGenBuffers(1, &entityVertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, entityVertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_entity_vertex_buffer_data), g_entity_vertex_buffer_data, GL_STATIC_DRAW);
 
-	// Font
-	// glGenBuffers(1, &fontVertexBuffer);
-	// glBindBuffer(GL_ARRAY_BUFFER, fontVertexBuffer);
-	// glBufferData(GL_ARRAY_BUFFER, sizeof(g_font_vertex_buffer_data), g_font_vertex_buffer_data, GL_STATIC_DRAW);
-        //
-	// glGenBuffers(1, &fontUVBuffer);
-	// glBindBuffer(GL_ARRAY_BUFFER, fontUVBuffer);
-	// glBufferData(GL_ARRAY_BUFFER, sizeof(g_font_uv_buffer_data), g_font_uv_buffer_data, GL_STATIC_DRAW);
-        //
-	// fontProgramID = Shader::load("shaders/font_vertex", "shaders/font_fragment");
-	// fontMatrixID = glGetUniformLocation(fontProgramID, "mvpMatrix");
-        //
-	// fontTextureHandler = glGetUniformLocation(fontProgramID, "textureSampler");
-	// fontIndex = glGetUniformLocation(fontProgramID, "index");
-	// fontColor = glGetUniformLocation(fontProgramID, "vertexColor");
-	
-	// Background
-	glGenBuffers(1, &backgroundVertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, backgroundVertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_background_vertex_buffer_data), g_background_vertex_buffer_data, GL_STATIC_DRAW);
-	
-	// Background
-	glGenBuffers(1, &floorVertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, floorVertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_floor_vertex_buffer_data), g_floor_vertex_buffer_data, GL_STATIC_DRAW);
+	glGenBuffers(1, &entityUVBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, entityUVBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_entity_uv_buffer_data), g_entity_uv_buffer_data, GL_STATIC_DRAW);
+
+	entityProgramID = Shader::load("shaders/entity_vert", "shaders/entity_frag");
+	entityMatrixID = glGetUniformLocation(entityProgramID, "mvpMatrix");
+
+	tileTextureHandler = glGetUniformLocation(entityProgramID, "textureSampler");
     }
 
     void clear() {
@@ -174,18 +124,15 @@ namespace Render {
 	viewMatrix = lookAt(vec3(view.x, view.y, view.z), vec3(view.x, view.y, view.z-1), vec3(0, 1, 0));
     }
 
-    void tile(vec4 position, GLuint tex) {
+    vec4 getPosition() {
+
+	return view;
+    }
+
+    void startTile() {
 
 	glUseProgram(tileProgramID);
 	glBindVertexArray(VertexArrayID);
-
-	mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
-	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
-	glUniformMatrix4fv(tileMatrixID, 1, GL_FALSE, &mvpMatrix[0][0]);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
-	glUniform1i(tileTextureHandler, 0);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, tileVertexBuffer);
@@ -194,88 +141,71 @@ namespace Render {
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, tileUVBuffer);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+    }
+
+    void tile(vec4 position, GLuint tex) {
+
+	// TODO: Use instancing to draw the tiles
+	mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
+	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
+
+	if (activeTexture != tex) {
+
+	    glActiveTexture(GL_TEXTURE0);
+	    glBindTexture(GL_TEXTURE_2D, tex);
+	    glUniform1i(tileTextureHandler, 0);
+
+	    activeTexture = tex;
+	}
+
+	glUniformMatrix4fv(tileMatrixID, 1, GL_FALSE, &mvpMatrix[0][0]);
 
 	glDrawArrays(GL_TRIANGLES, 0, 2*3);
+    }
+
+    void endTile() {
+
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
     }
 
-    void background(vec4 position, GLuint tex) {
+    void startEntity() {
 
-	glUseProgram(tileProgramID);
+	glUseProgram(entityProgramID);
 	glBindVertexArray(VertexArrayID);
 
-	mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
-	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
-	glUniformMatrix4fv(tileMatrixID, 1, GL_FALSE, &mvpMatrix[0][0]);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
-	glUniform1i(tileTextureHandler, 0);
-
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, backgroundVertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, entityVertexBuffer);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
 
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, tileUVBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, entityUVBuffer);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*) 0);
-
-	glDrawArrays(GL_TRIANGLES, 0, 2*3);
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
     }
 
-    void floor(vec4 position, GLuint tex) {
+    void entity(vec4 position, vec4 scale, GLuint tex) {
 
-	glUseProgram(tileProgramID);
-	glBindVertexArray(VertexArrayID);
-
+	mat4 scaleMatrix = glm::scale(IDENTITY, vec3(scale.x, scale.y, scale.z));
 	mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
-	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
-	glUniformMatrix4fv(tileMatrixID, 1, GL_FALSE, &mvpMatrix[0][0]);
+	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix * scaleMatrix;
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
-	glUniform1i(tileTextureHandler, 0);
+	if (activeTexture != tex) {
 
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, floorVertexBuffer);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+	    glActiveTexture(GL_TEXTURE0);
+	    glBindTexture(GL_TEXTURE_2D, tex);
+	    glUniform1i(entityTextureHandler, 0);
 
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, tileUVBuffer);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+	    activeTexture = tex;
+	}
+
+	glUniformMatrix4fv(entityMatrixID, 1, GL_FALSE, &mvpMatrix[0][0]);
 
 	glDrawArrays(GL_TRIANGLES, 0, 2*3);
+    }
+
+    void endEntity() {
+	
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
     }
-
-    // void font(vec4 position, vec4 color, GLuint tex, int index) {
-    //
-	// glUseProgram(fontProgramID);
-    //
-	// mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
-	// mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
-	// glUniformMatrix4fv(fontMatrixID, 1, GL_FALSE, &mvpMatrix[0][0]);
-	// glUniform4f(fontColor, color.x, color.y, color.z, color.w);
-	// glUniform1i(fontIndex, index);
-    //
-	// glActiveTexture(GL_TEXTURE0);
-	// glBindTexture(GL_TEXTURE_2D, tex);
-	// glUniform1i(fontTextureHandler, 0);
-    //
-	// glEnableVertexAttribArray(0);
-	// glBindBuffer(GL_ARRAY_BUFFER, fontVertexBuffer);
-	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
-    //
-	// glEnableVertexAttribArray(1);
-	// glBindBuffer(GL_ARRAY_BUFFER, fontUVBuffer);
-	// glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*) 0);
-    //
-	// glDrawArrays(GL_TRIANGLES, 0, 2*3);
-	// glDisableVertexAttribArray(0);
-	// glDisableVertexAttribArray(1);
-    // }
 }

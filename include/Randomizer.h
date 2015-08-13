@@ -3,9 +3,10 @@
 
 namespace Randomizer {
 
-    void init();
-
+    int random(long *seed);
+    int random(int max, long *seed);
     Item item();
+
 };
 
 #endif

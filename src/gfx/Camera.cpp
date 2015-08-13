@@ -2,7 +2,7 @@
 
 namespace Camera {
 
-    Player *player;
+    Player *player = nullptr;
 
     vec4 positionLast = vec4(0, 0, 0, 0);
     vec4 toMove       = vec4(0, 0, 0, 0);
@@ -14,13 +14,15 @@ namespace Camera {
 
 	// Get a pointer to the player
 	player = Level::getPlayer();
+	positionLast = player->position;
+	Render::move(positionLast);
     }
 
     void tick() {
 
 	// Calculate the position delta
 	toMove += player->position - positionLast;
-	
+
 	// NOTO: This is only here for testing puposes
 	// Zoom in when Q is pressed
 	if(Input::isPressed(GLFW_KEY_Q)) {

@@ -17,11 +17,11 @@
 #define PRINT_TO_TERMINAL true
 #endif
 
-
 // Standard library includes
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 #include <string>
 #include <cstdarg>
 
@@ -62,8 +62,10 @@ using namespace glm;
 #include "item/ItemUsage.h"
 #include "item/Item.h"
 
+#include "entity/Entity.h"
 #include "entity/player/Player.h"
     #include "entity/player/class/Mage.h"
+#include "entity/Enemy.h"
 
 #include "Game.h"
 #include "Input.h"
@@ -73,11 +75,12 @@ using namespace glm;
 
 #include "audio/Audio.h"
 #include "gfx/Camera.h"
-// #include "gfx/Font.h"
 #include "gfx/Render.h"
 #include "gfx/ShaderLoader.h"
 #include "gfx/TextureLoader.h"
 #include "io/Reader.h"
+#include "level/LevelGenerator.h"
+#include "level/BlueprintGenerator.h"
 #include "level/Level.h"
 #include "level/Tile.h"
 #include "util/Command.h"

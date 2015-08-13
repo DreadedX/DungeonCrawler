@@ -42,6 +42,7 @@ namespace Texture {
 
 	    // Free memory
 	    delete[] pixels;
+	    pixels = nullptr;
 
 	    // Read the image data
 	    pixels = new byte[(int) (imageSize.x * imageSize.y * 4)];
@@ -60,6 +61,7 @@ namespace Texture {
 
 	// Free memory
 	delete[] pixels;
+	pixels = nullptr;
 
 	// Return texture id
 	return tex;

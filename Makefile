@@ -52,6 +52,9 @@ run:
 debug:
 	cd sandbox; gdb ../$(NAME) -ex run -ex bt -ex quit --silent
 
+valgrind:
+	cd sandbox; valgrind ./../$(NAME) -ex run -ex bt -ex quit --silent
+
 clean:
 	rm -f build/debug/$(PROGRAM_NAME)
 	rm -f build/release/$(PROGRAM_NAME)

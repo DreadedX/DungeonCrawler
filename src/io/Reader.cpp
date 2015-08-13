@@ -116,6 +116,9 @@ namespace IO {
 		    return i;
 		}
 	    }
+
+	    Log::print(String::format("Could not find: %s", name.c_str()), DEBUG);
+
 	    return FILE_NOT_FOUND;
 	}
 

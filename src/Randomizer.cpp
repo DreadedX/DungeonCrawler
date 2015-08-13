@@ -2,61 +2,33 @@
 
 namespace Randomizer {
 
-    void init() {
+    int random(long *seed) {
 
-	srand(time(NULL));
+	*seed = (*seed * 32719 + 3) % 32749;
+
+	return *seed + 1;
+    }
+
+    int random(int max, long *seed) {
+
+	return ((random(seed)-1) % max) + 1;
     }
 
     Item item() {
 
-	int random = -1;
+	static long seedItem = time(NULL);
 
 	const ItemTypeData *itemType;
+	const MaterialData *material;
 	const ModifierData *modifier;
 	const EnchantmentData *enchantment;
 
-	random = (int) (rand() % 2);
-	switch (random) {
-	    case 0:
-		itemType = &ItemType::SWORD;
-		break;
+	itemType = &itemTypes[random(itemTypeCount - 1, &seedItem)];
+	material = &materials[random(materialCount - 1, &seedItem)];
+	modifier = &modifiers[random(modifierCount, &seedItem) - 1];
+	enchantment = &enchantments[random(enchantmentCount, &seedItem) - 1];
 
-	    case 1:
-		itemType = &ItemType::BOW;
-		break;
-	}
-
-	random = (int) (rand() % 3);
-	switch (random) {
-	    case 0:
-		modifier = &Modifier::NONE;
-		break;
-
-	    case 1:
-		modifier = &Modifier::AWESOME;
-		break;
-
-	    case 2:
-		modifier = &Modifier::TERRIBLE;
-		break;
-	}
-
-	random = (int) (rand() % 3);
-	switch (random) {
-	    case 0:
-		enchantment = &Enchantment::NONE;
-		break;
-
-	    case 1:
-		enchantment = &Enchantment::FLAMING;
-		break;
-
-	    case 2:
-		enchantment = &Enchantment::REGENERATION;
-		break;
-	}
-
-	Item item(itemType, modifier, enchantment);
+	Item item(random(20, &seedItem), itemType, material, modifier, enchantment);
 
 	return item;
     }

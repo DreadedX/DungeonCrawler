@@ -68,8 +68,6 @@ namespace Game {
 	Log::print(String::format("GPU: %s", glGetString(GL_RENDERER)), DEBUG);
 	Log::print(String::format("OpenGL: %s", glGetString(GL_VERSION)), DEBUG);
 
-	Randomizer::init();
-
 	// Initialize the renderer
 	Render::init();
 
@@ -293,13 +291,19 @@ namespace Game {
 	    ImGui::Text("FPS: %i, TPS: %i", actualFPS, actualTPS);
 
 	    // Display frametime information
-	    ImGui::Text("minFT: %.4f, avgFT: %.4f, maxFT: %.4f", minFT, avgFT, maxFT);
+	    ImGui::Text("minFT: %.3fms, avgFT: %.3fms, maxFT: %.3fms", minFT*1000, avgFT*1000, maxFT*1000);
 
 	    // Draw a seperator
 	    ImGui::Separator();
 	    //
 	    // Draw the frametime graph
 	    ImGui::PlotLines("avgFT", values.Data, values.Size, values_offset, "avgFT", 0.0f, FT*2, ImVec2(0, 100));
+
+	    // Draw a seperator
+	    ImGui::Separator();
+
+	    // Display player coords
+	    ImGui::Text("x: %.3f, y: %.3f", Level::getPlayer()->position.x, Level::getPlayer()->position.y);
 
 	    // Draw a seperator
 	    ImGui::Separator();

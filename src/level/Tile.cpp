@@ -2,7 +2,7 @@
 
 namespace Tile {
     
-    TileData *tiles;
+    TileData *tiles = nullptr;
 
     void init(int tileCount) {
 	tiles = new TileData[tileCount];
@@ -37,5 +37,6 @@ namespace Tile {
 
 	// Free tiles
 	delete[] tiles;
+	tiles = nullptr;
     }
 }

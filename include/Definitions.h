@@ -76,6 +76,11 @@ const int ERROR_WINDOW = 2;
 const int ERROR_GLEW = 3;
 const int ERROR_SHADER_COMPILE = 4;
 const int ERROR_ZLIB = 5;
-const int ERROR_LEVEL = 5;
+const int ERROR_FRAMEBUFFER = 6;
+
+enum {
+    themeNone = 0,
+    themeDungeon
+};
 
 #endif

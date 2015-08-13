@@ -2,7 +2,7 @@
 
 namespace Window {
 
-    GLFWwindow* window;
+    GLFWwindow* window = nullptr;
     
     inline void glfw();
     inline void alut();

@@ -4,13 +4,13 @@ namespace Audio {
 
     struct AudioData {
 	ALenum      format;
-	ALvoid*     data;
+	ALvoid*     data = nullptr;
 	ALsizei     size;
 	ALsizei     freq;
 	ALboolean   loop;
     };
 
-    ALuint buffers[BUFFER_COUNT_AL];
+    ALuint buffers[BUFFER_COUNT_AL] = {0};
     int error;
 
     void init() {
