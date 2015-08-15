@@ -283,8 +283,6 @@ namespace LevelGenerator {
 
     void findRooms(uint *prototype, vec2 size) {
 
-	Log::print("Searching rooms", DEBUG);
-
 	for (int y = 0; y < (int)size.y; y++) {
 
 	    for (int x = 0; x < (int)size.x; x++) {
@@ -295,8 +293,6 @@ namespace LevelGenerator {
 			((prototype[(int)((x+1) + y * size.x)] & (genDirWest | genDirSouth)) == (genDirWest | genDirSouth) || (prototype[(int)((x+1) + y * size.x)] & genRoom) == genRoom) &&
 			((prototype[(int)((x+1) + (y-1) * size.x)] & (genDirWest | genDirNorth)) == (genDirWest | genDirNorth) || (prototype[(int)((x+1) + (y-1) * size.x)] & genRoom) == genRoom)
 		   ) {
-
-		    Log::print("Found room", DEBUG);
 
 		    prototype[(int)(x + y * size.x)] = genRoom; 
 		    prototype[(int)(x + (y-1) * size.x)] = genRoom;

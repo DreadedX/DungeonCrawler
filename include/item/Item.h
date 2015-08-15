@@ -1,111 +1,73 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-struct ItemTypeData {
+struct ItemComponent : Component {
 
     std::string name;
     float value;
     float weight;
-    const ItemUsageClass *usage;
+
+    ItemComponent(std::string mName, float mValue, float mWeight) {
+
+	name = mName;
+	value = mValue;
+	weight = mWeight;
+    }
 };
 
-struct MaterialData {
+struct ModifierItemComponent : Component {
 
-    std::string name;
-    float value;
-    float weight;
+    ItemComponent *item = nullptr;
+
+    // ModifierItemComponent();
+
+    std::string name = "";
+    float value = 1;
+    float weight = 1;
+
+    void init() override;
 };
 
-struct ModifierData {
+struct EnchantmentItemComponent : Component {
 
-    std::string name;
-    float valueModifier;
-    float weightModifier;
+    ItemComponent *item = nullptr;
+
+    std::string name = "";
+    float value = 1;
+    float weight = 1;
+
+    void init() override;
 };
 
-struct EnchantmentData {
+struct UsageItemComponent : Component {
 
-    std::string name;
-    float valueModifier;
-    float weightModifier;
-    bool prefix;
-    // ItemPassiveClass *passive;
+    ItemComponent *item = nullptr;
+    // TODO: Make this do something
 };
 
-// TODO: Load all of this from a file
-static const ItemTypeData itemTypes[] = { 
-    { "Empty", 0, 0, &ItemUsage::NONE },
-    { "Sword", 10, 2, &ItemUsage::MELEE },
-    { "Bow", 15, 1, &ItemUsage::RANGED },
-    { "Ring", 5, 0.5f, &ItemUsage::NONE }
+struct AwesomeModifier : ModifierItemComponent {
+
+    AwesomeModifier() {
+
+	name = "Awesome";
+	value = 2;
+	weight = 0.9f;
+    }
 };
-static const int itemTypeCount = sizeof(itemTypes)/sizeof(ItemTypeData);
 
-static const MaterialData materials[] = { 
-    { "", 0, 0 },
-    { "Wooden", 0.1f, 0.1f },
-    { "Iron", 1, 1 },
-    { "Golden", 1.2f, 1.1f }
+struct FlamingEnchantment : EnchantmentItemComponent {
+    
+    FlamingEnchantment() {
+
+	name = "Flaming";
+	value = 2;
+	weight = 0.9f;
+    }
 };
-static const int materialCount = sizeof(materials)/sizeof(MaterialData);
 
-static const ModifierData modifiers[] = { 
-    { "", 1, 1 },
-    { "Great", 1.1f, 0.9f },
-    { "Terrible", 0.5f, 1.1f },
-    { "Godly", 2, 0.5f },
-    { "Moldy", 0.7f, 1}
-};
-static const int modifierCount = sizeof(modifiers)/sizeof(ModifierData);
-
-static const EnchantmentData enchantments[] = { 
-    { "", 1, 1, true },
-    { "Flaming", 1.5f, 1, true },
-    { "Regeneration", 1.1f, 1, false },
-    { "Lucky", 1.2f, 0.9f, true }
-};
-static const int enchantmentCount = sizeof(enchantments)/sizeof(EnchantmentData);
-
-class Item {
-
-    public: 
-
-	Item(int level = 1, const ItemTypeData *itemType = &itemTypes[0], const MaterialData *material = &materials[0], const ModifierData *modifier = &modifiers[0], const EnchantmentData *enchantment = &enchantments[0]);
-
-	std::string getName() {
-
-	    return name;
-	}
-
-	int getLevel() {
-
-	    return level;
-	}
-	
-	float getValue() {
-	    
-	    return value;
-	}
-
-	float getWeight() {
-
-	    return weight;
-	}
-
-	void use();
-	void passive();
-
-    private:
-
-	std::string name;
-	int level;
-	float value;
-	float weight;
-
-	const ItemTypeData *itemType;
-	// const MaterialData *material;
-	// const ModifierData *modifier;
-	// const EnchantmentData *enchantment;
+struct MeleeWeapon : UsageItemComponent {
+    
+    // TODO: Make this do something
 };
 
 #endif

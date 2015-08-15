@@ -85,7 +85,11 @@ namespace Game {
 
 #if DEBUG_MODE
 	// Shutdown the debug ui
+#if not LEGACY
 	ImGui_ImplGlfwGL3_Shutdown();
+#else
+	ImGui_ImplGlfw_Shutdown();
+#endif
 #endif
 
 	// Close the game window
@@ -279,7 +283,11 @@ namespace Game {
 	values_offset = (values_offset+1)%values.Size;
 
 	// Start a new ImGui frame, using the correct implementation
+#if not LEGACY
 	ImGui_ImplGlfwGL3_NewFrame();
+#else
+	ImGui_ImplGlfw_NewFrame();
+#endif
 
 	// Check if the debug window needs to be displayed
 	if (showDebug) {
@@ -299,11 +307,12 @@ namespace Game {
 	    // Draw the frametime graph
 	    ImGui::PlotLines("avgFT", values.Data, values.Size, values_offset, "avgFT", 0.0f, FT*2, ImVec2(0, 100));
 
+#if LEGACY
 	    // Draw a seperator
 	    ImGui::Separator();
 
-	    // Display player coords
-	    ImGui::Text("x: %.3f, y: %.3f", Level::getPlayer()->position.x, Level::getPlayer()->position.y);
+	    ImGui::Text("Legacy back-end");
+#endif
 
 	    // Draw a seperator
 	    ImGui::Separator();

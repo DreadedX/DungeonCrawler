@@ -24,6 +24,11 @@
 #include <algorithm>
 #include <string>
 #include <cstdarg>
+#include <memory>
+#include <bitset>
+#include <array>
+#include <cassert>
+#include <type_traits>
 
 #if DEBUG_MODE && __linux__
 #include <proc/readproc.h>
@@ -48,7 +53,11 @@ using namespace glm;
 #if DEBUG_MODE
 // Debug UI using imgui
 #include "imgui/imgui.h"
+#if not LEGACY
 #include "imgui/imgui_impl_glfw_gl3.h"
+#else
+#include "imgui/imgui_impl_glfw.h"
+#endif
 #endif
 
 #if DEBUG_MODE
@@ -59,13 +68,12 @@ using namespace glm;
 // Project includes
 #include "Definitions.h"
 
-#include "item/ItemUsage.h"
-#include "item/Item.h"
+#include "util/Log.h"
+#include "util/String.h"
 
 #include "entity/Entity.h"
-#include "entity/player/Player.h"
-    #include "entity/player/class/Mage.h"
-#include "entity/Enemy.h"
+#include "item/Item.h"
+#include "entity/Components.h"
 
 #include "Game.h"
 #include "Input.h"
@@ -85,7 +93,5 @@ using namespace glm;
 #include "level/Tile.h"
 #include "util/Command.h"
 #include "util/Console.h"
-#include "util/Log.h"
-#include "util/String.h"
 
 #endif

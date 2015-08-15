@@ -2,8 +2,8 @@
 
 namespace Level {
 
-    std::vector<Entity*> entities;
-    Entity *player = nullptr;
+    Manager manager;
+    auto& player = manager.addEntity();
 
     uint *layout   = nullptr;
     // vec2 levelSize = vec2(256, 256);
@@ -53,17 +53,13 @@ namespace Level {
 	newLevel();
 
 	// TODO: Make player selection
-	// Create the player
-	entities.push_back(new Mage(vec4(levelSize.x/2, levelSize.y/2, 0, 1)));
-	player = entities[0];
-
-	// entities.push_back(new Enemy(vec4(10, 10, 0, 1)));
+	player.addComponent<PositionComponent>(vec4(size.x/2, size.y/2, 0, 1));
+	player.addComponent<PhysicsComponent>();
+	player.addComponent<TextureComponent>("entity/player/class/mage", vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
+	player.addComponent<PlayerComponent>();
+	player.addComponent<InventoryComponent>();
 
 	// Initialize all entities
-	for (Entity *entity : entities) {
-
-	    entity->init();
-	}
     }
 
     void tick() {
@@ -72,18 +68,13 @@ namespace Level {
 	Camera::tick();
 
 	// Run all entity logic
-	for (Entity *entity : entities) {
+	// for (Entity *entity : entities) {
+        //
+	//     entity->tick();
+	// }
 
-	    entity->tick();
-	}
-
-	if (Input::isPressed(GLFW_KEY_R)) {
-		Input::setState(GLFW_KEY_R, false);
-
-		delete[] layout;
-
-		newLevel();
-	}
+	manager.refresh();
+	manager.tick();
     }
 
     void render() {
@@ -109,17 +100,15 @@ namespace Level {
 	// Render the player
 	Render::startEntity();
 
-	for (Entity *entity : entities) {
+	manager.render();
 
-	    entity->render();
-	}
 	Render::endEntity();
     }
 
-    Player *getPlayer() {
+    Entity *getPlayer() {
 
 	// Return a pointer to the player
-	return (Player *)player;
+	return &player;
     }
 
     void newLevel() {
@@ -141,13 +130,13 @@ namespace Level {
 	delete[] layout;
 	layout = nullptr;
 
-	for (Entity *entity : entities) {
-
-	    delete entity;
-	}
-
-	entities.clear();
-	player = nullptr;
+	// for (Entity *entity : entities) {
+        //
+	//     delete entity;
+	// }
+        //
+	// entities.clear();
+	// player = nullptr;
 
 	// Deinitialize tiles
 	Tile::end();

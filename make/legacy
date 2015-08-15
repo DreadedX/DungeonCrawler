@@ -1,8 +1,8 @@
 TPS = 60
-SCALE = 2
+SCALE = 1
 SWAP = 0
 PRINT_TO_TERMINAL = true
-LEGACY = false
+LEGACY = true
 
 COMPILE_FLAGS_EXTRA =
 

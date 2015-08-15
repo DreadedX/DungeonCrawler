@@ -3,8 +3,8 @@ TYPE = debug
 CXX = g++
 
 # Load project settings
-MAKE_SETTINGS = default
-include make/$(MAKE_SETTINGS)
+CONFIG = default
+include make/$(CONFIG)
 
 # Set compile flags for debug build
 ifeq ($(TYPE),debug)

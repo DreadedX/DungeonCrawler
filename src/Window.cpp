@@ -29,11 +29,12 @@ namespace Window {
 	}
 
 	// Make the window not resizable
-	// glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	
 	// Set antialiasing to 4x
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
+#if not LEGACY
 	// Set OpenGL version to 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -43,6 +44,7 @@ namespace Window {
 
 	// Use the OpenGL core profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#endif
 
 	// Create the window
 	window = glfwCreateWindow(WIDTH*SCALE, HEIGHT*SCALE, NAME, NULL, NULL);
@@ -60,6 +62,7 @@ namespace Window {
 	// Set the OpenGL context to the window
 	glfwMakeContextCurrent(window);
 
+#if not LEGACY
 	// Enable glew experimental
 	glewExperimental=true;
 
@@ -72,6 +75,7 @@ namespace Window {
 	    // Stop game
 	    Game::stop(ERROR_GLEW);
 	}
+#endif
 
 	// Get primary monitor
 	GLFWmonitor *monitor = glfwGetPrimaryMonitor();
@@ -86,6 +90,7 @@ namespace Window {
 	glfwSetKeyCallback(window, Input::keyCallback);
 
 #if DEBUG_MODE
+#if not LEGACY
 	// Initalize ImGui
 	ImGui_ImplGlfwGL3_Init(Window::window, false);
 
@@ -93,11 +98,18 @@ namespace Window {
         glfwSetMouseButtonCallback(window, ImGui_ImplGlfwGL3_MouseButtonCallback);
         glfwSetScrollCallback(window, ImGui_ImplGlfwGL3_ScrollCallback);
         glfwSetCharCallback(window, ImGui_ImplGlfwGL3_CharCallback);
-#endif
+#else
+	// Initalize ImGui
+	ImGui_ImplGlfw_Init(Window::window, false);
 
+	// Setup ImGui callbacks
+        glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
+        glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
+        glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
+#endif
+#endif
 	// Set swap interval
 	glfwSwapInterval(SWAP);
-
     }
 
     void alut() {

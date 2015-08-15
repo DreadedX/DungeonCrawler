@@ -5,7 +5,7 @@ namespace Randomizer {
 
     int random(long *seed);
     int random(int max, long *seed);
-    Item item();
+    // Item item();
 
 };
 

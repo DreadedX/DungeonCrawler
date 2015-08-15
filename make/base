@@ -1,7 +1,7 @@
 PROGRAM_NAME = dungeon
 
 LIBS_EXTERN = libprocps zlib freealut glew glfw3 $(shell pkg-config --print-requires --print-requires-private glfw3)
-DEFS = -DTPS=$(TPS) -DSCALE=$(SCALE) -DSWAP=$(SWAP) -DPRINT_TO_TERMINAL=$(PRINT_TO_TERMINAL)
+DEFS = -DTPS=$(TPS) -DSCALE=$(SCALE) -DSWAP=$(SWAP) -DPRINT_TO_TERMINAL=$(PRINT_TO_TERMINAL) -DLEGACY=$(LEGACY)
 
 COMPILE_FLAGS_EXTRA +=
 

@@ -8,7 +8,7 @@ namespace Level {
     void render();
     void end();
 
-    Player* getPlayer();
+    Entity *getPlayer();
 
 };
 
