@@ -72,6 +72,14 @@ namespace Level {
         //
 	//     entity->tick();
 	// }
+	
+	if (Input::isPressed(GLFW_KEY_R)) {
+
+	    Input::setState(GLFW_KEY_R, false);
+
+	    delete[] layout;
+	    newLevel();
+	}
 
 	manager.refresh();
 	manager.tick();

@@ -1,5 +1,19 @@
 # include "Standard.h"
 
+ItemComponent::ItemComponent(std::string mName, float mValue, float mWeight) {
+
+    name = mName;
+    value = mValue;
+    weight = mWeight;
+}
+
+ModifierItemComponent::ModifierItemComponent(std::string mName, float mValue, float mWeight) {
+
+    name = mName;
+    value = mValue;
+    weight = mWeight;
+}
+
 void ModifierItemComponent::init() {
 
     item = &entity->getComponent<ItemComponent>();

@@ -233,7 +233,7 @@ namespace BlueprintGenerator {
 	    }
 	}
 
-	// delete[] prototype;
+	delete[] prototype;
 
 	return blueprint;
     }

@@ -3,13 +3,13 @@
 namespace Render {
 
     static const GLfloat g_tile_vertex_buffer_data[] = {
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	0.5f, 0.5f, 0.0f,
+	0.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+	1.0f, 1.0f, 0.0f,
 
-	0.5f, 0.5f, 0.0f,
-	-0.5f, 0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f
+	1.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f
     };
 
     static const GLfloat g_tile_uv_buffer_data[] = {
@@ -23,13 +23,13 @@ namespace Render {
     };
 
     static const GLfloat g_entity_vertex_buffer_data[] = {
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	0.5f, 0.5f, 0.0f,
+	0.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+	1.0f, 1.0f, 0.0f,
 
-	0.5f, 0.5f, 0.0f,
-	-0.5f, 0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f
+	1.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f
     };
 
     static const GLfloat g_entity_uv_buffer_data[] = {
@@ -181,16 +181,16 @@ namespace Render {
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glBegin(GL_QUADS);
 	    glTexCoord2f(0, 0);
-	    glVertex3f(position.x-0.5f, position.y-0.5f, 0);
+	    glVertex3f(position.x, position.y, 0);
 
 	    glTexCoord2f(1, 0);
-	    glVertex3f(position.x+0.5f, position.y-0.5f, 0);
+	    glVertex3f(position.x+1.0f, position.y, 0);
 
 	    glTexCoord2f(1, 1);
-	    glVertex3f(position.x+0.5f, position.y+0.5f, 0);
+	    glVertex3f(position.x+1.0f, position.y+1.0f, 0);
 
 	    glTexCoord2f(0, 1);
-	    glVertex3f(position.x-0.5f, position.y+0.5f, 0);
+	    glVertex3f(position.x, position.y+1.0f, 0);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 #endif
@@ -244,16 +244,16 @@ namespace Render {
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glBegin(GL_QUADS);
 	    glTexCoord2f(0, 0);
-	    glVertex3f(position.x-(0.5f * scale.x), position.y-(0.5f * scale.y), 0);
+	    glVertex3f(position.x, position.y, 0);
 
 	    glTexCoord2f(1, 0);
-	    glVertex3f(position.x+(0.5f * scale.x), position.y-(0.5f * scale.y), 0);
+	    glVertex3f(position.x+scale.x, position.y, 0);
 
 	    glTexCoord2f(1, 1);
-	    glVertex3f(position.x+(0.5f * scale.x), position.y+(0.5f * scale.y), 0);
+	    glVertex3f(position.x+scale.x, position.y+scale.y, 0);
 
 	    glTexCoord2f(0, 1);
-	    glVertex3f(position.x-(0.5f * scale.x), position.y+(0.5f * scale.y), 0);
+	    glVertex3f(position.x, position.y+scale.y, 0);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 #endif

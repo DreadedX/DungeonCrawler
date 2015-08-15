@@ -41,7 +41,8 @@ Session.vim
 
 ### Custom ###
 # build
-bin/*
+build/*
+obj/*
 *~
 *.swp
 imgui.ini

@@ -47,7 +47,7 @@ struct InventoryComponent : Component {
 	Entity &item = inventory.addEntity();
 	item.addComponent<ItemComponent>("Sword", 10, 2);
 	item.addComponent<FlamingEnchantment>();
-	item.addComponent<AwesomeModifier>();
+	item.addComponent<ModifierItemComponent>("Awesome", 2, 0.8f);
     }
 
     // bool addItem(Item item);

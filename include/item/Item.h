@@ -3,23 +3,18 @@
 
 struct ItemComponent : Component {
 
+    ItemComponent(std::string mName, float mValue, float mWeight);
+
     std::string name;
     float value;
     float weight;
-
-    ItemComponent(std::string mName, float mValue, float mWeight) {
-
-	name = mName;
-	value = mValue;
-	weight = mWeight;
-    }
 };
 
 struct ModifierItemComponent : Component {
 
     ItemComponent *item = nullptr;
 
-    // ModifierItemComponent();
+    ModifierItemComponent(std::string mName, float mValue, float mWeight);
 
     std::string name = "";
     float value = 1;
@@ -43,16 +38,6 @@ struct UsageItemComponent : Component {
 
     ItemComponent *item = nullptr;
     // TODO: Make this do something
-};
-
-struct AwesomeModifier : ModifierItemComponent {
-
-    AwesomeModifier() {
-
-	name = "Awesome";
-	value = 2;
-	weight = 0.9f;
-    }
 };
 
 struct FlamingEnchantment : EnchantmentItemComponent {
