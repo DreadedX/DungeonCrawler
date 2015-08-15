@@ -54,6 +54,8 @@ namespace Level {
 
 	// TODO: Make player selection
 	player.addComponent<PositionComponent>(vec4(size.x/2, size.y/2, 0, 1));
+	player.addComponent<HitboxComponent>(vec4(0, 0, 0, 0), vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
+	player.addComponent<CollisionComponent>();
 	player.addComponent<PhysicsComponent>();
 	player.addComponent<TextureComponent>("entity/player/class/mage", vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
 	player.addComponent<PlayerComponent>();
@@ -117,6 +119,13 @@ namespace Level {
 
 	// Return a pointer to the player
 	return &player;
+    }
+
+    bool isSolid(vec4 mPosition) {
+
+	Tile::TileData tile = Tile::getTileData(layout[(int)(mPosition.x) + (int)(mPosition.y) * (int)(levelSize.x)]);
+
+	return (tile.type & TYPE_SOLID) == TYPE_SOLID;
     }
 
     void newLevel() {

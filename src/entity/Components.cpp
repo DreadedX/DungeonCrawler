@@ -8,11 +8,51 @@ PositionComponent::PositionComponent(vec4 mPosition) {
 void PhysicsComponent::init() {
 
     cPosition = &entity->getComponent<PositionComponent>();
+
+    if (entity->hasComponent<CollisionComponent>()) {
+	hasCollision = true;
+	cCollision = &entity->getComponent<CollisionComponent>();
+    }
+}
+
+HitboxComponent::HitboxComponent(vec4 mOrigin, vec4 mSize) {
+
+    origin = mOrigin;
+    size = mSize;
+}
+
+void CollisionComponent::init() {
+
+    cPosition = &entity->getComponent<PositionComponent>();
+    cHitbox = &entity->getComponent<HitboxComponent>();
+}
+
+mat4 CollisionComponent::checkCollision(vec4 mVelocity) {
+
+	mat4 move = translate(IDENTITY, vec3(mVelocity.x, mVelocity.y, mVelocity.z));
+
+	vec4 tempPosition = move * cPosition->position;
+
+	if (Level::isSolid(tempPosition)) {
+
+	    move = translate(IDENTITY, vec3(-mVelocity.x, -mVelocity.y, -mVelocity.z));
+	}
+
+	return move;
 }
 
 void PhysicsComponent::tick() {
 
-    mat4 move = translate(IDENTITY, vec3(velocity.x, velocity.y, velocity.z));
+    mat4 move;
+
+    if (hasCollision) {
+
+	move = cCollision->checkCollision(velocity);
+    } else {
+
+	move = translate(IDENTITY, vec3(velocity.x, velocity.y, velocity.z));
+    }
+
     cPosition->position = move * cPosition->position;
     
     if ((velocity.x > -0.01f) && (velocity.x < 0.01f) && velocity.x != 0) {

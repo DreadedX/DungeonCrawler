@@ -33,6 +33,11 @@ namespace Tile {
 	}
     }
 
+    TileData getTileData(int id) {
+
+	return tiles[id];
+    }
+
     void end() {
 
 	// Free tiles

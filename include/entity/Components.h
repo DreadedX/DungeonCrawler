@@ -7,12 +7,32 @@ struct PositionComponent : Component {
     PositionComponent(vec4 mPosition);
 };
 
+struct HitboxComponent : Component {
+
+    vec4 origin;
+    vec4 size;
+
+    HitboxComponent(vec4 mOrigin, vec4 mSize);
+};
+
+struct CollisionComponent : Component {
+
+    PositionComponent *cPosition = nullptr;
+    HitboxComponent *cHitbox = nullptr;
+
+    void init() override;
+
+    mat4 checkCollision(vec4 mVelocity);
+};
+
 struct PhysicsComponent : Component {
 
     const float frictionFloat = pow(0.8f, 1/VT);
     const mat4 friction = scale(mat4(IDENTITY), vec3(frictionFloat));
 
     PositionComponent *cPosition = nullptr;
+    CollisionComponent *cCollision = nullptr;
+    bool hasCollision = false;
 
     vec4 velocity = vec4(0, 0, 0, 0);
 
