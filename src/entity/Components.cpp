@@ -18,7 +18,8 @@ void PhysicsComponent::init() {
 HitboxComponent::HitboxComponent(vec4 mOrigin, vec4 mSize) {
 
     origin = mOrigin;
-    size = mSize;
+    // TODO: Do this better
+    size = mSize/2;
 }
 
 void CollisionComponent::init() {
@@ -29,15 +30,51 @@ void CollisionComponent::init() {
 
 mat4 CollisionComponent::checkCollision(vec4 mVelocity) {
 
-	mat4 move = translate(IDENTITY, vec3(mVelocity.x, mVelocity.y, mVelocity.z));
+	// X-axis
+	mat4 tempMoveX = translate(IDENTITY, vec3(mVelocity.x, 0, 0));
 
-	vec4 tempPosition = move * cPosition->position;
+	vec4 tempPositionX0 = (tempMoveX * cPosition->position) + cHitbox->origin;
 
-	if (Level::isSolid(tempPosition)) {
+	vec4 tempPositionX1 = tempPositionX0;
+	tempPositionX1.x += cHitbox->size.x;
 
-	    move = translate(IDENTITY, vec3(-mVelocity.x, -mVelocity.y, -mVelocity.z));
+	vec4 tempPositionX2 = tempPositionX0;
+	tempPositionX2.y += cHitbox->size.y;
+
+	vec4 tempPositionX3 = tempPositionX0;
+	tempPositionX3.x += cHitbox->size.x;
+	tempPositionX3.y += cHitbox->size.y;
+
+	mat4 moveX = scale(IDENTITY, vec3(1, 1, 1));
+	if (Level::isSolid(tempPositionX0) || Level::isSolid(tempPositionX1) || Level::isSolid(tempPositionX2) || Level::isSolid(tempPositionX3)) {
+
+	    moveX = scale(IDENTITY, vec3(0, 1, 1));
 	}
 
+	// Y-axis
+	mat4 tempMoveY = translate(IDENTITY, vec3(0, mVelocity.y, 0));
+
+	vec4 tempPositionY0 = (tempMoveY * cPosition->position) + cHitbox->origin;
+
+	vec4 tempPositionY1 = tempPositionY0;
+	tempPositionY1.x += cHitbox->size.x;
+
+	vec4 tempPositionY2 = tempPositionY0;
+	tempPositionY2.y += cHitbox->size.y;
+
+	vec4 tempPositionY3 = tempPositionY0;
+	tempPositionY3.x += cHitbox->size.x;
+	tempPositionY3.y += cHitbox->size.y;
+
+	mat4 moveY = scale(IDENTITY, vec3(1, 1, 1));
+	if (Level::isSolid(tempPositionY0) || Level::isSolid(tempPositionY1) || Level::isSolid(tempPositionY2) || Level::isSolid(tempPositionY3)) {
+
+	    moveY = scale(IDENTITY, vec3(1, 0, 1));
+	}
+
+	mVelocity = moveX * moveY * mVelocity;
+	mat4 move = translate(IDENTITY, vec3(mVelocity.x, mVelocity.y, mVelocity.z));
+	
 	return move;
 }
 

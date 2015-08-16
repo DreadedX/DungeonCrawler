@@ -54,7 +54,7 @@ namespace Level {
 
 	// TODO: Make player selection
 	player.addComponent<PositionComponent>(vec4(size.x/2, size.y/2, 0, 1));
-	player.addComponent<HitboxComponent>(vec4(0, 0, 0, 0), vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
+	player.addComponent<HitboxComponent>(vec4(0, 0, 0, 0), vec4(17.0f/16.0f, 10.0f/16.0f, 1, 0));
 	player.addComponent<CollisionComponent>();
 	player.addComponent<PhysicsComponent>();
 	player.addComponent<TextureComponent>("entity/player/class/mage", vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
