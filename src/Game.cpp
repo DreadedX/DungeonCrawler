@@ -57,7 +57,7 @@ namespace Game {
     void init() {
 
 	// Load the gaff files
-	std::string fileName[] = {"test.gaff"};
+	std::string fileName[] = {"out.gaff"};
 	IO::Reader::load(fileName, sizeof(fileName)/sizeof(std::string));
 
 	// Create GLFW window with OpenGL context

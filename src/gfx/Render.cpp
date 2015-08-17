@@ -48,7 +48,7 @@ namespace Render {
     // mat4 viewMatrix = translate(IDENTITY, vec3(0));
 
     float fov = 90.0f;
-    mat4 projectionMatrix = perspective(fov, 4.0f / 3.0f, 0.1f, 200.0f);
+    mat4 projectionMatrix = perspective(fov, 16.0f / 9.0f, 0.1f, 200.0f);
     // mat4 projectionMatrix = ortho(0, 2, 0, 2, -100, 100);
     mat4 viewMatrix = lookAt(vec3(view.x, view.y, view.z), vec3(view.x, view.y, view.z-1), vec3(0, 1, 0));
     
@@ -94,7 +94,7 @@ namespace Render {
 	glBindBuffer(GL_ARRAY_BUFFER, tileUVBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_tile_uv_buffer_data), g_tile_uv_buffer_data, GL_STATIC_DRAW);
 	
-	tileProgramID = Shader::load("shaders/tile_vert", "shaders/tile_frag");
+	tileProgramID = Shader::load("shader/tile_vert", "shader/tile_frag");
 	tileMatrixID = glGetUniformLocation(tileProgramID, "mvpMatrix");
 
 	tileTextureHandler = glGetUniformLocation(tileProgramID, "textureSampler");
@@ -108,7 +108,7 @@ namespace Render {
 	glBindBuffer(GL_ARRAY_BUFFER, entityUVBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_entity_uv_buffer_data), g_entity_uv_buffer_data, GL_STATIC_DRAW);
 
-	entityProgramID = Shader::load("shaders/entity_vert", "shaders/entity_frag");
+	entityProgramID = Shader::load("shader/entity_vert", "shader/entity_frag");
 	entityMatrixID = glGetUniformLocation(entityProgramID, "mvpMatrix");
 
 	tileTextureHandler = glGetUniformLocation(entityProgramID, "textureSampler");
@@ -117,7 +117,7 @@ namespace Render {
 	glLoadIdentity();
 	// TODO: Try and make this work
 	// gluPerspective(fov, 4.0f / 3.0f, 0.1f, 200.0f);
-	glOrtho(0,32,0,24,-100, 100);
+	glOrtho(0,48,0,24,-100, 100);
 #endif
     }
 

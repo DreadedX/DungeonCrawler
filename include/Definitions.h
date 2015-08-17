@@ -44,24 +44,19 @@ static const byte VERSION = 0x01;
 const float VT = 60.0f/TPS;
 const float FT = 1.0f/TPS;
 
-const int WIDTH = 608;
-const int HEIGHT = (WIDTH / 4 * 3);
+const int WIDTH = 640;
+const int HEIGHT = (WIDTH / 16) * 9;
 const char NAME[] = "Dungeon Crawler";
 
 const mat4 IDENTITY = mat4(1.0f);
 #endif
 
 // File types
-// 0000 0001
 const byte TYPE_UNDEF = 0x00;
-// 0000 0001
 const byte TYPE_TILE = 0x01;
-// 0000 0010
 const byte TYPE_SOLID = 0x02;
-// 0000 0100
 const byte TYPE_ENTITY = 0x04;
-// 1000 0000
-// byte HAS_ALPHA = 0x80;
+const byte TYPE_SHADER = 0x08;
 
 // Log types
 const int DEBUG = 0x00;

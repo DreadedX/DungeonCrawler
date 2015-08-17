@@ -50,6 +50,11 @@ using namespace glm;
 // Zlib
 #include <zlib.h>
 
+// RapidJSON
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
 #if DEBUG_MODE
 // Debug UI using imgui
 #include "imgui/imgui.h"

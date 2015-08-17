@@ -47,6 +47,7 @@ namespace Window {
 #endif
 
 	// Create the window
+	// window = glfwCreateWindow(WIDTH*SCALE, HEIGHT*SCALE, NAME, glfwGetPrimaryMonitor(), NULL);
 	window = glfwCreateWindow(WIDTH*SCALE, HEIGHT*SCALE, NAME, NULL, NULL);
 
 	// Check if the window was created

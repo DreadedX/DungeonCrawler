@@ -3,7 +3,7 @@
 
 struct ItemComponent : Component {
 
-    ItemComponent(std::string mName, float mValue, float mWeight);
+    ItemComponent(int id);
 
     std::string name;
     float value;
@@ -14,7 +14,7 @@ struct ModifierItemComponent : Component {
 
     ItemComponent *item = nullptr;
 
-    ModifierItemComponent(std::string mName, float mValue, float mWeight);
+    ModifierItemComponent(int id);
 
     std::string name = "";
     float value = 1;

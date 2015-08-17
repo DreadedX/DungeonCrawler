@@ -134,6 +134,34 @@ void PlayerComponent::tick() {
 
 	cPhysics->velocity.x += acceleration;
     }
+
+#if DEBUG_MODE
+    if (Input::isPressed(GLFW_KEY_SPACE)) {
+
+	Input::setState(GLFW_KEY_SPACE, false);
+
+	cPhysics->hasCollision = !cPhysics->hasCollision;
+	Log::print(String::format("No clip: %i", cPhysics->hasCollision), DEBUG);
+    }
+
+    if (Input::isPressed(GLFW_KEY_LEFT_SHIFT)) {
+
+	Input::setState(GLFW_KEY_LEFT_SHIFT, false);
+
+	static bool boost = false;
+	if (boost) {
+
+	    acceleration /= 10;
+	    boost = false;
+	} else {
+
+	    acceleration *= 10;
+	    boost = true;
+	}
+
+	Log::print(String::format("Boost: %i", boost), DEBUG);
+    }
+#endif
 }
 
 TextureComponent::TextureComponent(std::string mTex, vec4 mScale) {
