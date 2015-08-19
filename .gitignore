@@ -41,7 +41,7 @@ Session.vim
 
 ### Custom ###
 # build
-build/*
+bin/*
 obj/*
 *~
 *.swp

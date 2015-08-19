@@ -62,15 +62,12 @@ struct InventoryComponent : Component {
 
     Manager inventory;
 
-    InventoryComponent() {
+    InventoryComponent();
 
-	Entity &item = inventory.addEntity();
-	item.addComponent<ItemComponent>(0);
-	// item.addComponent<FlamingEnchantment>();
-	item.addComponent<ModifierItemComponent>(1);
-    }
+    int itemCount = 0;
+    int modifierCount = 0;
 
-    // bool addItem(Item item);
+    bool addItem();
     // void removeItem(int slot);
     void listInventory();
 };

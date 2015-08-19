@@ -170,20 +170,34 @@ TextureComponent::TextureComponent(std::string mTex, vec4 mScale) {
     scale = mScale;
 }
 
-// bool InventoryComponent::addItem(Item item) {
-//
-//     for (int i = 0; i < INVENTORY_SIZE; i++) {
-//
-// 	if (inventory[i]->getName() == "Empty") {
-//
-// 	    *inventory[i] = item;
-// 	    return true;
-// 	}
-//     }
-//
-//     return false;
-// }
-//
+InventoryComponent::InventoryComponent() {
+
+    static int itemsID = IO::Reader::getId("items");
+    static byte json[1000] = {0x00};
+    static rapidjson::Document d;
+
+    if (json[0] == 0x00) {
+	IO::Reader::read(itemsID, json);
+    
+	d.Parse(reinterpret_cast<char const*>(json));
+
+	itemCount = d["items"].Size();
+	modifierCount = d["modifiers"].Size();
+    }
+}
+
+bool InventoryComponent::addItem() {
+
+    static long seedItem = time(NULL);
+
+    Entity &item = inventory.addEntity();
+    item.addComponent<ItemComponent>(Randomizer::random(itemCount, &seedItem) - 1);
+    item.addComponent<ModifierItemComponent>(Randomizer::random(modifierCount, &seedItem) - 1);
+
+    // TODO: Add inventory size checking
+    return true;
+}
+
 // void InventoryComponent::removeItem(int slot) {
 //
 //     delete inventory[slot];

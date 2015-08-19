@@ -10,15 +10,9 @@ namespace Command {
 	    // Print hello world message 
 	    Log::print("Hello world!", DEBUG);
 	// If the command is "give"
-	// } else if (command == commandList[1]) {
-        //
-	//     while(true) {
-        //
-	// 	Item item = Randomizer::item();
-	// 	if(!Level::getPlayer()->getComponent<InventoryComponent>().addItem(item)) {
-	// 	    break;
-	// 	}
-	//     }
+	} else if (command == commandList[1]) {
+
+	    Level::getPlayer()->getComponent<InventoryComponent>().addItem();
 	// If the command is "remove"
 	// } else if (command == commandList[2]) {
         //
