@@ -20,7 +20,8 @@ NAME = bin/$(TYPE)/$(PROGRAM_NAME)
 LIBS = $(shell pkg-config --libs --cflags $(LIBS_EXTERN))
 COMPILE_FLAGS += -Wno-write-strings -std=c++14 -Wall -Wextra $(COMPILE_FLAGS_EXTRA) $(DEFS)
 # TODO: Make this automated
-INCLUDES = -I include -I libs/include -I libs/include/imgui -I libs/include/leakage -I libs/include/rapidjson
+INCLUDES = -I include -I libs/include -I libs/include/imgui -I libs/include/leakage -I libs/include/rapidjson -I libs/include/gorilla
+STATIC_INCLUDES = -pthread -Llibs/compiled -lgorilla -lm
 MAKEFLAGS = "-j $(shell grep -c ^processor /proc/cpuinfo)"
 
 SOURCES = $(shell find src -name '*.cpp' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
@@ -35,10 +36,10 @@ OBJECTS_LIBS = $(subst .cpp,.o,$(subst /src/,/obj/$(TYPE)/, $(SOURCES_LIBS)))
 all: include/Standard.h.gch $(NAME) build/gaff/files.json
 
 $(NAME): $(OBJECTS_LIBS) $(OBJECTS) 
-	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -o $@ $^
+	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -o $@ $^ $(STATIC_INCLUDES) 
 
 $(OBJECTS) : obj/$(TYPE)/%.o : src/%.cpp ./Makefile include/Standard.h.gch
-	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $<
+	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $< $(STATIC_INCLUDES)
 
 $(OBJECTS_LIBS) : libs/obj/$(TYPE)/%.o : libs/src/%.cpp ./Makefile
 	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $< -Wno-type-limits -Wno-missing-field-initializers

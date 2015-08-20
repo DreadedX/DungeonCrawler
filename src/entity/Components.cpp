@@ -172,7 +172,7 @@ TextureComponent::TextureComponent(std::string mTex, vec4 mScale) {
 
 InventoryComponent::InventoryComponent() {
 
-    static int itemsID = IO::Reader::getId("items");
+    static int itemsID = IO::Reader::getId("config/items");
     static byte json[1000] = {0x00};
     static rapidjson::Document d;
 

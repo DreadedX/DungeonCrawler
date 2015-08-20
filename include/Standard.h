@@ -50,6 +50,10 @@ using namespace glm;
 // Zlib
 #include <zlib.h>
 
+// Gorilla audio
+#include "gorilla/ga.h"
+#include "gorilla/gau.h"
+
 // RapidJSON
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"

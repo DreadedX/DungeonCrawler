@@ -2,38 +2,35 @@
 
 namespace Audio {
 
-    struct AudioData {
-	ALenum      format;
-	ALvoid*     data = nullptr;
-	ALsizei     size;
-	ALsizei     freq;
-	ALboolean   loop;
-    };
-
-    ALuint buffers[BUFFER_COUNT_AL] = {0};
-    int error;
+    gau_Manager *mgr = nullptr;
+    ga_Mixer *mixer = nullptr;
+    ga_StreamManager *streamMgr = nullptr;
 
     void init() {
 
-	// alGenBuffers(BUFFER_COUNT_AL, buffers);
-	// if((error = alGetError()) != AL_NO_ERROR) {
-	//     Log::print(String::format("alGenBuffers: %d", error), ERROR);
-	//     exit(-1);
-	//     return;
-	// }
-        //
-	// AudioData jump;
-        //
-	// alutLoadWAVFile("audio/jump.wav", &jump.format, &jump.data, &jump.size, &jump.freq, &jump.loop);
-	// if((error = alGetError()) != AL_NO_ERROR) {
-	//     Log::print(String::format("alutLoadWAVFile: %d", error), ERROR);
-	//     exit(-1);
-	//     return;
-	// }
-        //
+	gc_initialize(0);
+	mgr = gau_manager_create();
+	mixer = gau_manager_mixer(mgr);
+	streamMgr = gau_manager_streamManager(mgr);
     }
 
-    void play() {
+    void tick() {
 
+	gau_manager_update(mgr);
     }
+
+    void end() {
+
+	gau_manager_destroy(mgr);
+	gc_shutdown();
+    }
+
+    void test() {
+
+	ga_Handle *handle;
+	handle = gau_create_handle_buffered_file(mixer, streamMgr, "audio/jump.wav", "wav", &gau_on_finish_destroy, 0, 0);
+
+	ga_handle_play(handle);
+    }
+
 }

@@ -3,7 +3,7 @@
 ItemComponent::ItemComponent(int id) {
 
     // TODO: Move this into a seperate function
-    static int itemsID = IO::Reader::getId("items");
+    static int itemsID = IO::Reader::getId("config/items");
     static byte json[1000] = {0x00};
     static rapidjson::Document d;
 
@@ -24,7 +24,7 @@ ItemComponent::ItemComponent(int id) {
 ModifierItemComponent::ModifierItemComponent(int id) {
 
     // TODO: Move this into a seperate function
-    static int itemsID = IO::Reader::getId("items");
+    static int itemsID = IO::Reader::getId("config/items");
     static byte json[1000] = {0x00};
     static rapidjson::Document d;
 

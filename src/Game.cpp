@@ -77,8 +77,8 @@ namespace Game {
 	// Initialize the camera controller
 	Camera::init();
 
-	// Initalize the font system
-	// Font::init();
+	// Initalize the audio system
+	Audio::init();
     }
 
     void end() {
@@ -97,6 +97,9 @@ namespace Game {
 
 	// Deinitialize level
 	Level::end();
+
+	// Deinitialize the audio system
+	Audio::end();
 
 #if DEBUG_MODE
 	// stb_leakcheck_dumpmem();
@@ -168,6 +171,9 @@ namespace Game {
 
     void tick() {
 
+	// Update audio manager
+	Audio::tick();
+
 	// If the game is not paused execute the game logic
 	if (!paused) {
 
@@ -179,6 +185,8 @@ namespace Game {
 
 	    Input::setState(Key::PAUSE, false);
 	    paused = !paused;
+
+	    Audio::test();
 	}
 
 #if DEBUG_MODE

@@ -53,7 +53,7 @@ var data = { "data": [
     file("in/shader/entity.fsh", TYPE_SHADER),
 
     // JSON config files
-    file("in/items.json"),
+    file("in/config/items.json"),
 
 ]};
 
