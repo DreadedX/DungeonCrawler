@@ -1,5 +1,4 @@
 #include "Standard.h"
-
 namespace Level {
 
     Manager manager;
@@ -91,12 +90,17 @@ namespace Level {
 
 	Render::startTile();
 
-	// for (int y = min((int)(Render::getPosition().y)+VIEW_DISTANCE, (int)levelSize.y-1); y >= max((int)(Render::getPosition().y)-VIEW_DISTANCE, 0); y--) {
+#if not LEGACY
 	for (int y = (int)levelSize.y-1; y >= 0; y--) {
 
-	    // for (int x = max((int)Render::getPosition().x-VIEW_DISTANCE, 0); x < min((int)Render::getPosition().x+VIEW_DISTANCE, (int)levelSize.x); x++) {
 	    for (int x = 0; x < (int)levelSize.x; x++) {
+#else 
+#define VIEW_DISTANCE_Y HEIGHT/14
+#define VIEW_DISTANCE_X WIDTH/12
+	for (int y = min((int)(Render::getPosition().y)+VIEW_DISTANCE_Y, (int)levelSize.y-1); y >= max((int)(Render::getPosition().y)-VIEW_DISTANCE_Y, 0); y--) {
 
+	    for (int x = max((int)Render::getPosition().x-VIEW_DISTANCE_X, 0); x < min((int)Render::getPosition().x+VIEW_DISTANCE_X, (int)levelSize.x); x++) {
+#endif
 		// Create location vector
 		vec4 position = vec4 (x, y, 0, 1);
 
