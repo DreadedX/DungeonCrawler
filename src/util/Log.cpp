@@ -57,7 +57,9 @@ namespace Log {
 	std::cout << color << "[" << prefix << "] " << msg << "\u001B[0m" << std::endl;
 #endif
 
+#if DEBUG_MODE
 	// Print the message to the ingame console
 	Console::log(String::format("[%s] %s", prefix.c_str(), msg.c_str()));
+#endif
     }
 }

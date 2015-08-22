@@ -50,6 +50,10 @@
 // Zlib
 #include <zlib.h>
 
+// FreeType
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 // Gorilla audio
 #include "gorilla/ga.h"
 #include "gorilla/gau.h"

@@ -87,5 +87,4 @@ function file(fileName, type) {
 
 fs.writeFile('files.json', JSON.stringify(data), function (err) {
     if (err) return console.log(err);
-    console.log('files-pre.js > files.json');
 });

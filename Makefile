@@ -16,13 +16,13 @@ ifeq ($(TYPE),release)
 COMPILE_FLAGS += -O3
 endif
 
-NAME = bin/$(TYPE)/$(PROGRAM_NAME)
+NAME = bin/$(CONFIG)/$(TYPE)/$(PROGRAM_NAME)
 LIBS = $(shell pkg-config --libs --cflags $(LIBS_EXTERN))
-COMPILE_FLAGS += -Wno-write-strings -std=c++14 -Wall -Wextra $(COMPILE_FLAGS_EXTRA) $(DEFS)
+COMPILE_FLAGS += -pthread -Wno-write-strings -std=c++14 -Wall -Wextra $(COMPILE_FLAGS_EXTRA) $(DEFS) -Winvalid-pch
 # TODO: Make this automated
-INCLUDES = -I include -I libs/include -I libs/include/imgui -I libs/include/leakage -I libs/include/rapidjson -I libs/include/gorilla
-STATIC_INCLUDES = -pthread -Llibs/compiled -lgorilla
-MAKEFLAGS = "-j 4"
+INCLUDES = -I build/header/$(CONFIG)/$(TYPE) -I include -I libs/include -I libs/include/imgui -I libs/include/leakage -I libs/include/rapidjson -I libs/include/gorilla -I /usr/include/freetype2 -Llibs/a
+STATIC_LIBS = -lgorilla
+# MAKEFLAGS = "-j 4"
 
 SOURCES = $(shell find src -name '*.cpp' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
 SOURCES_LIBS = $(shell find libs/src -name '*.cpp' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
@@ -30,41 +30,62 @@ SOURCES_LIBS = $(shell find libs/src -name '*.cpp' -printf '%T@\t%p\n' | sort -k
 HEADERS = $(shell find include -name '*.h' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
 HEADERS_LIBS = $(shell find libs/include -name '*.h' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
 
-OBJECTS = $(subst .cpp,.o,$(subst src/,obj/$(TYPE)/, $(SOURCES)))
-OBJECTS_LIBS = $(subst .cpp,.o,$(subst /src/,/obj/$(TYPE)/, $(SOURCES_LIBS)))
+OBJECTS = $(subst .cpp,.o,$(subst src/,build/obj/$(CONFIG)/$(TYPE)/, $(SOURCES)))
+OBJECTS_LIBS = $(subst .cpp,.o,$(subst libs/src/,build/obj/$(CONFIG)/$(TYPE)/libs/, $(SOURCES_LIBS)))
 
-all: include/Standard.h.gch $(NAME) build/gaff/files.json
+FOLDERS = $(subst src,build/obj/$(CONFIG)/$(TYPE),$(shell find src -type d | sort -k 1nr | cut -f2-))
+FOLDERS_LIBS = $(subst libs/src,build/obj/$(CONFIG)/$(TYPE)/libs,$(shell find libs/src -type d | sort -k 1nr | cut -f2-))
+
+TOTAL = $(words $(SOURCES) $(SOURCES_LIBS))
+COUNTER = 1
+
+all: dirs build/header/$(CONFIG)/$(TYPE)/Standard.h.gch $(NAME) tools/gaff/files.json
+
+dirs:
+ifneq ($(wildcard $(FOLDERS) $(FOLDERS_LIBS) build/header/$(CONFIG)/$(TYPE) bin/$(CONFIG)/$(TYPE)),$(FOLDERS) $(FOLDERS_LIBS) build/header/$(CONFIG)/$(TYPE) bin/$(CONFIG)/$(TYPE))
+	@echo "Creating folders"
+	@mkdir -p $(FOLDERS)
+	@mkdir -p $(FOLDERS_LIBS)
+	@mkdir -p build/header/$(CONFIG)/$(TYPE)
+	@mkdir -p bin/$(CONFIG)/$(TYPE)
+endif
 
 $(NAME): $(OBJECTS_LIBS) $(OBJECTS) 
-	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -o $@ $^ $(STATIC_INCLUDES) 
+	@echo "Linking: $(NAME)"
+	@$(CXX) $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -o $@ $^ $(STATIC_LIBS) 
 
-$(OBJECTS) : obj/$(TYPE)/%.o : src/%.cpp ./Makefile include/Standard.h.gch
-	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $< $(STATIC_INCLUDES)
+$(OBJECTS) : build/obj/$(CONFIG)/$(TYPE)/%.o : src/%.cpp build/header/$(CONFIG)/$(TYPE)/Standard.h.gch
+	@echo "Compiling: $<"
+	@$(CXX) $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $< $(STATIC_LIBS)
 
-$(OBJECTS_LIBS) : libs/obj/$(TYPE)/%.o : libs/src/%.cpp ./Makefile
-	g++ $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $< -Wno-type-limits -Wno-missing-field-initializers
+$(OBJECTS_LIBS) : build/obj/$(CONFIG)/$(TYPE)/libs/%.o : libs/src/%.cpp
+	@echo "Compiling: $<"
+	@$(CXX) $(INCLUDES) $(LIBS) $(DEFS) $(COMPILE_FLAGS) -c -o $@ $< -Wno-type-limits -Wno-missing-field-initializers
 
-include/Standard.h.gch: $(HEADERS) $(HEADERS_LIBS) ./Makefile
-	$(CXX) $(COMPILE_FLAGS) $(INCLUDES) include/Standard.h 
+build/header/$(CONFIG)/$(TYPE)/Standard.h.gch: $(HEADERS) $(HEADERS_LIBS)
+	@echo "Compiling: include/Standard.h"
+	@$(CXX) $(COMPILE_FLAGS) $(INCLUDES) include/Standard.h -o build/header/$(CONFIG)/$(TYPE)/Standard.h.gch
 
-run: build/gaff/files.json
-	cd sandbox; ./../$(NAME)
+run: tools/gaff/files.json
+	@echo "Running: $(NAME)"
+	@cd sandbox; ./../$(NAME)
 
-debug: build/gaff/files.json
-	cd sandbox; gdb ../$(NAME) -ex run -ex bt -ex quit --silent
+debug: tools/gaff/files.json
+	@echo "Running: $(NAME) (using gdb)"
+	@cd sandbox; gdb ../$(NAME) -ex run -ex bt -ex quit --silent
 
-valgrind: build/gaff/files.json
-	cd sandbox; valgrind ./../$(NAME) -ex run -ex bt -ex quit --silent
+valgrind: tools/gaff/files.json
+	@echo "Running: $(NAME) (using valgrind)"
+	@cd sandbox; valgrind ./../$(NAME) -ex run -ex bt -ex quit --silent
 
-build/gaff/files.json: $(shell find build/gaff/in) build/gaff/files-pre.js ./Makefile
-	cd build/gaff; node files-pre.js && ./gaff
-	cp build/gaff/out.gaff sandbox/out.gaff
+tools/gaff/files.json: $(shell find tools/gaff/in) tools/gaff/files-pre.js
+	@echo "Generating: sandbox/out.gaf"
+	@cd tools/gaff; node files-pre.js && ./gaff
+	@cp tools/gaff/out.gaff sandbox/out.gaff
 
 clean:
-	rm -f bin/debug/$(PROGRAM_NAME)
-	rm -f bin/release/$(PROGRAM_NAME)
-	rm -f build/gaff/files.json
-	rm -f include/Standard.h.gch
-	rm -f $(subst .cpp,.o,$(subst src/,obj/debug/, $(SOURCES)))
-	rm -f $(subst .cpp,.o,$(subst src/,obj/release/, $(SOURCES)))
-	rm -f $(OBJECTS_LIBS)
+	@echo "Removing build files"
+	@rm -rf build/
+	@rm -rf bin/
+	@rm -f tools/gaff/files.json
+	@rm -f include/Standard.h.gch

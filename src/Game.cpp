@@ -182,6 +182,7 @@ namespace Game {
 
 	    // Reset variables used to check game performance
 	    actualTPS = ticks;
+	    Log::print(String::format("%i", actualFPS), INFO);
 	    ticks     = 0;
 
 #if DEBUG_MODE && __linux__

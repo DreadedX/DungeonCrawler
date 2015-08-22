@@ -65,13 +65,17 @@ const int WARNING = 0x03;
 const int ERROR = 0x04;
 
 // Exitcodes
-const int ERROR_UNDEF = -1;
-const int ERROR_GLFW = 1;
-const int ERROR_WINDOW = 2;
-const int ERROR_GLEW = 3;
-const int ERROR_SHADER_COMPILE = 4;
-const int ERROR_ZLIB = 5;
-const int ERROR_FRAMEBUFFER = 6;
+enum {
+    ERROR_UNDEF = -1,
+    ERROR_NONE,
+    ERROR_GLFW,
+    ERROR_WINDOW,
+    ERROR_GLEW,
+    ERROR_SHADER_COMPILE,
+    ERROR_ZLIB,
+    ERROR_FRAMEBUFFER,
+    ERROR_FT
+};
 
 enum {
     themeNone = 0,

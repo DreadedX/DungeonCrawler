@@ -1,3 +1,4 @@
+#if DEBUG_MODE
 # include "Standard.h"
 
 namespace Console {
@@ -299,3 +300,4 @@ namespace Console {
 	return d;
     }
 }
+#endif
