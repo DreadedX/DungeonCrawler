@@ -21,8 +21,8 @@ LIBS = $(shell pkg-config --libs --cflags $(LIBS_EXTERN))
 COMPILE_FLAGS += -Wno-write-strings -std=c++14 -Wall -Wextra $(COMPILE_FLAGS_EXTRA) $(DEFS)
 # TODO: Make this automated
 INCLUDES = -I include -I libs/include -I libs/include/imgui -I libs/include/leakage -I libs/include/rapidjson -I libs/include/gorilla
-STATIC_INCLUDES = -pthread -Llibs/compiled -lgorilla -lm
-MAKEFLAGS = "-j $(shell grep -c ^processor /proc/cpuinfo)"
+STATIC_INCLUDES = -pthread -Llibs/compiled -lgorilla
+MAKEFLAGS = "-j 4"
 
 SOURCES = $(shell find src -name '*.cpp' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)
 SOURCES_LIBS = $(shell find libs/src -name '*.cpp' -printf '%T@\t%p\n' | sort -k 1nr | cut -f2-)

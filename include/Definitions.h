@@ -48,7 +48,7 @@ const int WIDTH = 640;
 const int HEIGHT = (WIDTH / 16) * 9;
 const char NAME[] = "Dungeon Crawler";
 
-const mat4 IDENTITY = mat4(1.0f);
+const glm::mat4 IDENTITY = glm::mat4(1.0f);
 #endif
 
 // File types

@@ -122,9 +122,9 @@ namespace IO {
 	    return FILE_NOT_FOUND;
 	}
 
-	vec2 getImageSize(int id) {
+	glm::vec2 getImageSize(int id) {
 
-	    vec2 imageSize;
+	    glm::vec2 imageSize;
 	    imageSize.x = (files[id].extra.b[1] << 8) + (files[id].extra.b[0]);
 	    imageSize.y = (files[id].extra.b[3] << 8) + (files[id].extra.b[2]);
 

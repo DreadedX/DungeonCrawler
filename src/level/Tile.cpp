@@ -23,7 +23,7 @@ namespace Tile {
 	Log::print(String::format("Created tile: %s @ %i", name.c_str(), id), DEBUG);
     }
 
-    void render(vec4 position, byte id) {
+    void render(glm::vec4 position, byte id) {
 
 	// If the tile is the grid tile, do not render it
 	if (id != 1) {

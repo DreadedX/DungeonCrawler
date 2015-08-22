@@ -79,6 +79,9 @@ namespace Game {
 
 	// Initalize the audio system
 	Audio::init();
+
+	// Initialize text system
+	Text::init();
     }
 
     void end() {
@@ -214,51 +217,10 @@ namespace Game {
 	// Clear the current buffer
 	Render::clear();
 
-	// // TODO: Clean this code up
-	// Draw the floor
-	// static GLuint floor = Texture::load("background/mountain_floor");
-	// Render::floor(vec4(0,0,0,1), floor);
-	// Render::floor(vec4(-170,0,0,1), floor);
-	// Render::floor(vec4(170,0,0,1), floor);
-
-	// Draw background layer 0, furthest away
-	// static GLuint background_0 = Texture::load("background/mountain_0");
-	// Render::background(vec4(0,0,-60, 1), background_0);
-	// Render::background(vec4(-170,0,-60, 1), background_0);
-	// Render::background(vec4(170,0,-60, 1), background_0);
-
-	// Draw backfround layer 1
-	// static GLuint background_1 = Texture::load("background/mountain_1");
-	// Render::background(vec4(0,0,-50, 1), background_1);
-	// Render::background(vec4(-170,0,-50, 1), background_1);
-	// Render::background(vec4(170,0,-50, 1), background_1);
-
-	// Draw background layer 2
-	// static GLuint background_2 = Texture::load("background/mountain_2");
-	// Render::background(vec4(0,0,-40, 1), background_2);
-	// Render::background(vec4(-170,0,-40, 1), background_2);
-	// Render::background(vec4(170,0,-40, 1), background_2);
-
-	// Draw background layer 3
-	// static GLuint background_3 = Texture::load("background/mountain_3");
-	// Render::background(vec4(0,0,-30, 1), background_3);
-	// Render::background(vec4(-170,0,-30, 1), background_3);
-	// Render::background(vec4(170,0,-30, 1), background_3);
-
-	// Draw background layer 4
-	// static GLuint background_4 = Texture::load("background/mountain_4");
-	// Render::background(vec4(0,0,-20, 1), background_4);
-	// Render::background(vec4(-170,0,-20, 1), background_4);
-	// Render::background(vec4(170,0,-20, 1), background_4);
-
-	// Draw background layer 5, closest
-	// static GLuint background_5 = Texture::load("background/mountain_5");
-	// Render::background(vec4(0,0,-10, 1), background_5);
-	// Render::background(vec4(-170,0,-10, 1), background_5);
-	// Render::background(vec4(170,0,-10, 1), background_5);
-
 	// Render the level
 	Level::render();
+
+	Text::render();
 
 #if DEBUG_MODE
 	// Render the debug interface

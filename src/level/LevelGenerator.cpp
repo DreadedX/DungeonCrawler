@@ -15,21 +15,21 @@ namespace LevelGenerator {
 	byte direction;
     };
 
-    void createRoom(uint *prototype, vec2 size, Room room);
-    bool placeExit(uint *prototype, vec2 size);
+    void createRoom(uint *prototype, glm::vec2 size, Room room);
+    bool placeExit(uint *prototype, glm::vec2 size);
 
-    void carveMaze(uint *prototype, vec2 size, Cell cell, byte previousDirection);
-    void connectMaze(uint *prototype, vec2 size);
-    void sparseMaze(uint *prototype, vec2 size);
+    void carveMaze(uint *prototype, glm::vec2 size, Cell cell, byte previousDirection);
+    void connectMaze(uint *prototype, glm::vec2 size);
+    void sparseMaze(uint *prototype, glm::vec2 size);
 
-    void findRooms(uint *prototype, vec2 size);
+    void findRooms(uint *prototype, glm::vec2 size);
 
     // static long seedLayout = time(NULL);
     static long seedLayout = 26101997;
 
     int mazeCounter = 0;
 
-    uint *generate(vec2 size) {
+    uint *generate(glm::vec2 size) {
 
 	uint *prototype = new uint[(int)(size.x * size.y)];
 	mazeCounter = 0;
@@ -111,7 +111,7 @@ namespace LevelGenerator {
 
     }
 
-    void createRoom(uint *prototype, vec2 size, Room room) {
+    void createRoom(uint *prototype, glm::vec2 size, Room room) {
 
 	int requiredSpace = Randomizer::random(5, &seedLayout);
 
@@ -141,7 +141,7 @@ namespace LevelGenerator {
 	}
     }
 
-    bool placeExit(uint *prototype, vec2 size) {
+    bool placeExit(uint *prototype, glm::vec2 size) {
 
 	int x = Randomizer::random((int)size.x, &seedLayout) - 1;
 	int y =Randomizer::random((int)size.y, &seedLayout) - 1;
@@ -156,7 +156,7 @@ namespace LevelGenerator {
 	return false;
     }
 
-    void carveMaze(uint *prototype, vec2 size, Cell cell, byte previousDirection) {
+    void carveMaze(uint *prototype, glm::vec2 size, Cell cell, byte previousDirection) {
 
 	std::vector<Cell> neighbourCells;
 	uint directions = previousDirection;
@@ -211,7 +211,7 @@ namespace LevelGenerator {
 	prototype[(int)(cell.x + cell.y * size.y)] = directions;
     }
 
-    void connectMaze(uint *prototype, vec2 size) {
+    void connectMaze(uint *prototype, glm::vec2 size) {
 
 	int x = Randomizer::random((int)size.x, &seedLayout) - 1;
 	int y = Randomizer::random((int)size.y, &seedLayout) - 1;
@@ -243,7 +243,7 @@ namespace LevelGenerator {
 	}
     }
 
-    void sparseMaze(uint *prototype, vec2 size) {
+    void sparseMaze(uint *prototype, glm::vec2 size) {
 
 	int x = Randomizer::random((int)size.x, &seedLayout) - 1;
 	int y = Randomizer::random((int)size.y, &seedLayout) - 1;
@@ -281,7 +281,7 @@ namespace LevelGenerator {
 	}
     }
 
-    void findRooms(uint *prototype, vec2 size) {
+    void findRooms(uint *prototype, glm::vec2 size) {
 
 	for (int y = 0; y < (int)size.y; y++) {
 

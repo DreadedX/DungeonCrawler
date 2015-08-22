@@ -1,6 +1,6 @@
 # include "Standard.h"
 
-PositionComponent::PositionComponent(vec4 mPosition) {
+PositionComponent::PositionComponent(glm::vec4 mPosition) {
 
     position = mPosition;
 }
@@ -15,7 +15,7 @@ void PhysicsComponent::init() {
     }
 }
 
-HitboxComponent::HitboxComponent(vec4 mOrigin, vec4 mSize) {
+HitboxComponent::HitboxComponent(glm::vec4 mOrigin, glm::vec4 mSize) {
 
     origin = mOrigin;
     // TODO: Do this better
@@ -28,70 +28,70 @@ void CollisionComponent::init() {
     cHitbox = &entity->getComponent<HitboxComponent>();
 }
 
-mat4 CollisionComponent::checkCollision(vec4 mVelocity) {
+glm::mat4 CollisionComponent::checkCollision(glm::vec4 mVelocity) {
 
 	// X-axis
-	mat4 tempMoveX = translate(IDENTITY, vec3(mVelocity.x, 0, 0));
+    glm::mat4 tempMoveX = glm::translate(IDENTITY, glm::vec3(mVelocity.x, 0, 0));
 
-	vec4 tempPositionX0 = (tempMoveX * cPosition->position) + cHitbox->origin;
+    glm::vec4 tempPositionX0 = (tempMoveX * cPosition->position) + cHitbox->origin;
 
-	vec4 tempPositionX1 = tempPositionX0;
-	tempPositionX1.x += cHitbox->size.x;
+    glm::vec4 tempPositionX1 = tempPositionX0;
+    tempPositionX1.x += cHitbox->size.x;
 
-	vec4 tempPositionX2 = tempPositionX0;
-	tempPositionX2.y += cHitbox->size.y;
+    glm::vec4 tempPositionX2 = tempPositionX0;
+    tempPositionX2.y += cHitbox->size.y;
 
-	vec4 tempPositionX3 = tempPositionX0;
-	tempPositionX3.x += cHitbox->size.x;
-	tempPositionX3.y += cHitbox->size.y;
+    glm::vec4 tempPositionX3 = tempPositionX0;
+    tempPositionX3.x += cHitbox->size.x;
+    tempPositionX3.y += cHitbox->size.y;
 
-	mat4 moveX = scale(IDENTITY, vec3(1, 1, 1));
-	if (Level::isSolid(tempPositionX0) || Level::isSolid(tempPositionX1) || Level::isSolid(tempPositionX2) || Level::isSolid(tempPositionX3)) {
+    glm::mat4 moveX = glm::scale(IDENTITY, glm::vec3(1, 1, 1));
+    if (Level::isSolid(tempPositionX0) || Level::isSolid(tempPositionX1) || Level::isSolid(tempPositionX2) || Level::isSolid(tempPositionX3)) {
 
-	    moveX = scale(IDENTITY, vec3(0, 1, 1));
-	}
+	moveX = glm::scale(IDENTITY, glm::vec3(0, 1, 1));
+    }
 
-	// Y-axis
-	mat4 tempMoveY = translate(IDENTITY, vec3(0, mVelocity.y, 0));
+    // Y-axis
+    glm::mat4 tempMoveY = glm::translate(IDENTITY, glm::vec3(0, mVelocity.y, 0));
 
-	vec4 tempPositionY0 = (tempMoveY * cPosition->position) + cHitbox->origin;
+    glm::vec4 tempPositionY0 = (tempMoveY * cPosition->position) + cHitbox->origin;
 
-	vec4 tempPositionY1 = tempPositionY0;
-	tempPositionY1.x += cHitbox->size.x;
+    glm::vec4 tempPositionY1 = tempPositionY0;
+    tempPositionY1.x += cHitbox->size.x;
 
-	vec4 tempPositionY2 = tempPositionY0;
-	tempPositionY2.y += cHitbox->size.y;
+    glm::vec4 tempPositionY2 = tempPositionY0;
+    tempPositionY2.y += cHitbox->size.y;
 
-	vec4 tempPositionY3 = tempPositionY0;
-	tempPositionY3.x += cHitbox->size.x;
-	tempPositionY3.y += cHitbox->size.y;
+    glm::vec4 tempPositionY3 = tempPositionY0;
+    tempPositionY3.x += cHitbox->size.x;
+    tempPositionY3.y += cHitbox->size.y;
 
-	mat4 moveY = scale(IDENTITY, vec3(1, 1, 1));
-	if (Level::isSolid(tempPositionY0) || Level::isSolid(tempPositionY1) || Level::isSolid(tempPositionY2) || Level::isSolid(tempPositionY3)) {
+    glm::mat4 moveY = glm::scale(IDENTITY, glm::vec3(1, 1, 1));
+    if (Level::isSolid(tempPositionY0) || Level::isSolid(tempPositionY1) || Level::isSolid(tempPositionY2) || Level::isSolid(tempPositionY3)) {
 
-	    moveY = scale(IDENTITY, vec3(1, 0, 1));
-	}
+	moveY = glm::scale(IDENTITY, glm::vec3(1, 0, 1));
+    }
 
-	mVelocity = moveX * moveY * mVelocity;
-	mat4 move = translate(IDENTITY, vec3(mVelocity.x, mVelocity.y, mVelocity.z));
-	
-	return move;
+    mVelocity = moveX * moveY * mVelocity;
+    glm::mat4 move = glm::translate(IDENTITY, glm::vec3(mVelocity.x, mVelocity.y, mVelocity.z));
+
+    return move;
 }
 
 void PhysicsComponent::tick() {
 
-    mat4 move;
+    glm::mat4 move;
 
     if (hasCollision) {
 
 	move = cCollision->checkCollision(velocity);
     } else {
 
-	move = translate(IDENTITY, vec3(velocity.x, velocity.y, velocity.z));
+	move = translate(IDENTITY, glm::vec3(velocity.x, velocity.y, velocity.z));
     }
 
     cPosition->position = move * cPosition->position;
-    
+
     if ((velocity.x > -0.01f) && (velocity.x < 0.01f) && velocity.x != 0) {
 
 	velocity.x = 0;
@@ -164,7 +164,7 @@ void PlayerComponent::tick() {
 #endif
 }
 
-TextureComponent::TextureComponent(std::string mTex, vec4 mScale) {
+TextureComponent::TextureComponent(std::string mTex, glm::vec4 mScale) {
 
     tex = Texture::load(mTex);
     scale = mScale;

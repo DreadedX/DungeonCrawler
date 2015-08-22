@@ -3,16 +3,16 @@
 
 struct PositionComponent : Component {
 
-    vec4 position;
-    PositionComponent(vec4 mPosition);
+    glm::vec4 position;
+    PositionComponent(glm::vec4 mPosition);
 };
 
 struct HitboxComponent : Component {
 
-    vec4 origin;
-    vec4 size;
+    glm::vec4 origin;
+    glm::vec4 size;
 
-    HitboxComponent(vec4 mOrigin, vec4 mSize);
+    HitboxComponent(glm::vec4 mOrigin, glm::vec4 mSize);
 };
 
 struct CollisionComponent : Component {
@@ -22,19 +22,19 @@ struct CollisionComponent : Component {
 
     void init() override;
 
-    mat4 checkCollision(vec4 mVelocity);
+    glm::mat4 checkCollision(glm::vec4 mVelocity);
 };
 
 struct PhysicsComponent : Component {
 
     const float frictionFloat = pow(0.8f, 1/VT);
-    const mat4 friction = scale(mat4(IDENTITY), vec3(frictionFloat));
+    const glm::mat4 friction = glm::scale(glm::mat4(IDENTITY), glm::vec3(frictionFloat));
 
     PositionComponent *cPosition = nullptr;
     CollisionComponent *cCollision = nullptr;
     bool hasCollision = false;
 
-    vec4 velocity = vec4(0, 0, 0, 0);
+    glm::vec4 velocity = glm::vec4(0, 0, 0, 0);
 
     void init() override;
     void tick() override;
@@ -49,10 +49,10 @@ struct TextureComponent : Component {
 
     PositionComponent *cPosition = nullptr;
 
-    TextureComponent(std::string mTex, vec4 mScale);
+    TextureComponent(std::string mTex, glm::vec4 mScale);
 
     GLuint tex = 0;
-    vec4 scale;
+    glm::vec4 scale;
 
     void init() override;
     void render() override;

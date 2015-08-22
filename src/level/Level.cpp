@@ -6,9 +6,9 @@ namespace Level {
 
     uint *layout   = nullptr;
     // vec2 levelSize = vec2(256, 256);
-    vec2 size = vec2(25, 25);
+    glm::vec2 size = glm::vec2(25, 25);
     // vec2 levelSize = vec2(25, 25);
-    vec2 levelSize = size * 5;
+    glm::vec2 levelSize = size * 5;
 
     void newLevel();
 
@@ -52,11 +52,11 @@ namespace Level {
 	newLevel();
 
 	// TODO: Make player selection
-	player.addComponent<PositionComponent>(vec4(size.x/2, size.y/2, 0, 1));
-	player.addComponent<HitboxComponent>(vec4(0, 0, 0, 0), vec4(17.0f/16.0f, 10.0f/16.0f, 1, 0));
+	player.addComponent<PositionComponent>(glm::vec4(size.x/2, size.y/2, 0, 1));
+	player.addComponent<HitboxComponent>(glm::vec4(0, 0, 0, 0), glm::vec4(17.0f/16.0f, 10.0f/16.0f, 1, 0));
 	player.addComponent<CollisionComponent>();
 	player.addComponent<PhysicsComponent>();
-	player.addComponent<TextureComponent>("entity/player/class/mage", vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
+	player.addComponent<TextureComponent>("entity/player/class/mage", glm::vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
 	player.addComponent<PlayerComponent>();
 	player.addComponent<InventoryComponent>();
 
@@ -102,7 +102,7 @@ namespace Level {
 	    for (int x = max((int)Render::getPosition().x-VIEW_DISTANCE_X, 0); x < min((int)Render::getPosition().x+VIEW_DISTANCE_X, (int)levelSize.x); x++) {
 #endif
 		// Create location vector
-		vec4 position = vec4 (x, y, 0, 1);
+		glm::vec4 position = glm::vec4 (x, y, 0, 1);
 
 		// Render each tile
 		Tile::render(position, layout[(int)(x + y * levelSize.y)]);
@@ -125,7 +125,7 @@ namespace Level {
 	return &player;
     }
 
-    bool isSolid(vec4 mPosition) {
+    bool isSolid(glm::vec4 mPosition) {
 
 	Tile::TileData tile = Tile::getTileData(layout[(int)(mPosition.x) + (int)(mPosition.y) * (int)(levelSize.x)]);
 

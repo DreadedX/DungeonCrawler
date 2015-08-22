@@ -10,7 +10,7 @@ namespace Level {
 
     Entity *getPlayer();
 
-    bool isSolid(vec4 mPosition);
+    bool isSolid(glm::vec4 mPosition);
 
 };
 

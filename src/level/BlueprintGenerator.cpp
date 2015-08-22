@@ -112,7 +112,7 @@ namespace BlueprintGenerator {
     };
 
 
-    uint *generate(uint *prototype, vec2 size, vec2 levelSize) {
+    uint *generate(uint *prototype, glm::vec2 size, glm::vec2 levelSize) {
 
 	uint *blueprint = new uint[(int)(levelSize.x * levelSize.y)];
 

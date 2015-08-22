@@ -44,13 +44,13 @@ namespace Render {
 
     static uint activeTexture = 0;
 
-    vec4 view = vec4(0, 0, 10, 1);
+    glm::vec4 view = glm::vec4(0, 0, 10, 1);
     // mat4 viewMatrix = translate(IDENTITY, vec3(0));
 
     float fov = 90.0f;
-    mat4 projectionMatrix = perspective(fov, 16.0f / 9.0f, 0.1f, 200.0f);
+    glm::mat4 projectionMatrix = glm::perspective(fov, 16.0f / 9.0f, 0.1f, 200.0f);
     // mat4 projectionMatrix = ortho(0, 2, 0, 2, -100, 100);
-    mat4 viewMatrix = lookAt(vec3(view.x, view.y, view.z), vec3(view.x, view.y, view.z-1), vec3(0, 1, 0));
+    glm::mat4 viewMatrix = glm::lookAt(glm::vec3(view.x, view.y, view.z), glm::vec3(view.x, view.y, view.z-1), glm::vec3(0, 1, 0));
     
     GLuint VertexArrayID;
 
@@ -126,17 +126,17 @@ namespace Render {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void move(vec4 toMove) {
+    void move(glm::vec4 toMove) {
 
 	view += toMove;
 #if not LEGACY
-	viewMatrix = lookAt(vec3(view.x, view.y, view.z), vec3(view.x, view.y, view.z-1), vec3(0, 1, 0));
+	viewMatrix = glm::lookAt(glm::vec3(view.x, view.y, view.z), glm::vec3(view.x, view.y, view.z-1), glm::vec3(0, 1, 0));
 #else
 	glTranslatef(-toMove.x, -toMove.y, -toMove.z);
 #endif
     }
 
-    vec4 getPosition() {
+    glm::vec4 getPosition() {
 
 	return view;
     }
@@ -157,12 +157,12 @@ namespace Render {
 #endif
     }
 
-    void tile(vec4 position, GLuint tex) {
+    void tile(glm::vec4 position, GLuint tex) {
 
 #if not LEGACY
 	// TODO: Use instancing to draw the tiles
-	mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
-	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
+	glm::mat4 modelMatrix = glm::translate(IDENTITY, glm::vec3(position.x, position.y, position.z));
+	glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
 
 	if (activeTexture != tex) {
 
@@ -220,12 +220,12 @@ namespace Render {
 #endif
     }
 
-    void entity(vec4 position, vec4 scale, GLuint tex) {
+    void entity(glm::vec4 position, glm::vec4 scale, GLuint tex) {
 
 #if not LEGACY
-	mat4 scaleMatrix = glm::scale(IDENTITY, vec3(scale.x, scale.y, scale.z));
-	mat4 modelMatrix = translate(IDENTITY, vec3(position.x, position.y, position.z));
-	mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix * scaleMatrix;
+	glm::mat4 scaleMatrix = glm::scale(IDENTITY, glm::vec3(scale.x, scale.y, scale.z));
+	glm::mat4 modelMatrix = glm::translate(IDENTITY, glm::vec3(position.x, position.y, position.z));
+	glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix * scaleMatrix;
 
 	if (activeTexture != tex) {
 

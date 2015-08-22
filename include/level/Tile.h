@@ -12,7 +12,7 @@ namespace Tile {
 	
     void init(int tileCount);
     void create(std::string name, byte type, byte id);
-    void render(vec4 position, byte id);
+    void render(glm::vec4 position, byte id);
     TileData getTileData(int id);
     void end();
 };

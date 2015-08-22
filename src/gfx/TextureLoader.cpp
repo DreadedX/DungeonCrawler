@@ -22,7 +22,7 @@ namespace Texture {
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, largest_supported_anisotropy);
 
 	// Create vector containing fallback image size
-	vec2 imageSize = vec2(2, 2);
+	glm::vec2 imageSize = glm::vec2(2, 2);
 
 	// Create pixel data array filled with a fallback texture
 	byte *pixels;

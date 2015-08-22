@@ -40,7 +40,6 @@
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-using namespace glm;
 
 // OpenAL
 #include <AL/al.h>
@@ -95,6 +94,7 @@ using namespace glm;
 #include "gfx/Render.h"
 #include "gfx/ShaderLoader.h"
 #include "gfx/TextureLoader.h"
+#include "gfx/Text.h"
 #include "io/Reader.h"
 #include "level/LevelGenerator.h"
 #include "level/BlueprintGenerator.h"

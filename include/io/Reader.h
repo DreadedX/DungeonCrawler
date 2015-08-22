@@ -10,7 +10,7 @@ namespace IO {
 	std::string getName(uint id);
 	byte getType(uint id);
 	uint getId(std::string);
-	vec2 getImageSize(int id);
+	glm::vec2 getImageSize(int id);
 	void read(int id, byte*);
     };
 };

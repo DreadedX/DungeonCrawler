@@ -2,11 +2,11 @@
 
 namespace Camera {
 
-    vec4 positionLast = vec4(0, 0, 0, 0);
-    vec4 toMove       = vec4(0, 0, 0, 0);
+    glm::vec4 positionLast = glm::vec4(0, 0, 0, 0);
+    glm::vec4 toMove       = glm::vec4(0, 0, 0, 0);
 
     float tweenFloat = 0.1 * VT;
-    mat4 tween       = scale(IDENTITY, vec3(tweenFloat, tweenFloat, 1));
+    glm::mat4 tween       = glm::scale(IDENTITY, glm::vec3(tweenFloat, tweenFloat, 1));
     PositionComponent *cPosition = nullptr;
  
     void init() {
