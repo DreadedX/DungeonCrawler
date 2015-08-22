@@ -3,6 +3,7 @@
 namespace Game {
 
     double lastTick;
+    double lastFrame;
 
     int ticks  = 0;
     int frames = 0;
@@ -27,7 +28,8 @@ namespace Game {
     inline void init();
     inline void gameLoop();
     inline void end();
-    inline void control();
+
+    inline void audio();
     inline void tick();
     inline void render();
 
@@ -40,6 +42,7 @@ namespace Game {
 
 	// Set lastTick to current time
 	lastTick = glfwGetTime();
+	lastFrame = glfwGetTime();
 
 	// Run the game loop
 	gameLoop();
@@ -62,7 +65,7 @@ namespace Game {
 
 	// Create GLFW window with OpenGL context
 	Window::create();
-	
+
 	// Print debug information about the system
 	Log::print(String::format("Vendor: %s", glGetString(GL_VENDOR)), DEBUG);
 	Log::print(String::format("GPU: %s", glGetString(GL_RENDERER)), DEBUG);
@@ -114,106 +117,89 @@ namespace Game {
 
     void gameLoop() {
 
-	// Run the game as long as the window does not have to be closed
-	while (!Window::shouldClose()) {
-	    
-	    // Run the control function every second
-	    if (glfwGetTime() - lastTick > 1) {
+	std::thread tAudio(audio);
 
-		control();
-	    }
+	while(!Window::shouldClose()) {
 
-	    // Run a tick every 1/TPS seconds
-	    for (double delta = glfwGetTime() - lastTick; delta > FT*ticks; delta -= FT) {
-
-		tick();
-	    }
-
-	    // Start frametime timer
-	    double timerStart = glfwGetTime();
-
-	    // Render frame
+	    tick();
 	    render();
-
-	    // Calculate frametime
-	    double time = glfwGetTime() - timerStart;
-
-	    // Set min and max frametimes
-	    if (time > maxFT) {
-		maxFT = time;
-	    }
-	    if (time < minFT) {
-		minFT = time;
-	    }
-
-	    // Poll the game window
-	    Window::poll();
 	}
+
+	tAudio.join();
     }
 
-    void control() {
+    void audio() {
 
-	// Reset variables used to check game performance
-	actualTPS = ticks;
-	actualFPS = frames;
-	minFT     = 10;
-	avgFT     = 1.0f/frames;
-	maxFT     = 0;
-	ticks     = 0;
-	frames    = 0;
+	while(!Window::shouldClose()) {
 
-#if DEBUG_MODE && __linux__
-	// Check the memory usage of the game
-	look_up_our_self(&proc);
-	vsize = proc.vsize / 1000000;
-#endif
-
-	// Set lastTick to current time
-	lastTick = glfwGetTime();
+	    // Update audio manager
+	    Audio::tick();
+	}
     }
 
     void tick() {
 
-	// Update audio manager
-	Audio::tick();
+	// Run a tick every 1/TPS seconds
+	for (double delta = glfwGetTime() - lastTick; delta > FT*ticks; delta -= FT) {
 
-	// If the game is not paused execute the game logic
-	if (!paused) {
+	    // If the game is not paused execute the game logic
+	    if (!paused) {
 
-	    Level::tick();
-	}
+		Level::tick();
+	    }
 
-	// If the pause key is pressed toggle the paused state
-	if (Input::isPressed(Key::PAUSE)) {
+	    // If the pause key is pressed toggle the paused state
+	    if (Input::isPressed(Key::PAUSE)) {
 
-	    Input::setState(Key::PAUSE, false);
-	    paused = !paused;
+		Input::setState(Key::PAUSE, false);
+		paused = !paused;
 
-	    Audio::test();
-	}
+		Audio::test();
+	    }
+
+	    // Increment the tick counter
+	    ticks++;
 
 #if DEBUG_MODE
-	// If the debug key is pressed toggle the debug window
-	if (Input::isPressed(Key::DEBUG)) {
+	    // If the debug key is pressed toggle the debug window
+	    if (Input::isPressed(Key::DEBUG)) {
 
-	    Input::setState(Key::DEBUG, false);
-	    showDebug = !showDebug;
+		Input::setState(Key::DEBUG, false);
+		showDebug = !showDebug;
+	    }
+
+	    // If the console key is pressed toggle the console window
+	    if (Input::isPressed(Key::CONSOLE)) {
+
+		Input::setState(Key::CONSOLE, false);
+		showConsole = !showConsole;
+		switchInput = true;
+	    }
+#endif
 	}
 
-	// If the console key is pressed toggle the console window
-	if (Input::isPressed(Key::CONSOLE)) {
+	if (glfwGetTime() - lastTick > 1) {
 
-	    Input::setState(Key::CONSOLE, false);
-	    showConsole = !showConsole;
-	    switchInput = true;
-	}
+	    // Reset variables used to check game performance
+	    actualTPS = ticks;
+	    ticks     = 0;
+
+#if DEBUG_MODE && __linux__
+	    // Check the memory usage of the game
+	    look_up_our_self(&proc);
+	    vsize = proc.vsize / 1000000;
 #endif
 
-	// Increment the tick counter
-	ticks++;
+	    // Set lastTick to current time
+	    lastTick = glfwGetTime();
+	}
     }
 
     void render() {
+
+	// Start frametime timer
+	double timerStart = glfwGetTime();
+
 	// Clear the current buffer
 	Render::clear();
 
@@ -232,15 +218,42 @@ namespace Game {
 
 	// Increment frame counter
 	frames++;
+
+	// Calculate frametime
+	double time = glfwGetTime() - timerStart;
+
+	// Set min and max frametimes
+	if (time > maxFT) {
+	    maxFT = time;
+	}
+	if (time < minFT) {
+	    minFT = time;
+	}
+
+	// Poll the game window
+	Window::poll();
+
+	if (glfwGetTime() - lastFrame > 1) {
+
+	    // Reset variables used to check game performance
+	    actualFPS = frames;
+	    minFT     = 10;
+	    avgFT     = 1.0f/frames;
+	    maxFT     = 0;
+	    frames    = 0;
+
+	    // Set lastTick to current time
+	    lastFrame = glfwGetTime();
+	}
     }
 
 #if DEBUG_MODE
     void renderDebug() {
-	
+
 	// create variables used to display frametime graph
 	static ImVector<float> values;
 	static int values_offset = 0;
-	
+
 	// If values is empty fill it with zeroes
 	if (values.empty()) {
 
@@ -264,7 +277,7 @@ namespace Game {
 
 	    // Begin a new ImGui window
 	    ImGui::Begin("Debug infomation", &showDebug, ImVec2(0,0), 0.3f, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_NoInputs);
-	    
+
 	    // Display fps and tps information
 	    ImGui::Text("FPS: %i, TPS: %i", actualFPS, actualTPS);
 
@@ -295,7 +308,7 @@ namespace Game {
 	    // End ImGui window
 	    ImGui::End();
 	}
-	
+
 	// Check if the console window needs to be displayed
 	if (showConsole) {
 

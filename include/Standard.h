@@ -29,6 +29,7 @@
 #include <array>
 #include <cassert>
 #include <type_traits>
+#include <thread>
 
 #if DEBUG_MODE && __linux__
 #include <proc/readproc.h>
