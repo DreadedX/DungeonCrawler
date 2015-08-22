@@ -154,6 +154,8 @@ namespace Render {
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, tileUVBuffer);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+#else
+	glEnable(GL_TEXTURE_2D);
 #endif
     }
 
@@ -177,7 +179,6 @@ namespace Render {
 
 	glDrawArrays(GL_TRIANGLES, 0, 2*3);
 #else
-	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glBegin(GL_QUADS);
 	    glTexCoord2f(0, 0);
@@ -192,7 +193,6 @@ namespace Render {
 	    glTexCoord2f(0, 1);
 	    glVertex3f(position.x, position.y+1.0f, 0);
 	glEnd();
-	glDisable(GL_TEXTURE_2D);
 #endif
     }
 
@@ -201,6 +201,8 @@ namespace Render {
 #if not LEGACY
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+#else
+	glDisable(GL_TEXTURE_2D);
 #endif
     }
 

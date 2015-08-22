@@ -89,7 +89,6 @@ namespace Level {
     void render() {
 
 	Render::startTile();
-
 #if not LEGACY
 	for (int y = (int)levelSize.y-1; y >= 0; y--) {
 
@@ -97,9 +96,9 @@ namespace Level {
 #else 
 #define VIEW_DISTANCE_Y HEIGHT/14
 #define VIEW_DISTANCE_X WIDTH/12
-	for (int y = min((int)(Render::getPosition().y)+VIEW_DISTANCE_Y, (int)levelSize.y-1); y >= max((int)(Render::getPosition().y)-VIEW_DISTANCE_Y, 0); y--) {
+	for (int y = glm::min((int)(Render::getPosition().y)+VIEW_DISTANCE_Y, (int)levelSize.y-1); y >= glm::max((int)(Render::getPosition().y)-VIEW_DISTANCE_Y, 0); y--) {
 
-	    for (int x = max((int)Render::getPosition().x-VIEW_DISTANCE_X, 0); x < min((int)Render::getPosition().x+VIEW_DISTANCE_X, (int)levelSize.x); x++) {
+	    for (int x = glm::max((int)Render::getPosition().x-VIEW_DISTANCE_X, 0); x < glm::min((int)Render::getPosition().x+VIEW_DISTANCE_X, (int)levelSize.x); x++) {
 #endif
 		// Create location vector
 		glm::vec4 position = glm::vec4 (x, y, 0, 1);
