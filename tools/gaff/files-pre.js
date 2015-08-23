@@ -2,11 +2,14 @@
 fs = require('fs');
 
 // Types
-var TYPE_UNDEF = 0x00;
-var TYPE_TILE = 0x01;
-var TYPE_SOLID = 0x02;
-var TYPE_ENTITY = 0x04;
-var TYPE_SHADER = 0x08;
+var TYPE_UNDEF = 0;
+var TYPE_TILE = 1;
+var TYPE_SOLID = 2;
+var TYPE_ENTITY = 4;
+var TYPE_FONT = 8;
+var TYPE_SHADER = 16;
+var TYPE_CONFIG = 32;
+var TYPE_AUDIO = 64;
 
 // File types
 var FILE_TYPE_FILE = 0x00;
@@ -46,14 +49,22 @@ var data = { "data": [
     file("in/entity/player/class/mage.png", TYPE_ENTITY),
     file("in/entity/enemy.png", TYPE_ENTITY),
 
+    // Font
+    file("in/font/aesymatt.ttf", TYPE_FONT),
+
     // Shaders
     file("in/shader/tile.vsh", TYPE_SHADER),
     file("in/shader/tile.fsh", TYPE_SHADER),
     file("in/shader/entity.vsh", TYPE_SHADER),
     file("in/shader/entity.fsh", TYPE_SHADER),
+    file("in/shader/text.vsh", TYPE_SHADER),
+    file("in/shader/text.fsh", TYPE_SHADER),
 
     // JSON config files
-    file("in/config/items.json"),
+    file("in/config/items.json", TYPE_CONFIG),
+
+    // Audio
+    file("in/audio/jump.wav", TYPE_AUDIO)
 
 ]};
 

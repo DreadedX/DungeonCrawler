@@ -1,78 +1,73 @@
 # include "Standard.h"
 
-namespace Shader {
+GLuint compileShader(std::string name, GLenum shaderType) {
 
-    GLuint compileShader(std::string name, GLenum shaderType);
+    // TODO: Make the max size automatically adjust depending on the size of the shader
+    // Create buffer for reading shader
+    byte buffer[1000] = {0x00};
 
-    GLuint load(const char *nameVert, const char *nameFrag) {
+    // Get the file id of the requested shader and read it
+    int id = Reader::getId(name);
+    Reader::read(id, buffer);
 
-	// Compile the shaders
-	GLuint vertexShader = compileShader(nameVert, GL_VERTEX_SHADER);
-	GLuint fragmentShader = compileShader(nameFrag, GL_FRAGMENT_SHADER);
+    // Turn the byte array into a char array
+    const char *src = (const char*)buffer;
 
-	// Create new shader program
-	GLuint shaderProgram = glCreateProgram();
+    //Create a new shader
+    GLuint shader = glCreateShader(shaderType);
 
-	// Attacht the shaders to the program
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
+    // Set the shader source and compile
+    glShaderSource(shader, 1, &src, NULL);
+    glCompileShader(shader);
 
-	// Delete the individual shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+    // Check the compile status of the shader
+    GLint status = 0;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 
-	// Link the shader program
-	glLinkProgram(shaderProgram);
+    // If the compile failed
+    if (!status) {
 
-	// Print debug message
-	Log::print(String::format("Compiled shader: %s, %s", nameVert, nameFrag), DEBUG);
+	// Print that an error has occured
+	Log::print(String::format("Shader (%s) compilation failed with message:", name.c_str()), ERROR);
 
-	// Return the id of the shader program
-	return shaderProgram;
+	// Read the error message
+	std::vector<char> compilation_log(512);
+	glGetShaderInfoLog(shader, compilation_log.size(), NULL, &compilation_log[0]);
+
+	// Print the error message
+	Log::print(String::format("%s", &compilation_log[0]), ERROR);
+
+	// End game
+	Game::stop(ERROR_SHADER_COMPILE);
     }
 
-    GLuint compileShader(std::string name, GLenum shaderType) {
+    // Return shader id
+    return shader;
+}
 
-	// TODO: Make the max size automatically adjust depending on the size of the shader
-	// Create buffer for reading shader
-	byte buffer[1000] = {0x00};
+GLuint Shader::load(const char *nameVert, const char *nameFrag) {
 
-	// Get the file id of the requested shader and read it
-	int id = IO::Reader::getId(name);
-	IO::Reader::read(id, buffer);
+    // Compile the shaders
+    GLuint vertexShader = compileShader(nameVert, GL_VERTEX_SHADER);
+    GLuint fragmentShader = compileShader(nameFrag, GL_FRAGMENT_SHADER);
 
-	// Turn the byte array into a char array
-	const char *src = (const char*)buffer;
+    // Create new shader program
+    GLuint shaderProgram = glCreateProgram();
 
-	//Create a new shader
-	GLuint shader = glCreateShader(shaderType);
+    // Attacht the shaders to the program
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
 
-	// Set the shader source and compile
-	glShaderSource(shader, 1, &src, NULL);
-	glCompileShader(shader);
+    // Delete the individual shaders
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
-	// Check the compile status of the shader
-	GLint status = 0;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+    // Link the shader program
+    glLinkProgram(shaderProgram);
 
-	// If the compile failed
-	if (!status) {
+    // Print debug message
+    Log::print(String::format("Compiled shader: %s, %s", nameVert, nameFrag), DEBUG);
 
-	    // Print that an error has occured
-	    Log::print(String::format("Shader (%s) compilation failed with message:", name.c_str()), ERROR);
-
-	    // Read the error message
-	    std::vector<char> compilation_log(512);
-	    glGetShaderInfoLog(shader, compilation_log.size(), NULL, &compilation_log[0]);
-
-	    // Print the error message
-	    Log::print(String::format("%s", &compilation_log[0]), ERROR);
-
-	    // End game
-	    Game::stop(ERROR_SHADER_COMPILE);
-	}
-
-	// Return shader id
-	return shader;
-    }
+    // Return the id of the shader program
+    return shaderProgram;
 }

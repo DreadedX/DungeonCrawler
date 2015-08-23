@@ -1,6 +1,7 @@
 #if DEBUG_MODE
 # include "Standard.h"
 
+// NOTE; This is not my code, I have know idea how it works...
 namespace Console {
 
     static int ImStricmp(const char* str1, const char* str2);

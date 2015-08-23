@@ -30,6 +30,7 @@
 #include <cassert>
 #include <type_traits>
 #include <thread>
+#include <map>
 
 #if DEBUG_MODE && __linux__
 #include <proc/readproc.h>

@@ -172,12 +172,12 @@ TextureComponent::TextureComponent(std::string mTex, glm::vec4 mScale) {
 
 InventoryComponent::InventoryComponent() {
 
-    static int itemsID = IO::Reader::getId("config/items");
+    static int itemsID = Reader::getId("config/items");
     static byte json[1000] = {0x00};
     static rapidjson::Document d;
 
     if (json[0] == 0x00) {
-	IO::Reader::read(itemsID, json);
+	Reader::read(itemsID, json);
     
 	d.Parse(reinterpret_cast<char const*>(json));
 
@@ -204,7 +204,7 @@ bool InventoryComponent::addItem() {
 //     inventory[slot] = nullptr;
 //     inventory[slot] = new Item;
 // }
-//
+
 void InventoryComponent::listInventory() {
 
     Log::print("----Inventory----", DEBUG);

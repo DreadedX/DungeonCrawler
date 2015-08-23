@@ -7,33 +7,34 @@ namespace BlueprintGenerator {
 
     uint getTile(int type);
 
-    enum {
-	tileUnused = 0,
+};
 
-	tileFloor,
-	tileFilled,
+enum {
+    tileUnused = 0,
 
-	tileStairLeft,
-	tileStairRight,
+    tileFloor,
+    tileFilled,
 
-	tileWallTopLeft,
-	tileWallTopRight,
-	tileWallTopCenter,
+    tileStairLeft,
+    tileStairRight,
 
-	tileWallBottomLeft,
-	tileWallBottomRight,
-	tileWallBottomCenter,
+    tileWallTopLeft,
+    tileWallTopRight,
+    tileWallTopCenter,
 
-	tileWallLeftCenter,
-	tileWallRightCenter,
+    tileWallBottomLeft,
+    tileWallBottomRight,
+    tileWallBottomCenter,
 
-	tileWallBottomLeftInner,
-	tileWallBottomRightInner,
-	tileWallTopLeftInner,
-	tileWallTopRightInner,
+    tileWallLeftCenter,
+    tileWallRightCenter,
 
-	tileWallSide
-    };
+    tileWallBottomLeftInner,
+    tileWallBottomRightInner,
+    tileWallTopLeftInner,
+    tileWallTopRightInner,
+
+    tileWallSide
 };
 
 #endif

@@ -4,7 +4,7 @@
 namespace Text {
 
     void init();
-    void render();
+    void render(std::string text, glm::ivec4 position, GLfloat scale, glm::vec4 color);
 }
 
 #endif

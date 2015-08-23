@@ -1,17 +1,146 @@
 # include "Standard.h"
 
-namespace Text {
+struct Character {
+    GLuint tex;
+    glm::ivec2 size;
+    glm::ivec2 bearing;
+    GLuint advance;
+};
 
-    void init() {
+GLuint vao;
+GLuint vbo;
 
-	FT_Library ft;
-	if(FT_Init_FreeType(&ft)) {
+GLuint textProgramID;
 
-	    Log::print("Could not load FreeType library", ERROR);
-	    Game::stop(ERROR_FT);
+std::map<GLchar, Character> characters;
+
+void Text::init() {
+
+    #if not LEGACY
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glDisableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    textProgramID = Shader::load("shader/text_vert", "shader/text_frag");
+
+    glm::mat4 projectionMatrix = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
+    glUseProgram(textProgramID);
+    glUniformMatrix4fv(glGetUniformLocation(textProgramID, "projection"), 1, GL_FALSE, &projectionMatrix[0][0]);
+
+    FT_Library ft;
+    if(FT_Init_FreeType(&ft)) {
+
+	Log::print("Could not load FreeType library", ERROR);
+	Game::stop(ERROR_FT);
+    }
+
+    FT_Face face;
+    if(FT_New_Face(ft, "fonts/aesymatt.ttf", 0, &face)) {
+
+	Log::print("Could not load font", ERROR);
+	Game::stop(ERROR_FONT);
+    }
+
+    FT_Set_Pixel_Sizes(face, 0, 48);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+    for (GLubyte c = 0; c< 128; c++) {
+
+	if(FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+
+	    Log::print("Could not load glyph", ERROR);
+	    continue;
 	}
+
+	GLuint tex;
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glTexImage2D(
+		GL_TEXTURE_2D,
+		0,
+		GL_RED,
+		face->glyph->bitmap.width,
+		face->glyph->bitmap.rows,
+		0,
+		GL_RED,
+		GL_UNSIGNED_BYTE,
+		face->glyph->bitmap.buffer
+		);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	Character character = {
+	    tex,
+	    glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+	    glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+	    (GLuint)face->glyph->advance.x
+	};
+	characters.insert(std::pair<GLchar, Character>(c, character));
+
+	Log::print(String::format("tex: %i, sizew: %i, sizeh: %i, bearingl: %i, bearingt: %i, advance: %i", tex, character.size.x, character.size.y, character.bearing.x, character.bearing.y, (character.advance >> 6)), DEBUG);
     }
 
-    void render() {
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
+    #endif
+}
+
+void Text::render(std::string text, glm::ivec4 position, GLfloat scale, glm::vec4 color) {
+
+    #if not LEGACY
+    // TODO: Make the shader use MVP matrix, currently nothing shows up on screen (?)
+    glUseProgram(textProgramID);
+    glUniform4f(glGetUniformLocation(textProgramID, "textColor"), color.x, color.y, color.z, color.w);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(vao);
+
+    std::string::const_iterator c;
+    for (c = text.begin(); c != text.end(); c++) {
+
+	Character ch = characters[*c];
+
+	GLfloat xpos = position.x + ch.bearing.x * scale;
+	GLfloat ypos = position.y - (ch.size.y - ch.bearing.y) * scale;
+
+	GLfloat w = ch.size.x * scale;
+	GLfloat h = ch.size.y * scale;
+
+	GLfloat vertices[6][4] = {
+	    {xpos, ypos + h, 0.0, 0.0},
+	    {xpos, ypos, 0.0, 1.0},
+	    {xpos + w, ypos, 1.0, 1.0},
+
+	    {xpos, ypos + h, 0.0, 0.0},
+	    {xpos + w, ypos, 1.0, 1.0},
+	    {xpos + w, ypos + h, 1.0, 0.0}
+	};
+
+	// Render::startTile();
+	// Render::tile(glm::vec4(xpos, ypos, 0.0f, 1.0f), ch.tex);
+	// Render::endTile();
+
+	glBindTexture(GL_TEXTURE_2D, ch.tex);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glEnableVertexAttribArray(0);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	position.x += (ch.advance >> 6) * scale;
     }
+    glBindVertexArray(0);
+    #endif
 }

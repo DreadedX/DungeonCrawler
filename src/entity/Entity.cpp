@@ -8,6 +8,7 @@ void Entity::tick() {
 	c->tick();
     }
 }
+
 void Entity::render() {
 
     for (auto& c : components) {

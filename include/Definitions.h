@@ -51,12 +51,16 @@ const char NAME[] = "Dungeon Crawler";
 const glm::mat4 IDENTITY = glm::mat4(1.0f);
 #endif
 
+// TODO: Look at this
 // File types
-const byte TYPE_UNDEF = 0x00;
-const byte TYPE_TILE = 0x01;
-const byte TYPE_SOLID = 0x02;
-const byte TYPE_ENTITY = 0x04;
-const byte TYPE_SHADER = 0x08;
+const byte TYPE_UNDEF = 0;
+const byte TYPE_TILE = 1;
+const byte TYPE_SOLID = 2;
+const byte TYPE_ENTITY = 4;
+const byte TYPE_FONT = 8;
+const byte TYPE_SHADER = 16;
+const byte TYPE_CONFIG = 32;
+const byte TYPE_AUDIO = 64;
 
 // Log types
 const int DEBUG = 0x00;
@@ -74,7 +78,9 @@ enum {
     ERROR_SHADER_COMPILE,
     ERROR_ZLIB,
     ERROR_FRAMEBUFFER,
-    ERROR_FT
+    ERROR_FT,
+    ERROR_FONT,
+    ERROR_GLYPH
 };
 
 enum {

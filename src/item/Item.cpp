@@ -3,12 +3,12 @@
 ItemComponent::ItemComponent(int id) {
 
     // TODO: Move this into a seperate function
-    static int itemsID = IO::Reader::getId("config/items");
+    static int itemsID = Reader::getId("config/items");
     static byte json[1000] = {0x00};
     static rapidjson::Document d;
 
     if (json[0] == 0x00) {
-	IO::Reader::read(itemsID, json);
+	Reader::read(itemsID, json);
 
 	d.Parse(reinterpret_cast<char const*>(json));
     }
@@ -24,12 +24,12 @@ ItemComponent::ItemComponent(int id) {
 ModifierItemComponent::ModifierItemComponent(int id) {
 
     // TODO: Move this into a seperate function
-    static int itemsID = IO::Reader::getId("config/items");
+    static int itemsID = Reader::getId("config/items");
     static byte json[1000] = {0x00};
     static rapidjson::Document d;
 
     if (json[0] == 0x00) {
-	IO::Reader::read(itemsID, json);
+	Reader::read(itemsID, json);
     
 	d.Parse(reinterpret_cast<char const*>(json));
     }

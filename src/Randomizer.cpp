@@ -1,16 +1,13 @@
 # include "Standard.h"
 
-namespace Randomizer {
+int Randomizer::random(long *seed) {
 
-    int random(long *seed) {
+    *seed = (*seed * 32719 + 3) % 32749;
 
-	*seed = (*seed * 32719 + 3) % 32749;
+    return *seed + 1;
+}
 
-	return *seed + 1;
-    }
+int Randomizer::random(int max, long *seed) {
 
-    int random(int max, long *seed) {
-
-	return ((random(seed)-1) % max) + 1;
-    }
-};
+    return ((random(seed)-1) % max) + 1;
+}
