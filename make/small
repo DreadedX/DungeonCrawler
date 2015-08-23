@@ -1,0 +1,9 @@
+TPS = 60
+SCALE = 1
+SWAP = 0
+PRINT_TO_TERMINAL = true
+LEGACY = false
+
+COMPILE_FLAGS_EXTRA =
+
+include make/base
