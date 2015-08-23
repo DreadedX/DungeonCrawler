@@ -3,7 +3,7 @@
 
 namespace Text {
 
-    void init();
+    void init(std::string fontName);
     void render(std::string text, glm::ivec4 position, GLfloat scale, glm::vec4 color);
 }
 

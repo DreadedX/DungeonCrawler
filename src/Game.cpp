@@ -82,7 +82,7 @@ void init() {
     Audio::init();
 
     // Initialize text system
-    Text::init();
+    Text::init("font/aesymatt");
 }
 
 void end() {
@@ -207,7 +207,7 @@ void render() {
     Level::render();
 
     // Text::render("Hello world", glm::ivec4(25.0f, 25.0f, 0, 1), 1, glm::ivec4(1, 1, 1, 1));
-    Text::render("Hello world! This is a demo text", glm::ivec4(1.0f, 3.0f, 0, 1), 0.25f, glm::ivec4(1, 1, 1, 1));
+    Text::render("Hello world! This is a demo text", glm::ivec4(1.0f, 3.0f, 0, 1), 0.5f, glm::ivec4(1, 1, 1, 1));
     
     // static int i = 0;
     // if (i == 10) {

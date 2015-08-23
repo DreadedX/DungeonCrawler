@@ -19,5 +19,7 @@
 (C) Multi-threading +Improve
 (C) Store maze piece blueprints in gaff file +Improve
 (Z) ------------------ +Improve
+(A) Make windows build work +Project
+(Z) ------------------ +Project
 (A) Create system for vim to detect on which system I am running in order to select correct makefile config +Workflow
 (Z) ------------------ +Workflow

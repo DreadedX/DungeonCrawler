@@ -14,7 +14,7 @@ GLuint textProgramID;
 
 std::map<GLchar, Character> characters;
 
-void Text::init() {
+void Text::init(std::string fontName) {
 
     #if not LEGACY
     glGenVertexArrays(1, &vao);
@@ -42,13 +42,15 @@ void Text::init() {
     }
 
     FT_Face face;
-    if(FT_New_Face(ft, "fonts/aesymatt.ttf", 0, &face)) {
+    // TODO: Load the font from the gaff file
+    Log::print(String::format("%s.ttf", fontName.c_str()).c_str(), DEBUG);
+    if(FT_New_Face(ft, String::format("%s.ttf", fontName.c_str()).c_str(), 0, &face)) {
 
 	Log::print("Could not load font", ERROR);
 	Game::stop(ERROR_FONT);
     }
 
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, 40);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -76,8 +78,8 @@ void Text::init() {
 		);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	Character character = {
 	    tex,
