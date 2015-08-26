@@ -5,6 +5,7 @@
 (B) Implement audio +Feature
 (B) Implement lighting +Feature
 (B) Store tile type in gaff, for automated blueprint to tilemap system +Feature
+(B) Merge String::format into Log::print
 (C) Implement loading screen +Feature
 (C) Implement particle system +Feature
 (C) Make actual enemies +Feature
@@ -20,6 +21,10 @@
 (C) Store maze piece blueprints in gaff file +Improve
 (Z) ------------------ +Improve
 (A) Make windows build work +Project
+(A) Make all code consistent +Project
+(A) Improve function names +Project
+(A) Make sure that variables are accessed trough setters and getters and not directly
+(A) Make variables public/protected/private
 (Z) ------------------ +Project
 (A) Create system for vim to detect on which system I am running in order to select correct makefile config +Workflow
 (Z) ------------------ +Workflow

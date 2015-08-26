@@ -31,14 +31,12 @@ void Camera::tick() {
 #endif
 
     // NOTE: This is only here for testing puposes
-    // Zoom in when Q is pressed
-    if(Input::isPressed(GLFW_KEY_Q)) {
+    if(Input::isPressed(Key::DEBUG_ZOOM_IN)) {
 
 	toMove.z -= 1.0f * VT;
     }
 
-    // Zoom out when E is pressed
-    if(Input::isPressed(GLFW_KEY_E)) {
+    if(Input::isPressed(Key::DEBUG_ZOOM_OUT)) {
 
 	toMove.z += 1.0f * VT;
     }

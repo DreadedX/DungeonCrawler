@@ -146,6 +146,8 @@ void tick() {
 	    Level::tick();
 	}
 
+	Gui::tick();
+
 	// If the pause key is pressed toggle the paused state
 	if (Input::isPressed(Key::PAUSE)) {
 
@@ -161,18 +163,24 @@ void tick() {
 
 	#if DEBUG_MODE
 	// If the debug key is pressed toggle the debug window
-	if (Input::isPressed(Key::DEBUG)) {
+	if (Input::isPressed(Key::DEBUG_INFO)) {
 
-	    Input::setState(Key::DEBUG, false);
+	    Input::setState(Key::DEBUG_INFO, false);
 	    showDebug = !showDebug;
 	}
 
 	// If the console key is pressed toggle the console window
-	if (Input::isPressed(Key::CONSOLE)) {
+	if (Input::isPressed(Key::DEBUG_CONSOLE)) {
 
-	    Input::setState(Key::CONSOLE, false);
+	    Input::setState(Key::DEBUG_CONSOLE, false);
 	    showConsole = !showConsole;
 	    switchInput = true;
+	}
+
+	if (Input::isPressed(Key::DEBUG_ITEM)) {
+
+	    Input::setState(Key::DEBUG_ITEM, false);
+	    Level::getPlayer()->getComponent<InventoryComponent>().addItem();
 	}
 	#endif
     }
@@ -206,8 +214,7 @@ void render() {
     // Render the level
     Level::render();
 
-    // Text::render("Hello world", glm::ivec4(25.0f, 25.0f, 0, 1), 1, glm::ivec4(1, 1, 1, 1));
-    Text::render("Hello world! This is a demo text", glm::ivec4(1.0f, 3.0f, 0, 1), 0.5f, glm::ivec4(1, 1, 1, 1));
+    Gui::render();
     
     // static int i = 0;
     // if (i == 10) {

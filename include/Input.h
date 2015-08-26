@@ -20,9 +20,17 @@ namespace Key {
     // const int DASH = GLFW_KEY_W;
     const int PAUSE = GLFW_KEY_ESCAPE;
 
+    const int DEBUG_ZOOM_IN = GLFW_KEY_Q;
+    const int DEBUG_ZOOM_OUT = GLFW_KEY_E;
+    const int DEBUG_NEW_LEVEL = GLFW_KEY_R;
+
 #if DEBUG_MODE
-    const int DEBUG = GLFW_KEY_F3;
-    const int CONSOLE = GLFW_KEY_F4;
+    const int DEBUG_NOCLIP = GLFW_KEY_SPACE;
+    const int DEBUG_BOOST = GLFW_KEY_LEFT_SHIFT;
+
+    const int DEBUG_INFO = GLFW_KEY_F3;
+    const int DEBUG_CONSOLE = GLFW_KEY_F4;
+    const int DEBUG_ITEM = GLFW_KEY_I;
 #endif
 };
 

@@ -14,6 +14,8 @@ GLuint textProgramID;
 
 std::map<GLchar, Character> characters;
 
+std::vector<Text::TextObject*> textObjects;
+
 void Text::init(std::string fontName) {
 
     #if not LEGACY
@@ -97,52 +99,98 @@ void Text::init(std::string fontName) {
     #endif
 }
 
-void Text::render(std::string text, glm::ivec4 position, GLfloat scale, glm::vec4 color) {
+// TODO: This needs to retrun some kind of identifier, so that it can be removed from the array later on
+Text::TextObject *Text::add(std::string mText, glm::ivec4 mPosition, GLfloat mScale, glm::vec4 mColor, float mSpeed = 0.0f) {
+
+    TextObject *textObject = new TextObject{mText, mPosition, mScale, mColor, mSpeed};
+
+    if (mSpeed == 0) {
+
+	textObject->charIndex = mText.length();
+	textObject->speed = 0;
+    }
+    
+    textObjects.push_back(textObject);
+
+    return textObject;
+}
+
+void Text::tick() {
+
+    for (auto& t : textObjects) {
+
+	t->charIndex += t->speed * VT;
+
+	if (!t->display) {
+
+	    // TODO: Make this free memory, currently causes SIGSEGV
+	    // delete t;
+	    t = nullptr;
+	}
+    }
+
+    textObjects.erase(
+	    std::remove_if(std::begin(textObjects), std::end(textObjects),
+		[](TextObject *textObject) {
+
+		return textObject == nullptr;
+		}),
+	    std::end(textObjects));
+}
+
+void Text::render() {
 
     #if not LEGACY
-    // TODO: Make the shader use MVP matrix, currently nothing shows up on screen (?)
-    glUseProgram(textProgramID);
-    glUniform4f(glGetUniformLocation(textProgramID, "textColor"), color.x, color.y, color.z, color.w);
-    glActiveTexture(GL_TEXTURE0);
-    glBindVertexArray(vao);
+    for (auto& t : textObjects) {
 
-    std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++) {
+	std::string text = t->text.substr(0, glm::min((int)t->charIndex, (int)t->text.length()));
+	glm::ivec4 position = t->position;
+	float scale = t->scale;
+	glm::vec4 color = t->color;
+	
+	glUseProgram(textProgramID);
+	glUniform4f(glGetUniformLocation(textProgramID, "textColor"), color.x, color.y, color.z, color.w);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(vao);
 
-	Character ch = characters[*c];
+	std::string::const_iterator c;
+	for (c = text.begin(); c != text.end(); c++) {
 
-	GLfloat xpos = position.x + ch.bearing.x * scale;
-	GLfloat ypos = position.y - (ch.size.y - ch.bearing.y) * scale;
+	    Character ch = characters[*c];
 
-	GLfloat w = ch.size.x * scale;
-	GLfloat h = ch.size.y * scale;
+	    GLfloat xpos = position.x + ch.bearing.x * scale;
+	    GLfloat ypos = position.y - (ch.size.y - ch.bearing.y) * scale;
 
-	GLfloat vertices[6][4] = {
-	    {xpos, ypos + h, 0.0, 0.0},
-	    {xpos, ypos, 0.0, 1.0},
-	    {xpos + w, ypos, 1.0, 1.0},
+	    GLfloat w = ch.size.x * scale;
+	    GLfloat h = ch.size.y * scale;
 
-	    {xpos, ypos + h, 0.0, 0.0},
-	    {xpos + w, ypos, 1.0, 1.0},
-	    {xpos + w, ypos + h, 1.0, 0.0}
-	};
+	    GLfloat vertices[6][4] = {
+		{xpos, ypos + h, 0.0, 0.0},
+		{xpos, ypos, 0.0, 1.0},
+		{xpos + w, ypos, 1.0, 1.0},
 
-	// Render::startTile();
-	// Render::tile(glm::vec4(xpos, ypos, 0.0f, 1.0f), ch.tex);
-	// Render::endTile();
+		{xpos, ypos + h, 0.0, 0.0},
+		{xpos + w, ypos, 1.0, 1.0},
+		{xpos + w, ypos + h, 1.0, 0.0}
+	    };
 
-	glBindTexture(GL_TEXTURE_2D, ch.tex);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glEnableVertexAttribArray(0);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	    // Render::startTile();
+	    // Render::tile(glm::vec4(xpos, ypos, 0.0f, 1.0f), ch.tex);
+	    // Render::endTile();
 
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	    glBindTexture(GL_TEXTURE_2D, ch.tex);
+	    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	    glEnableVertexAttribArray(0);
+	    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
-	glDisableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	    glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	position.x += (ch.advance >> 6) * scale;
+	    glDisableVertexAttribArray(0);
+	    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	    position.x += (ch.advance >> 6) * scale;
+	}
+	glBindVertexArray(0);
     }
-    glBindVertexArray(0);
     #endif
 }

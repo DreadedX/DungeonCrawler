@@ -136,17 +136,17 @@ void PlayerComponent::tick() {
     }
 
 #if DEBUG_MODE
-    if (Input::isPressed(GLFW_KEY_SPACE)) {
+    if (Input::isPressed(Key::DEBUG_NOCLIP)) {
 
-	Input::setState(GLFW_KEY_SPACE, false);
+	Input::setState(Key::DEBUG_NOCLIP, false);
 
 	cPhysics->hasCollision = !cPhysics->hasCollision;
 	Log::print(String::format("No clip: %i", cPhysics->hasCollision), DEBUG);
     }
 
-    if (Input::isPressed(GLFW_KEY_LEFT_SHIFT)) {
+    if (Input::isPressed(Key::DEBUG_BOOST)) {
 
-	Input::setState(GLFW_KEY_LEFT_SHIFT, false);
+	Input::setState(Key::DEBUG_BOOST, false);
 
 	static bool boost = false;
 	if (boost) {
@@ -193,6 +193,8 @@ bool InventoryComponent::addItem() {
     Entity &item = inventory.addEntity();
     item.addComponent<ItemComponent>(Randomizer::random(itemCount, &seedItem) - 1);
     item.addComponent<ModifierItemComponent>(Randomizer::random(modifierCount, &seedItem) - 1);
+
+    Gui::printLine(String::format("Picked up: %s", item.getComponent<ItemComponent>().name.c_str()));
 
     // TODO: Add inventory size checking
     return true;

@@ -84,9 +84,9 @@ void Level::tick() {
     //     entity->tick();
     // }
 
-    if (Input::isPressed(GLFW_KEY_R)) {
+    if (Input::isPressed(Key::DEBUG_NEW_LEVEL)) {
 
-	Input::setState(GLFW_KEY_R, false);
+	Input::setState(Key::DEBUG_NEW_LEVEL, false);
 
 	delete[] layout;
 	newLevel();
