@@ -19,7 +19,7 @@ void lineTick() {
 	    std::remove_if(std::begin(lines), std::end(lines),
 		[](Text::TextObject *textObject) {
 
-		return textObject == nullptr;
+		return !textObject->display;
 		}),
 	    std::end(lines));
 
@@ -40,9 +40,10 @@ void lineTick() {
 
 void Gui::tick() {
 
-    Text::tick();
-
     lineTick();
+
+    // NOTE: This needs to be called last, else it will cause nullpointers
+    Text::tick();
 }
 
 void Gui::render() {

@@ -112,14 +112,10 @@ Text::TextObject *Text::add(std::string mText, glm::ivec4 mPosition, GLfloat mSc
     
     textObjects.push_back(textObject);
 
-    Log::print("Added new text object", DEBUG);
-
     return textObject;
 }
 
 void Text::tick() {
-
-    Log::print(String::format("1: %i", textObjects.size()), DEBUG);
 
     int u = textObjects.size();
     for (int i = 0; i < u; i++) {
@@ -140,8 +136,6 @@ void Text::tick() {
 		return textObject == nullptr;
 		}),
 	    std::end(textObjects));
-
-    Log::print(String::format("2: %i", textObjects.size()), DEBUG);
 }
 
 void Text::render() {
