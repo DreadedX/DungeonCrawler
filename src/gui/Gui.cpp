@@ -1,5 +1,6 @@
 #include "Standard.h"
 
+// TODO: The pointers in this array need to be updated to where the pointers in Text.cpp are pointing to
 std::vector<Text::TextObject*> lines;
 
 void Gui::printLine(std::string mText) {
@@ -18,10 +19,11 @@ void lineTick() {
 	    std::remove_if(std::begin(lines), std::end(lines),
 		[](Text::TextObject *textObject) {
 
-		    return textObject == nullptr;
+		return textObject == nullptr;
 		}),
 	    std::end(lines));
 
+    // TODO: This causes a crash because the object is deleted, but is not set to nullptr in the array in Gui.cpp, only in Text.cpp
     for (auto& line : lines) {
 
 	if (line->charIndex >= line->text.length()+60) {

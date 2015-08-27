@@ -112,20 +112,24 @@ Text::TextObject *Text::add(std::string mText, glm::ivec4 mPosition, GLfloat mSc
     
     textObjects.push_back(textObject);
 
+    Log::print("Added new text object", DEBUG);
+
     return textObject;
 }
 
 void Text::tick() {
 
-    for (auto& t : textObjects) {
+    Log::print(String::format("1: %i", textObjects.size()), DEBUG);
 
-	t->charIndex += t->speed * VT;
+    int u = textObjects.size();
+    for (int i = 0; i < u; i++) {
 
-	if (!t->display) {
+	textObjects[i]->charIndex += textObjects[i]->speed * VT;
 
-	    // TODO: Make this free memory, currently causes SIGSEGV
-	    // delete t;
-	    t = nullptr;
+	if (!textObjects[i]->display) {
+
+	    delete textObjects[i];
+	    textObjects[i] = nullptr;
 	}
     }
 
@@ -136,6 +140,8 @@ void Text::tick() {
 		return textObject == nullptr;
 		}),
 	    std::end(textObjects));
+
+    Log::print(String::format("2: %i", textObjects.size()), DEBUG);
 }
 
 void Text::render() {
