@@ -60,9 +60,13 @@ struct TextureComponent : Component {
 
 struct InventoryComponent : Component {
 
-    Manager inventory;
+    Manager *inventory = new Manager;
 
     InventoryComponent();
+    ~InventoryComponent() {
+
+	delete inventory;
+    }
 
     int itemCount = 0;
     int modifierCount = 0;

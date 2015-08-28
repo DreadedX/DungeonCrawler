@@ -190,7 +190,7 @@ bool InventoryComponent::addItem() {
 
     static long seedItem = time(NULL);
 
-    Entity &item = inventory.addEntity();
+    Entity &item = inventory->addEntity();
     item.addComponent<ItemComponent>(Randomizer::random(itemCount, &seedItem) - 1);
     item.addComponent<ModifierItemComponent>(Randomizer::random(modifierCount, &seedItem) - 1);
 
@@ -211,7 +211,7 @@ void InventoryComponent::listInventory() {
 
     Log::print("----Inventory----", DEBUG);
 
-    for (auto& entity : inventory.getEntities()) {
+    for (auto& entity : inventory->getEntities()) {
 
 	ItemComponent item = entity->getComponent<ItemComponent>();
 
