@@ -52,6 +52,9 @@ var data = { "data": [
     // Font
     file("in/font/aesymatt.ttf", TYPE_FONT),
 
+    // GUI
+    file("in/textbox.png"),
+
     // Shaders
     file("in/shader/tile.vsh", TYPE_SHADER),
     file("in/shader/tile.fsh", TYPE_SHADER),

@@ -5,6 +5,7 @@ namespace Gui {
 
     void printLine(std::string mText);
 
+    void init();
     void tick();
     void render();
 };

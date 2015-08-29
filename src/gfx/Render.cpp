@@ -50,7 +50,7 @@ glm::mat4 projectionMatrix = glm::perspective(fov, 16.0f / 9.0f, 0.1f, 200.0f);
 // mat4 projectionMatrix = ortho(0, 2, 0, 2, -100, 100);
 glm::mat4 viewMatrix = glm::lookAt(glm::vec3(view.x, view.y, view.z), glm::vec3(view.x, view.y, view.z-1), glm::vec3(0, 1, 0));
 
-GLuint VertexArrayID;
+GLuint vertexArrayID;
 
 // Tiles
 GLuint tileVertexBuffer;
@@ -76,8 +76,8 @@ void Render::init() {
     glClearColor(33.0f/255.0f, 30.0f/255.0f, 39.0f/255.0f, 1.0f);
 
     #if not LEGACY
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
+    glGenVertexArrays(1, &vertexArrayID);
+    glBindVertexArray(vertexArrayID);
 
     // Tiles
     glGenBuffers(1, &tileVertexBuffer);
@@ -136,7 +136,7 @@ void Render::startTile() {
 
     #if not LEGACY
     glUseProgram(tileProgramID);
-    glBindVertexArray(VertexArrayID);
+    glBindVertexArray(vertexArrayID);
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, tileVertexBuffer);
@@ -201,7 +201,7 @@ void Render::startEntity() {
 
     #if not LEGACY
     glUseProgram(entityProgramID);
-    glBindVertexArray(VertexArrayID);
+    glBindVertexArray(vertexArrayID);
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, entityVertexBuffer);

@@ -81,8 +81,8 @@ void init() {
     // Initalize the audio system
     Audio::init();
 
-    // Initialize text system
-    Text::init("font/aesymatt");
+    // Initialize gui system
+    Gui::init();
 }
 
 void end() {

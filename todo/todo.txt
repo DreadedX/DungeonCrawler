@@ -26,5 +26,5 @@
 (A) Make sure that variables are accessed trough setters and getters and not directly
 (A) Make variables public/protected/private
 (Z) ------------------ +Project
-(A) Create system for vim to detect on which system I am running in order to select correct makefile config +Workflow
+x 2015-08-29 Create system for vim to detect on which system I am running in order to select correct makefile config +Workflow
 (Z) ------------------ +Workflow

@@ -138,6 +138,7 @@ void Text::tick() {
 	    std::end(textObjects));
 }
 
+// TODO: Part of this code needs to move into the renderer
 void Text::render() {
 
     #if not LEGACY
@@ -173,10 +174,6 @@ void Text::render() {
 		{xpos + w, ypos, 1.0, 1.0},
 		{xpos + w, ypos + h, 1.0, 0.0}
 	    };
-
-	    // Render::startTile();
-	    // Render::tile(glm::vec4(xpos, ypos, 0.0f, 1.0f), ch.tex);
-	    // Render::endTile();
 
 	    glBindTexture(GL_TEXTURE_2D, ch.tex);
 	    glBindBuffer(GL_ARRAY_BUFFER, vbo);
