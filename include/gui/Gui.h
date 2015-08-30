@@ -8,6 +8,7 @@ namespace Gui {
     void init();
     void tick();
     void render();
+    void end();
 };
 
 #endif

@@ -90,8 +90,6 @@ void Text::init(std::string fontName) {
 	    (GLuint)face->glyph->advance.x
 	};
 	characters.insert(std::pair<GLchar, Character>(c, character));
-
-	Log::print(String::format("tex: %i, sizew: %i, sizeh: %i, bearingl: %i, bearingt: %i, advance: %i", tex, character.size.x, character.size.y, character.bearing.x, character.bearing.y, (character.advance >> 6)), DEBUG);
     }
 
     FT_Done_Face(face);
@@ -190,4 +188,16 @@ void Text::render() {
 	glBindVertexArray(0);
     }
     #endif
+}
+
+void Text::end() {
+
+    for (auto& t : textObjects) {
+
+	if (t != nullptr) {
+
+	    delete t;
+	    t = nullptr;
+	}
+    }
 }

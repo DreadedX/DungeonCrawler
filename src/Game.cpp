@@ -33,6 +33,11 @@ inline void render();
 
 void renderDebug();
 
+void Game::setPaused(bool state) {
+
+    paused = state;
+}
+
 void Game::main() {
 
     // Initalize the game
@@ -96,18 +101,16 @@ void end() {
     #endif
     #endif
 
-    // Close the game window
-    Window::destroy();
+    Gui::end();
 
     // Deinitialize level
     Level::end();
 
     // Deinitialize the audio system
     Audio::end();
-
-    #if DEBUG_MODE
-    // stb_leakcheck_dumpmem();
-    #endif
+    
+    // Close the game window
+    Window::destroy();
 
     // Free allocated memory
     // Function does not yet exist

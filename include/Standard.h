@@ -101,6 +101,7 @@
 #include "gfx/ShaderLoader.h"
 #include "gfx/TextureLoader.h"
 #include "gui/Text.h"
+#include "gui/TextBox.h"
 #include "gui/Gui.h"
 #include "io/Reader.h"
 #include "level/LevelGenerator.h"

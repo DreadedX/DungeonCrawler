@@ -194,7 +194,8 @@ bool InventoryComponent::addItem() {
     item.addComponent<ItemComponent>(Randomizer::random(itemCount, &seedItem) - 1);
     item.addComponent<ModifierItemComponent>(Randomizer::random(modifierCount, &seedItem) - 1);
 
-    Gui::printLine(String::format("Picked up: %s", item.getComponent<ItemComponent>().name.c_str()));
+    // Gui::printLine(String::format("Picked up: %s", item.getComponent<ItemComponent>().name.c_str()));
+    TextBox::add(String::format("Picked up: %s", item.getComponent<ItemComponent>().name.c_str()));
 
     // TODO: Add inventory size checking
     return true;

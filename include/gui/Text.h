@@ -25,6 +25,7 @@ namespace Text {
     TextObject *add(std::string mText, glm::ivec4 mPosition, GLfloat mScale, glm::vec4 mColor, float mSpeed);
     void tick();
     void render();
+    void end();
 }
 
 #endif
