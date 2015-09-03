@@ -71,6 +71,7 @@ void TextBox::add(std::string text) {
 
 void TextBox::init() {
 
+    #if not LEGACY
     glGenVertexArrays(1, &guiVertexArrayID);
     glBindVertexArray(guiVertexArrayID);
 
@@ -88,6 +89,7 @@ void TextBox::init() {
     glUseProgram(textBoxProgramID);
     glm::mat4 projectionMatrix = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
     glUniformMatrix4fv(glGetUniformLocation(textBoxProgramID, "mvpMatrix"), 1, GL_FALSE, &projectionMatrix[0][0]);
+    #endif
 }
 
 void TextBox::tick() {

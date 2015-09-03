@@ -1,6 +1,7 @@
 #include "Standard.h"
 
 bool keys[1000] = {0};
+glm::vec4 mousePos = glm::vec4(0, 0, 0, 1);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -55,6 +56,11 @@ void Input::keyCallback(GLFWwindow* window, int key, int scancode, int action, i
 }
 #pragma GCC diagnostic pop
 
+void Input::mousePosCallback(GLFWwindow* window, double xPos, double yPos) {
+
+    mousePos = glm::vec4(xPos, yPos, 0, 1);
+}
+
 bool Input::isPressed(int key) {
 
     // Return the key status
@@ -66,3 +72,9 @@ void Input::setState(int key, bool state) {
     // Set the key state
     keys[key] = state;
 }
+
+glm::vec4 Input::getMousePos() {
+
+    return mousePos;
+}
+

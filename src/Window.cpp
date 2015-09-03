@@ -75,6 +75,7 @@ void glfw() {
 
     // Setup the key callback
     glfwSetKeyCallback(window, Input::keyCallback);
+    glfwSetCursorPosCallback(window, Input::mousePosCallback);
 
 #if DEBUG_MODE
 #if not LEGACY
@@ -99,22 +100,10 @@ void glfw() {
     glfwSwapInterval(SWAP);
 }
 
-void alut() {
-
-    // Initialize alut
-    alutInit(0, NULL);
-
-    // Clear the alut error buffer
-    alGetError();
-}
-
 void Window::create() {
 
     // Initalize glfw
     glfw();
-
-    // Intalize alut
-    // alut();
 }
 
 bool Window::shouldClose() {

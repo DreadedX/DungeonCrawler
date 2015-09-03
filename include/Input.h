@@ -4,10 +4,12 @@
 
 namespace Input {
 
-    void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+    void mousePosCallback(GLFWwindow *window, double xPos, double yPos);
 
     bool isPressed(int key);
     void setState(int key, bool state);
+    glm::vec4 getMousePos();
 };
 
 namespace Key {
