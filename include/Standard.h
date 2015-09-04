@@ -84,6 +84,7 @@
 
 #include "util/Log.h"
 #include "util/String.h"
+#include "util/Math.h"
 
 #include "entity/Entity.h"
 #include "item/Item.h"

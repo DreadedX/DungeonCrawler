@@ -310,8 +310,9 @@ void renderDebug() {
 
 	Render::entity(glm::vec4(Input::getMousePos().x/WIDTH, Input::getMousePos().y/HEIGHT, 0, 0), glm::vec4(1, 1, 1, 0), 1);
 
-	Log::print(String::format("%f, %f", (Input::getMousePos().x*2/WIDTH)-1, (Input::getMousePos().y*2/HEIGHT)-1), DEBUG);
-	Log::print(String::format("%f", atan(Input::getMousePos().y / Input::getMousePos().x)), DEBUG);
+	Log::print(String::format("%f, %f", (Input::getMousePos().x), (Input::getMousePos().y)), DEBUG);
+
+	Log::print(String::format("%f", Math::pointAngle(glm::vec4(WIDTH/2, HEIGHT/2, 0, 1), Input::getMousePos())), DEBUG);
 
 	Render::endEntity();
 
