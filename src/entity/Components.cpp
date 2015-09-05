@@ -1,5 +1,4 @@
 # include "Standard.h"
-
 PositionComponent::PositionComponent(glm::vec4 mPosition) {
 
     position = mPosition;
@@ -105,6 +104,29 @@ void PhysicsComponent::tick() {
     velocity = friction * velocity;
 }
 
+ProjectileComponent::ProjectileComponent(glm::vec4 mVelocity) {
+
+    velocity = mVelocity;
+}
+
+void ProjectileComponent::init() {
+
+    cPosition = &entity->getComponent<PositionComponent>();
+}
+
+void ProjectileComponent::tick() {
+
+    glm::mat4 move = glm::translate(IDENTITY, glm::vec3(velocity.x, velocity.y, velocity.z));
+
+    cPosition->position = move * cPosition->position;
+    
+    life--;
+    if (life <= 0) {
+
+	entity->destroy();
+    }
+}
+
 void PlayerComponent::init() {
 
     cPhysics = &entity->getComponent<PhysicsComponent>();
@@ -133,6 +155,16 @@ void PlayerComponent::tick() {
     if (Input::isPressed(Key::RIGHT)) {
 
 	cPhysics->velocity.x += acceleration;
+    }
+
+    if (Input::isPressed(GLFW_MOUSE_BUTTON_LEFT)) {
+
+	Input::setState(GLFW_MOUSE_BUTTON_LEFT, false);
+	auto& projectile = Level::spawn();
+	projectile.addComponent<PositionComponent>(cPhysics->cPosition->position);
+	projectile.addComponent<TextureComponent>("entity/player/class/mage", glm::vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
+	float angle = Math::pointAngle(glm::vec4(WIDTH*SCALE/2, HEIGHT*SCALE/2, 0, 1), Input::getMousePos());
+	projectile.addComponent<ProjectileComponent>(glm::vec4(1.5 * cos(angle), 1.5 * sin(angle), 0, 0));
     }
 
 #if DEBUG_MODE

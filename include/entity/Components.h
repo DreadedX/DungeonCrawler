@@ -45,6 +45,19 @@ struct PhysicsComponent : Component {
     }
 };
 
+struct ProjectileComponent : Component {
+
+    PositionComponent *cPosition = nullptr;
+
+    glm::vec4 velocity;
+    int life = 60;
+
+    ProjectileComponent(glm::vec4 mVelocity);
+
+    void init() override;
+    void tick() override;
+};
+
 struct TextureComponent : Component {
 
     PositionComponent *cPosition = nullptr;

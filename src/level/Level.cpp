@@ -73,6 +73,11 @@ void Level::init() {
     // Initialize all entities
 }
 
+Entity &Level::spawn() {
+
+    return manager.addEntity();
+}
+
 void Level::tick() {
 
     // Run camera logic

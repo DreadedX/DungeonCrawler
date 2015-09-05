@@ -47,9 +47,10 @@ void Entity::removeGroup(std::size_t mGroup) {
 
 void Manager::tick() {
 
-    for (auto& e : entities) {
+    int size = entities.size();
+    for (int i = 0; i < size; i++) {
 
-	e->tick();
+	entities[i]->tick();
     }
 }
 

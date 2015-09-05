@@ -54,12 +54,40 @@ void Input::keyCallback(GLFWwindow* window, int key, int scancode, int action, i
     }
 #endif
 }
-#pragma GCC diagnostic pop
+
+void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
+
+    #if DEBUG_MODE
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.WantCaptureMouse) {
+
+	ImGui_ImplGlfwGL3_MouseButtonCallback(window, button, action, mods);
+    } else {
+    #endif
+
+	// Check if the key is pressed
+	if (action == GLFW_PRESS) {
+
+	    // Set the key to true
+	    keys[button] = true;
+	}
+
+	// Check if the key is released
+	if (action == GLFW_RELEASE) {
+
+	    // Set the key to false
+	    keys[button] = false;
+	}
+    #if DEBUG_MODE
+    }
+    #endif
+}
 
 void Input::mousePosCallback(GLFWwindow* window, double xPos, double yPos) {
 
     mousePos = glm::vec4(xPos, yPos, 0, 1);
 }
+#pragma GCC diagnostic pop
 
 bool Input::isPressed(int key) {
 

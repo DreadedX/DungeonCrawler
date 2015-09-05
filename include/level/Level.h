@@ -4,6 +4,7 @@
 namespace Level {
 
     void init();
+    Entity &spawn();
     void tick();
     void render();
     void end();

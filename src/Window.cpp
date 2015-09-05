@@ -76,6 +76,7 @@ void glfw() {
     // Setup the key callback
     glfwSetKeyCallback(window, Input::keyCallback);
     glfwSetCursorPosCallback(window, Input::mousePosCallback);
+    glfwSetMouseButtonCallback(window, Input::mouseButtonCallback);
 
 #if DEBUG_MODE
 #if not LEGACY
@@ -83,7 +84,6 @@ void glfw() {
     ImGui_ImplGlfwGL3_Init(window, false);
 
     // Setup ImGui callbacks
-    glfwSetMouseButtonCallback(window, ImGui_ImplGlfwGL3_MouseButtonCallback);
     glfwSetScrollCallback(window, ImGui_ImplGlfwGL3_ScrollCallback);
     glfwSetCharCallback(window, ImGui_ImplGlfwGL3_CharCallback);
 #else
