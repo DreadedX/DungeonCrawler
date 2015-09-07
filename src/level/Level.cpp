@@ -5,9 +5,9 @@ auto& player = manager.addEntity();
 
 uint *layout   = nullptr;
 // vec2 levelSize = vec2(256, 256);
-glm::vec2 size = glm::vec2(25, 25);
+glm::ivec2 size = glm::ivec2(25, 25);
 // vec2 levelSize = vec2(25, 25);
-glm::vec2 levelSize = size * 5;
+glm::ivec2 levelSize = size * 5;
 
 void newLevel() {
 
@@ -56,7 +56,7 @@ void Level::init() {
     // levelSize = IO::Reader::getImageSize(room_test);
 
     // Read the layout data
-    // layout = new byte[(int)(levelSize.x * levelSize.y)];
+    // layout = new byte[levelSize.x * levelSize.y];
     // IO::Reader::read(room_test, layout);
 
     newLevel();
@@ -67,15 +67,19 @@ void Level::init() {
     player.addComponent<CollisionComponent>();
     player.addComponent<PhysicsComponent>();
     player.addComponent<TextureComponent>("entity/player/class/mage", glm::vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
-    player.addComponent<PlayerComponent>();
+    player.addComponent<HealthComponent>(100);
     player.addComponent<InventoryComponent>();
+    player.addComponent<PlayerComponent>();
+
+    // NOTE: Only for testing
+    player.getComponent<HealthComponent>().damage(10);
 
     // Initialize all entities
 }
 
-Entity &Level::spawn() {
+Manager *Level::getManager() {
 
-    return manager.addEntity();
+    return &manager;
 }
 
 void Level::tick() {
@@ -105,14 +109,14 @@ void Level::render() {
 
     Render::startTile();
 
-    for (int y = (int)levelSize.y-1; y >= 0; y--) {
+    for (int y = levelSize.y-1; y >= 0; y--) {
 
-	for (int x = 0; x < (int)levelSize.x; x++) {
+	for (int x = 0; x < levelSize.x; x++) {
 	    // Create location vector
 	    glm::vec4 position = glm::vec4 (x, y, 0, 1);
 
 	    // Render each tile
-	    Tile::render(position, layout[(int)(x + y * levelSize.y)]);
+	    Tile::render(position, layout[(x + y * levelSize.y)]);
 	}
     }
 
@@ -132,9 +136,14 @@ Entity *Level::getPlayer() {
     return &player;
 }
 
-bool Level::isSolid(glm::vec4 mPosition) {
+bool Level::isSolid(glm::ivec4 mPosition) {
 
-    Tile::TileData tile = Tile::getTileData(layout[(int)(mPosition.x) + (int)(mPosition.y) * (int)(levelSize.x)]);
+    if (mPosition.x < 0 || mPosition.y < 0 || mPosition.x > levelSize.x || mPosition.y > levelSize.y) {
+
+	return false;
+    }
+
+    Tile::TileData tile = Tile::getTileData(layout[mPosition.x + mPosition.y * levelSize.x]);
 
     return (tile.type & TYPE_SOLID) == TYPE_SOLID;
 }

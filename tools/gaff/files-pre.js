@@ -47,6 +47,7 @@ var data = { "data": [
 
     // Entities
     file("in/entity/player/class/mage.png", TYPE_ENTITY),
+    file("in/entity/arrow.png", TYPE_ENTITY),
     file("in/entity/enemy.png", TYPE_ENTITY),
 
     // Font

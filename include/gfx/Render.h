@@ -15,7 +15,7 @@ namespace Render {
     void map();
 
     void startEntity();
-    void entity(glm::vec4 position, glm::vec4 scale, GLuint tex);
+    void entity(glm::vec4 position, glm::vec4 scale, float mAngle, GLuint tex);
     void endEntity();
 }
 #endif

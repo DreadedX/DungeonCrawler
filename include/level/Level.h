@@ -4,14 +4,14 @@
 namespace Level {
 
     void init();
-    Entity &spawn();
     void tick();
     void render();
     void end();
 
+    Manager *getManager();
     Entity *getPlayer();
 
-    bool isSolid(glm::vec4 mPosition);
+    bool isSolid(glm::ivec4 mPosition);
 
 };
 

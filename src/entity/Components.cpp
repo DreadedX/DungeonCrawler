@@ -112,25 +112,26 @@ ProjectileComponent::ProjectileComponent(glm::vec4 mVelocity) {
 void ProjectileComponent::init() {
 
     cPosition = &entity->getComponent<PositionComponent>();
+    cPhysics = &entity->getComponent<PhysicsComponent>();
+    cPhysics->velocity = velocity;
 }
 
 void ProjectileComponent::tick() {
 
-    glm::mat4 move = glm::translate(IDENTITY, glm::vec3(velocity.x, velocity.y, velocity.z));
-
-    cPosition->position = move * cPosition->position;
-    
+    // TODO: Check if the projectile has collided
     life--;
     if (life <= 0) {
 
 	entity->destroy();
     }
+
+    cPhysics->velocity = velocity;
 }
 
 void PlayerComponent::init() {
 
     cPhysics = &entity->getComponent<PhysicsComponent>();
-    // cClass = &entity->getComponent<ClassComponent>();
+    cInventory = &entity->getComponent<InventoryComponent>();
 
     acceleration = cPhysics->getAccelaration(1.5f/16);
 }
@@ -159,12 +160,16 @@ void PlayerComponent::tick() {
 
     if (Input::isPressed(GLFW_MOUSE_BUTTON_LEFT)) {
 
-	Input::setState(GLFW_MOUSE_BUTTON_LEFT, false);
-	auto& projectile = Level::spawn();
-	projectile.addComponent<PositionComponent>(cPhysics->cPosition->position);
-	projectile.addComponent<TextureComponent>("entity/player/class/mage", glm::vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0));
-	float angle = Math::pointAngle(glm::vec4(WIDTH*SCALE/2, HEIGHT*SCALE/2, 0, 1), Input::getMousePos());
-	projectile.addComponent<ProjectileComponent>(glm::vec4(1.5 * cos(angle), 1.5 * sin(angle), 0, 0));
+	if (Level::getManager()->getEntitiesByGroup(GROUP_INVENTORY).size() > 0) {
+
+	    Level::getManager()->getEntitiesByGroup(GROUP_INVENTORY)[0]->getComponent<ItemComponent>().attack();
+	}
+    }
+
+    // TODO: Make this only use items that are equiped
+    for (auto &item : Level::getManager()->getEntitiesByGroup(GROUP_INVENTORY)) {
+
+	item->getComponent<ItemComponent>().passive();
     }
 
 #if DEBUG_MODE
@@ -196,10 +201,44 @@ void PlayerComponent::tick() {
 #endif
 }
 
-TextureComponent::TextureComponent(std::string mTex, glm::vec4 mScale) {
+HealthComponent::HealthComponent(float mMaxHealth) {
 
-    tex = Texture::load(mTex);
-    scale = mScale;
+    maxHealth = mMaxHealth;
+    health = mMaxHealth;
+}
+
+void HealthComponent::damage(float damage) {
+
+    health -= damage;
+
+    Log::print(String::format("Took %f damage", damage), DEBUG);
+
+    if (health <= 0) {
+
+	// TODO: Add better death handeling
+	entity->destroy();
+    }
+}
+
+void HealthComponent::heal(float heal) {
+
+    if (health != maxHealth) {
+
+	health += heal;
+
+	Log::print(String::format("Healed for %f", heal), DEBUG);
+    }
+
+    if (health >= maxHealth) {
+
+	health = maxHealth;
+    }
+}
+
+void HealthComponent::setMaxHealth(float mMaxHealth) {
+
+    maxHealth = mMaxHealth;
+    health = mMaxHealth;
 }
 
 InventoryComponent::InventoryComponent() {
@@ -222,7 +261,9 @@ bool InventoryComponent::addItem() {
 
     static long seedItem = time(NULL);
 
-    Entity &item = inventory->addEntity();
+    Entity &item = Level::getManager()->addEntity();
+    item.addGroup(GROUP_INVENTORY);
+    Level::getManager()->addToGroup(&item, GROUP_INVENTORY);
     item.addComponent<ItemComponent>(Randomizer::random(itemCount, &seedItem) - 1);
     item.addComponent<ModifierItemComponent>(Randomizer::random(modifierCount, &seedItem) - 1);
 
@@ -244,12 +285,19 @@ void InventoryComponent::listInventory() {
 
     Log::print("----Inventory----", DEBUG);
 
-    for (auto& entity : inventory->getEntities()) {
+    for (auto& entity : Level::getManager()->getEntitiesByGroup(GROUP_INVENTORY)) {
 
 	ItemComponent item = entity->getComponent<ItemComponent>();
 
 	Log::print(String::format("%s %.1f %.1f", item.name.c_str(), item.value, item.weight), DEBUG);
     }
+}
+
+TextureComponent::TextureComponent(std::string mTex, glm::vec4 mScale, float mAngle) {
+
+    tex = Texture::load(mTex);
+    scale = mScale;
+    angle = mAngle;
 }
 
 void TextureComponent::init() {
@@ -260,5 +308,5 @@ void TextureComponent::init() {
 
 void TextureComponent::render() {
 
-    Render::entity(cPosition->position, scale/2, tex);
+    Render::entity(cPosition->position, scale/2, angle, tex);
 }

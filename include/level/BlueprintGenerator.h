@@ -3,7 +3,7 @@
 
 namespace BlueprintGenerator {
 
-    uint *generate(uint *prototpye, glm::vec2 size, glm::vec2 levelSize);
+    uint *generate(uint *prototpye, glm::ivec2 size, glm::ivec2 levelSize);
 
     uint getTile(int type);
 

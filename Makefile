@@ -80,6 +80,7 @@ valgrind: tools/gaff/files.json
 
 tools/gaff/files.json: $(shell find tools/gaff/in) tools/gaff/files-pre.js
 	@echo "Generating: sandbox/out.gaf"
+	@cd tools/gaff/in/config; node items-pre.js
 	@cd tools/gaff; node files-pre.js && ./gaff
 	@cp tools/gaff/out.gaff sandbox/out.gaff
 

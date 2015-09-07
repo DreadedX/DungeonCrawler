@@ -3,7 +3,7 @@
 
 namespace LevelGenerator {
 
-    uint *generate(glm::vec2 size);
+    uint *generate(glm::ivec2 size);
 
     uint getDirectionTile(uint direction);
 };

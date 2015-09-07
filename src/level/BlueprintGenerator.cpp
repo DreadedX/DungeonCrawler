@@ -109,120 +109,120 @@ uint mazePiece[][25] = {
     }
 };
 
-uint *BlueprintGenerator::generate(uint *prototype, glm::vec2 size, glm::vec2 levelSize) {
+uint *BlueprintGenerator::generate(uint *prototype, glm::ivec2 size, glm::ivec2 levelSize) {
 
-    uint *blueprint = new uint[(int)(levelSize.x * levelSize.y)];
+    uint *blueprint = new uint[levelSize.x * levelSize.y];
 
-    for (int i = 0; i < (int)(levelSize.x * levelSize.y); i++) {
+    for (int i = 0; i < levelSize.x * levelSize.y; i++) {
 
 	blueprint[i] = 0;
     }
 
-    for (int y = 0; y < (int)size.y; y++) {
+    for (int y = 0; y < size.y; y++) {
 
-	for (int x = 0; x < (int)size.x; x++) {
+	for (int x = 0; x < size.x; x++) {
 
 	    for (int iy = 0; iy < 5; iy++) {
 
 		for (int ix = 0; ix < 5; ix++) {
 		    // N
-		    if (prototype[(int)(x + y * size.x)] == genDirNorth) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == genDirNorth) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[0][ix+iy*5];
 		    }
 
 		    // E
-		    if (prototype[(int)(x + y * size.x)] == genDirEast) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == genDirEast) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[1][ix+iy*5];
 		    }
 
 		    // S
-		    if (prototype[(int)(x + y * size.x)] == genDirSouth) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == genDirSouth) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[2][ix+iy*5];
 		    }
 
 		    // W
-		    if (prototype[(int)(x + y * size.x)] == genDirWest) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == genDirWest) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[3][ix+iy*5];
 		    }
 
 		    // NE
-		    if (prototype[(int)(x + y * size.x)] == (genDirNorth | genDirEast)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirNorth | genDirEast)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[4][ix+iy*5];
 		    }
 
 		    // NS
-		    if (prototype[(int)(x + y * size.x)] == (genDirNorth | genDirSouth)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirNorth | genDirSouth)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[5][ix+iy*5];
 		    }
 
 		    // NW
-		    if (prototype[(int)(x + y * size.x)] == (genDirNorth | genDirWest)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirNorth | genDirWest)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[6][ix+iy*5];
 		    }
 
 		    // ES
-		    if (prototype[(int)(x + y * size.x)] == (genDirEast | genDirSouth)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirEast | genDirSouth)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[7][ix+iy*5];
 		    }
 
 		    // EW
-		    if (prototype[(int)(x + y * size.x)] == (genDirEast | genDirWest)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirEast | genDirWest)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[8][ix+iy*5];
 		    }
 
 		    // SW
-		    if (prototype[(int)(x + y * size.x)] == (genDirSouth | genDirWest)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirSouth | genDirWest)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[9][ix+iy*5];
 		    }
 
 		    // NES
-		    if (prototype[(int)(x + y * size.x)] == (genDirNorth | genDirEast | genDirSouth)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirNorth | genDirEast | genDirSouth)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[10][ix+iy*5];
 		    }
 
 		    // NEW
-		    if (prototype[(int)(x + y * size.x)] == (genDirNorth | genDirEast | genDirWest)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirNorth | genDirEast | genDirWest)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[11][ix+iy*5];
 		    }
 
 		    // NSW
-		    if (prototype[(int)(x + y * size.x)] == (genDirNorth | genDirSouth | genDirWest)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirNorth | genDirSouth | genDirWest)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[12][ix+iy*5];
 		    }
 
 		    // ESW
-		    if (prototype[(int)(x + y * size.x)] == (genDirEast | genDirSouth | genDirWest)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirEast | genDirSouth | genDirWest)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[13][ix+iy*5];
 		    }
 
 		    // NESW
-		    if (prototype[(int)(x + y * size.x)] == (genDirNorth | genDirEast | genDirSouth | genDirWest)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if (prototype[x + y * size.x] == (genDirNorth | genDirEast | genDirSouth | genDirWest)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = mazePiece[14][ix+iy*5];
 		    }
 
 		    // Empty / Filled
-		    if ((prototype[(int)(x + y * size.x)] == genEmpty) || (prototype[(int)(x + y * size.x)] == genFilled)) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if ((prototype[x + y * size.x] == genEmpty) || (prototype[(x + y * size.x)] == genFilled)) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = tileFilled;
 		    }
 
-		    if ((prototype[(int)(x + y * size.x)] & genRoom) == genRoom) {
-			int index = (int)((x*5+ix)+(y*5+iy)*levelSize.x); 
+		    if ((prototype[x + y * size.x] & genRoom) == genRoom) {
+			int index = ((x*5+ix)+(y*5+iy)*levelSize.x); 
 			blueprint[index] = 0;
 		    }
 		}

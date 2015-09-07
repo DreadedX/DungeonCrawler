@@ -4,6 +4,9 @@
 class Entity;
 class Manager;
 
+// TODO: Make this an enum
+static const std::size_t GROUP_INVENTORY = 1;
+
 struct Component {
     Entity* entity;
     

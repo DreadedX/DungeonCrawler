@@ -22,6 +22,7 @@ namespace Key {
     const int ATTACK = GLFW_KEY_SPACE;
     // const int DASH = GLFW_KEY_W;
     const int PAUSE = GLFW_KEY_ESCAPE;
+    const int CONTINUE = GLFW_KEY_SPACE;
 
     const int DEBUG_ZOOM_IN = GLFW_KEY_Q;
     const int DEBUG_ZOOM_OUT = GLFW_KEY_E;

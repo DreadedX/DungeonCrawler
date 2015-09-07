@@ -215,12 +215,17 @@ void Render::startEntity() {
     #endif
 }
 
-void Render::entity(glm::vec4 position, glm::vec4 scale, GLuint tex) {
+void Render::entity(glm::vec4 position, glm::vec4 scale, float mAngle, GLuint tex) {
 
     #if not LEGACY
+    glm::mat4 rotateMatrix = glm::rotate(IDENTITY, mAngle, glm::vec3(0, 0, 1));
     glm::mat4 scaleMatrix = glm::scale(IDENTITY, glm::vec3(scale.x, scale.y, scale.z));
     glm::mat4 modelMatrix = glm::translate(IDENTITY, glm::vec3(position.x, position.y, position.z));
-    glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix * scaleMatrix;
+    glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix *
+	glm::translate(IDENTITY, glm::vec3(scale.x/2, scale.y/2, scale.z/2)) *
+	rotateMatrix *
+	glm::translate(IDENTITY, glm::vec3(-scale.x/2, -scale.y/2, -scale.z/2)) *
+	scaleMatrix;
 
     if (activeTexture != tex) {
 

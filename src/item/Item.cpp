@@ -1,4 +1,38 @@
-# include "Standard.h"
+#include "Standard.h"
+
+struct MeleeAttack : ItemType {
+
+    void attack() override {
+
+	Log::print("Melee attack", DEBUG);
+    }
+};
+
+
+struct ArrowAttack : ItemType {
+
+    void attack() override {
+
+	// NOTE: Maybe make this a delay, that way you don't have to spawn the mouse button
+	Input::setState(GLFW_MOUSE_BUTTON_LEFT, false);
+	auto& projectile = Level::getManager()->addEntity();
+	projectile.addComponent<PositionComponent>(Level::getPlayer()->getComponent<PositionComponent>().position);
+	projectile.addComponent<HitboxComponent>(glm::vec4(0, 0, 0, 0), glm::vec4(17.0f/16.0f, 10.0f/16.0f, 1, 0));
+	projectile.addComponent<CollisionComponent>();
+	projectile.addComponent<PhysicsComponent>();
+	float angle = Math::pointAngle(glm::vec4(WIDTH*SCALE/2, HEIGHT*SCALE/2, 0, 1), Input::getMousePos());
+	projectile.addComponent<TextureComponent>("entity/arrow", glm::vec4(17.0f/16.0f, 20.0f/16.0f, 1, 0), angle);
+	projectile.addComponent<ProjectileComponent>(glm::vec4(0.25 * cos(angle), 0.25 * sin(angle), 0, 0));
+    }
+};
+
+struct HealingPassive : ItemType {
+
+    void passive() override {
+
+	Level::getPlayer()->getComponent<HealthComponent>().heal(0.05f);
+    }
+};
 
 ItemComponent::ItemComponent(int id) {
 
@@ -19,6 +53,37 @@ ItemComponent::ItemComponent(int id) {
     name = item[0].GetString();
     value = item[1].GetDouble();
     weight = item[2].GetDouble();
+	    
+    // TODO: Add delete for each new
+    // TODO: There has to be a better way to do this
+    switch (item[3].GetInt()) {
+
+	// NOTE: If attack() deal damage in close range of player
+	case TYPE_MELEE:
+	    itemType = new MeleeAttack;
+	    break;
+
+	// NOTE: If attack() spawn projectile
+	case TYPE_RANGED:
+	    itemType = new ArrowAttack;
+	    break;
+
+	// NOTE: If passive() execute passive code
+	case TYPE_PASSIVE:
+	    HealingPassive healingPassive;
+	    itemType = new HealingPassive;
+	    break;
+    }
+}
+
+void ItemComponent::attack() {
+
+    itemType->attack();
+}
+
+void ItemComponent::passive() {
+
+    itemType->passive();
 }
 
 ModifierItemComponent::ModifierItemComponent(int id) {

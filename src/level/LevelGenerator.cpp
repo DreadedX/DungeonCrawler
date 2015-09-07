@@ -19,8 +19,7 @@ static long seedLayout = 26101997;
 
 int mazeCounter = 0;
 
-
-void createRoom(uint *prototype, glm::vec2 size, Room room) {
+void createRoom(uint *prototype, glm::ivec2 size, Room room) {
 
     int requiredSpace = Randomizer::random(5, &seedLayout);
 
@@ -28,7 +27,7 @@ void createRoom(uint *prototype, glm::vec2 size, Room room) {
 
 	for (int x = room.x - requiredSpace; x < room.x + room.width + requiredSpace + 1; x++) {
 
-	    if (y < 0 || y > (int)size.y || x < 0 || x > (int)size.x || prototype[(int)(x + y * size.x)] != genEmpty) {
+	    if (y < 0 || y > size.y || x < 0 || x > size.x || prototype[x + y * size.x] != genEmpty) {
 
 		return;
 	    }
@@ -41,23 +40,23 @@ void createRoom(uint *prototype, glm::vec2 size, Room room) {
 
 	    if (y == room.y && x == room.x) {
 
-		prototype[(int)(x + y * size.y)] = genRoom | genDoor;
+		prototype[x + y * size.y] = genRoom | genDoor;
 	    } else {
 
-		prototype[(int)(x + y * size.y)] = genRoom;
+		prototype[x + y * size.y] = genRoom;
 	    }
 	}
     }
 }
 
-bool placeExit(uint *prototype, glm::vec2 size) {
+bool placeExit(uint *prototype, glm::ivec2 size) {
 
-    int x = Randomizer::random((int)size.x, &seedLayout) - 1;
-    int y =Randomizer::random((int)size.y, &seedLayout) - 1;
+    int x = Randomizer::random(size.x, &seedLayout) - 1;
+    int y =Randomizer::random(size.y, &seedLayout) - 1;
 
-    if ((prototype[(int)(x + y * size.x)] == genRoom)) {
+    if ((prototype[x + y * size.x] == genRoom)) {
 
-	prototype[(int)(x + y * size.x)] = genRoom | genExit;
+	prototype[x + y * size.x] = genRoom | genExit;
 
 	return true;
     }
@@ -65,7 +64,7 @@ bool placeExit(uint *prototype, glm::vec2 size) {
     return false;
 }
 
-void carveMaze(uint *prototype, glm::vec2 size, Cell cell, byte previousDirection) {
+void carveMaze(uint *prototype, glm::ivec2 size, Cell cell, byte previousDirection) {
 
     std::vector<Cell> neighbourCells;
     uint directions = previousDirection;
@@ -86,11 +85,11 @@ void carveMaze(uint *prototype, glm::vec2 size, Cell cell, byte previousDirectio
 
     std::random_shuffle(neighbourCells.begin(), neighbourCells.end());
 
-    prototype[(int)(cell.x + cell.y * size.y)] = genDirNone;
+    prototype[cell.x + cell.y * size.y] = genDirNone;
 
     for (Cell nextCell : neighbourCells) {
 
-	if (nextCell.y >= 0 && nextCell.y < (int)size.y && nextCell.x >= 0 && nextCell.x < (int)size.x) {
+	if (nextCell.y >= 0 && nextCell.y < size.y && nextCell.x >= 0 && nextCell.x < size.x) {
 
 	    byte oppositeDirection = 0;
 	    if (nextCell.direction < 4) {
@@ -101,7 +100,7 @@ void carveMaze(uint *prototype, glm::vec2 size, Cell cell, byte previousDirectio
 		oppositeDirection = nextCell.direction / 4;
 	    }
 
-	    if (prototype[(int)(nextCell.x + nextCell.y * size.x)] == genEmpty) {
+	    if (prototype[nextCell.x + nextCell.y * size.x] == genEmpty) {
 
 		directions |= nextCell.direction;
 
@@ -110,103 +109,103 @@ void carveMaze(uint *prototype, glm::vec2 size, Cell cell, byte previousDirectio
 		carveMaze(prototype, size, nextCell, oppositeDirection);
 	    }
 
-	    if ((prototype[(int)(nextCell.x + nextCell.y * size.x)] & genDoor) == genDoor) {
+	    if ((prototype[nextCell.x + nextCell.y * size.x] & genDoor) == genDoor) {
 
 		directions |= nextCell.direction;
 	    }
 	}
     }
 
-    prototype[(int)(cell.x + cell.y * size.y)] = directions;
+    prototype[cell.x + cell.y * size.y] = directions;
 }
 
-void connectMaze(uint *prototype, glm::vec2 size) {
+void connectMaze(uint *prototype, glm::ivec2 size) {
 
-    int x = Randomizer::random((int)size.x, &seedLayout) - 1;
-    int y = Randomizer::random((int)size.y, &seedLayout) - 1;
+    int x = Randomizer::random(size.x, &seedLayout) - 1;
+    int y = Randomizer::random(size.y, &seedLayout) - 1;
 
     int direction = Randomizer::random(4, &seedLayout);
 
-    if ((prototype[(int)(x + y * size.x)] & genRoom) != genRoom && (prototype[(int)(x + y * size.x)] & genFilled) != genFilled) {
+    if ((prototype[x + y * size.x] & genRoom) != genRoom && (prototype[x + y * size.x] & genFilled) != genFilled) {
 
-	if (direction == 1 && (prototype[(int)(x + (y+1) * size.x)] & genRoom) != genRoom && (prototype[(int)(x + (y+1) * size.x)] & genFilled) != genFilled && (y+1) < (int)size.y) {
-	    prototype[(int)(x + y * size.x)] |= genDirNorth;
-	    prototype[(int)(x + (y+1) * size.x)] |= genDirSouth;
+	if (direction == 1 && (prototype[x + (y+1) * size.x] & genRoom) != genRoom && (prototype[x + (y+1) * size.x] & genFilled) != genFilled && (y+1) < size.y) {
+	    prototype[(x + y * size.x)] |= genDirNorth;
+	    prototype[(x + (y+1) * size.x)] |= genDirSouth;
 	}
 
-	if (direction == 2 && (prototype[(int)((x+1) + y * size.x)] & genRoom) != genRoom && (prototype[(int)((x+1) + y * size.x)] & genFilled) != genFilled && (x+1) < (int)size.x) {
-	    prototype[(int)(x + y * size.x)] |= genDirEast;
-	    prototype[(int)((x+1) + y * size.x)] |= genDirWest;
+	if (direction == 2 && (prototype[(x+1) + y * size.x] & genRoom) != genRoom && (prototype[(x+1) + y * size.x] & genFilled) != genFilled && (x+1) < size.x) {
+	    prototype[(x + y * size.x)] |= genDirEast;
+	    prototype[((x+1) + y * size.x)] |= genDirWest;
 	}
 
-	if (direction == 3 && (prototype[(int)(x + (y-1) * size.x)] & genRoom) != genRoom && (prototype[(int)(x + (y-1) * size.x)] & genFilled) != genFilled && (y-1) >= 0) {
-	    prototype[(int)(x + y * size.x)] |= genDirSouth;
-	    prototype[(int)(x + (y-1) * size.x)] |= genDirNorth;
+	if (direction == 3 && (prototype[x + (y-1) * size.x] & genRoom) != genRoom && (prototype[x + (y-1) * size.x] & genFilled) != genFilled && (y-1) >= 0) {
+	    prototype[(x + y * size.x)] |= genDirSouth;
+	    prototype[(x + (y-1) * size.x)] |= genDirNorth;
 	}
 
-	if (direction == 4 && (prototype[(int)((x-1) + y * size.x)] & genRoom) != genRoom && (prototype[(int)((x-1) + y * size.x)] & genFilled) != genFilled && (x-1) >= 0) {
+	if (direction == 4 && (prototype[(x-1) + y * size.x] & genRoom) != genRoom && (prototype[(x-1) + y * size.x] & genFilled) != genFilled && (x-1) >= 0) {
 
-	    prototype[(int)(x + y * size.x)] |= genDirWest;
-	    prototype[(int)((x-1) + y * size.x)] |= genDirEast;
+	    prototype[(x + y * size.x)] |= genDirWest;
+	    prototype[((x-1) + y * size.x)] |= genDirEast;
 	}
     }
 }
 
-void sparseMaze(uint *prototype, glm::vec2 size) {
+void sparseMaze(uint *prototype, glm::ivec2 size) {
 
-    int x = Randomizer::random((int)size.x, &seedLayout) - 1;
-    int y = Randomizer::random((int)size.y, &seedLayout) - 1;
+    int x = Randomizer::random(size.x, &seedLayout) - 1;
+    int y = Randomizer::random(size.y, &seedLayout) - 1;
 
-    if (prototype[(int)(x + y * size.x)] == genDirNorth) {
+    if (prototype[x + y * size.x] == genDirNorth) {
 
-	prototype[(int)(x + y * size.x)] = genEmpty;
-	prototype[(int)(x + (y+1) * size.x)] ^= genDirSouth;
-
-	mazeCounter--;
-    }
-
-    if (prototype[(int)(x + y * size.x)] == genDirEast) {
-
-	prototype[(int)(x + y * size.x)] = genEmpty;
-	prototype[(int)((x+1) + y * size.x)] ^= genDirWest;
+	prototype[x + y * size.x] = genEmpty;
+	prototype[x + (y+1) * size.x] ^= genDirSouth;
 
 	mazeCounter--;
     }
 
-    if (prototype[(int)(x + y * size.x)] == genDirSouth) {
+    if (prototype[x + y * size.x] == genDirEast) {
 
-	prototype[(int)(x + y * size.x)] = genEmpty;
-	prototype[(int)(x + (y-1) * size.x)] ^= genDirNorth;
+	prototype[x + y * size.x] = genEmpty;
+	prototype[(x+1) + y * size.x] ^= genDirWest;
 
 	mazeCounter--;
     }
 
-    if (prototype[(int)(x + y * size.x)] == genDirWest) {
+    if (prototype[x + y * size.x] == genDirSouth) {
 
-	prototype[(int)(x + y * size.x)] = genEmpty;
-	prototype[(int)((x-1) + y * size.x)] ^= genDirEast;
+	prototype[x + y * size.x] = genEmpty;
+	prototype[x + (y-1) * size.x] ^= genDirNorth;
+
+	mazeCounter--;
+    }
+
+    if (prototype[x + y * size.x] == genDirWest) {
+
+	prototype[x + y * size.x] = genEmpty;
+	prototype[(x-1) + y * size.x] ^= genDirEast;
 
 	mazeCounter--;
     }
 }
 
-void findRooms(uint *prototype, glm::vec2 size) {
+void findRooms(uint *prototype, glm::ivec2 size) {
 
-    for (int y = 0; y < (int)size.y; y++) {
+    for (int y = 0; y < size.y; y++) {
 
-	for (int x = 0; x < (int)size.x; x++) {
+	for (int x = 0; x < size.x; x++) {
 
 	    if (
-		    ((prototype[(int)(x + y * size.x)] & (genDirEast | genDirSouth)) == (genDirEast | genDirSouth) || (prototype[(int)(x + y * size.x)] & genRoom) == genRoom) &&
-		    ((prototype[(int)(x + (y-1) * size.x)] & (genDirEast | genDirNorth)) == (genDirEast | genDirNorth) || (prototype[(int)(x + (y-1) * size.x)] & genRoom) == genRoom) &&
-		    ((prototype[(int)((x+1) + y * size.x)] & (genDirWest | genDirSouth)) == (genDirWest | genDirSouth) || (prototype[(int)((x+1) + y * size.x)] & genRoom) == genRoom) &&
-		    ((prototype[(int)((x+1) + (y-1) * size.x)] & (genDirWest | genDirNorth)) == (genDirWest | genDirNorth) || (prototype[(int)((x+1) + (y-1) * size.x)] & genRoom) == genRoom)
+		    ((prototype[x + y * size.x] & (genDirEast | genDirSouth)) == (genDirEast | genDirSouth) || (prototype[x + y * size.x] & genRoom) == genRoom) &&
+		    ((prototype[x + (y-1) * size.x] & (genDirEast | genDirNorth)) == (genDirEast | genDirNorth) || (prototype[x + (y-1) * size.x] & genRoom) == genRoom) &&
+		    ((prototype[(x+1) + y * size.x] & (genDirWest | genDirSouth)) == (genDirWest | genDirSouth) || (prototype[(x+1) + y * size.x] & genRoom) == genRoom) &&
+		    ((prototype[(x+1) + (y-1) * size.x] & (genDirWest | genDirNorth)) == (genDirWest | genDirNorth) || (prototype[(x+1) + (y-1) * size.x] & genRoom) == genRoom)
 	       ) {
 
-		prototype[(int)(x + y * size.x)] = genRoom; 
-		prototype[(int)(x + (y-1) * size.x)] = genRoom;
-		prototype[(int)((x+1) + y * size.x)] = genRoom;
-		prototype[(int)((x+1) + (y-1) * size.x)] = genRoom;
+		prototype[x + y * size.x] = genRoom; 
+		prototype[x + (y-1) * size.x] = genRoom;
+		prototype[(x+1) + y * size.x] = genRoom;
+		prototype[(x+1) + (y-1) * size.x] = genRoom;
 	    }
 	}
 
@@ -214,9 +213,9 @@ void findRooms(uint *prototype, glm::vec2 size) {
 
 }
 
-uint *LevelGenerator::generate(glm::vec2 size) {
+uint *LevelGenerator::generate(glm::ivec2 size) {
 
-    uint *prototype = new uint[(int)(size.x * size.y)];
+    uint *prototype = new uint[size.x * size.y];
     mazeCounter = 0;
 
     for (int i = 0; i < size.x * size.y; i++) {
@@ -228,8 +227,8 @@ uint *LevelGenerator::generate(glm::vec2 size) {
     for (int i = 0; i < 10000; i++) {
 
 	Room room = {
-	    Randomizer::random((int)size.x - 2, &seedLayout),
-	    Randomizer::random((int)size.y - 2, &seedLayout),
+	    Randomizer::random(size.x - 2, &seedLayout),
+	    Randomizer::random(size.y - 2, &seedLayout),
 	    // Randomizer::random(3, &seedLayout) + 1,
 	    // Randomizer::random(3, &seedLayout) + 1
 	    Randomizer::random(3, &seedLayout) + 1,
@@ -243,19 +242,19 @@ uint *LevelGenerator::generate(glm::vec2 size) {
     // Place random filled spots
     for (int i = 0; i < 200; i++) {
 
-	int x =Randomizer::random((int)size.x, &seedLayout) - 1;
-	int y = Randomizer::random((int)size.y, &seedLayout) - 1;
+	int x =Randomizer::random(size.x, &seedLayout) - 1;
+	int y = Randomizer::random(size.y, &seedLayout) - 1;
 
 	if (
-		(prototype[(int)(x + y * size.y)] & genRoom) == 0 &&
-		prototype[(int)(x + (y+1) * size.y)] != genFilled &&
-		prototype[(int)((x+1) + y * size.y)] != genFilled &&
-		prototype[(int)(x + (y-1) * size.y)] != genFilled &&
-		prototype[(int)((x-1) + y * size.y)] != genFilled
+		(prototype[x + y * size.y] & genRoom) == 0 &&
+		prototype[x + (y+1) * size.y] != genFilled &&
+		prototype[(x+1) + y * size.y] != genFilled &&
+		prototype[x + (y-1) * size.y] != genFilled &&
+		prototype[(x-1) + y * size.y] != genFilled
 	   ) {
 
 	    // TODO: Add seperate filled space tile
-	    prototype[(int)(x + y * size.y)] = genFilled;
+	    prototype[x + y * size.y] = genFilled;
 	}
 
     }
@@ -263,10 +262,10 @@ uint *LevelGenerator::generate(glm::vec2 size) {
     // Maze carver
     int cx = 0;
     int cy = 0;
-    // while (prototype[(int)(cx + cy * size.x)] == genEmpty) {
+    // while (prototype[(cx + cy * size.x)] == genEmpty) {
 
-    cx =Randomizer::random((int)size.x, &seedLayout) - 1;
-    cy = Randomizer::random((int)size.y, &seedLayout) - 1;
+    cx =Randomizer::random(size.x, &seedLayout) - 1;
+    cy = Randomizer::random(size.y, &seedLayout) - 1;
     // }
 
     Cell startCell = {cx, cy, 0};

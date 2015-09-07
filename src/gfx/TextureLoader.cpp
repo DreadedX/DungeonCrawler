@@ -20,11 +20,11 @@ GLuint Texture::load(std::string name) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, largest_supported_anisotropy);
 
     // Create vector containing fallback image size
-    glm::vec2 imageSize = glm::vec2(2, 2);
+    glm::ivec2 imageSize = glm::ivec2(2, 2);
 
     // Create pixel data array filled with a fallback texture
     byte *pixels;
-    pixels = new byte[(int) (imageSize.x * imageSize.y * 4)] {
+    pixels = new byte[imageSize.x * imageSize.y * 4] {
 	255,   0, 255, 255,      0,   0,   0, 255,
 	    0,   0,   0, 255,    255,   0, 255, 255
     };
@@ -43,7 +43,7 @@ GLuint Texture::load(std::string name) {
 	pixels = nullptr;
 
 	// Read the image data
-	pixels = new byte[(int) (imageSize.x * imageSize.y * 4)];
+	pixels = new byte[imageSize.x * imageSize.y * 4];
 	Reader::read(id, pixels);
     } else {
 

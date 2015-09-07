@@ -308,7 +308,7 @@ void renderDebug() {
 
 	Render::startEntity();
 
-	Render::entity(glm::vec4(Input::getMousePos().x/WIDTH, Input::getMousePos().y/HEIGHT, 0, 0), glm::vec4(1, 1, 1, 0), 1);
+	Render::entity(glm::vec4(Input::getMousePos().x/WIDTH, Input::getMousePos().y/HEIGHT, 0, 0), glm::vec4(1, 1, 1, 0), 0, 1);
 
 	Log::print(String::format("%f, %f", (Input::getMousePos().x), (Input::getMousePos().y)), DEBUG);
 

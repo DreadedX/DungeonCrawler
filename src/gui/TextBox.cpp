@@ -32,9 +32,6 @@ struct TextBoxObject {
 
 	// TODO: Make this devide the text in lines
 	lines.push_back(text);
-	lines.push_back("Hello world!");
-	lines.push_back("abcdefghijkmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	lines.push_back("This is the last line");
     }
 
     bool canContinue() {
@@ -99,7 +96,7 @@ void TextBox::tick() {
 
 	bool next = true;
 
-	bool continueText = Input::isPressed(GLFW_KEY_T);
+	bool continueText = Input::isPressed(Key::CONTINUE);
 
 	// TODO: This code needs to be cleaned up
 	for (auto& t : currentTextBox->textLines) {

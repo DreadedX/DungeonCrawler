@@ -48,6 +48,7 @@ struct PhysicsComponent : Component {
 struct ProjectileComponent : Component {
 
     PositionComponent *cPosition = nullptr;
+    PhysicsComponent *cPhysics = nullptr;
 
     glm::vec4 velocity;
     int life = 60;
@@ -62,24 +63,31 @@ struct TextureComponent : Component {
 
     PositionComponent *cPosition = nullptr;
 
-    TextureComponent(std::string mTex, glm::vec4 mScale);
+    TextureComponent(std::string mTex, glm::vec4 mScale = glm::vec4(1, 1, 1, 0), float mAngle = 0);
 
     GLuint tex = 0;
     glm::vec4 scale;
+    float angle;
 
     void init() override;
     void render() override;
 };
 
+struct HealthComponent : Component {
+
+    HealthComponent(float mMaxHealth);
+
+    float maxHealth = 0;
+    float health = 0;
+
+    void damage(float damage);
+    void heal(float heal);
+    void setMaxHealth(float mMaxHealth);
+};
+
 struct InventoryComponent : Component {
 
-    Manager *inventory = new Manager;
-
     InventoryComponent();
-    ~InventoryComponent() {
-
-	delete inventory;
-    }
 
     int itemCount = 0;
     int modifierCount = 0;
@@ -92,6 +100,7 @@ struct InventoryComponent : Component {
 struct PlayerComponent : Component {
 
     PhysicsComponent *cPhysics = nullptr;
+    InventoryComponent *cInventory = nullptr;
 
     float acceleration = 0;
 

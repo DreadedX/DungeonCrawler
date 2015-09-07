@@ -1,12 +1,14 @@
-(A) Get mouse location +Feature
+(A) Using the exit command causes pthread error +Bug
+(A) Prevent reloading of already loaded textures +Bug
+(Z) ------------------ +Bug
 (A) Implement UI system +Feature
+(A) Implement actual inventory managment +Feature
 (A) Make items actually do something +Feature
 (A) Make the collision system work correctly +Feature
 (A) Text-boxes for dialogue +Feature
 (B) Implement audio +Feature
 (B) Implement lighting +Feature
 (B) Store tile type in gaff, for automated blueprint to tilemap system +Feature
-(B) Merge String::format into Log::print
 (C) Implement loading screen +Feature
 (C) Implement particle system +Feature
 (C) Make actual enemies +Feature
@@ -15,17 +17,21 @@
 (C) "Turn-based" (enemies only move when you move) +Idea
 (C) Add shops that randomly spawn +Idea
 (Z) ------------------ +Idea
+(A) Add batch rendering, game is currently bottlenecked by CPU not GPU +Improve
+(A) Rotate hitboxes +Improve
 (A) Change vec's containing int's to ivec's +Improve
+(A) Make sure that variables are accessed trough setters and getters and not directly +Improve
+(A) Make variables public/protected/private +Improve
+(B) Have entity specific inventories, instead of a global player only inventory +Improve
+(B) Merge String::format into Log::print +Improve
 (C) Create actual assets +Improve
 (C) Make view distance a compile option (Legacy only) +Improve
 (C) Multi-threading +Improve
 (C) Store maze piece blueprints in gaff file +Improve
 (Z) ------------------ +Improve
-(A) Make windows build work +Project
-(A) Make all code consistent +Project
 (A) Improve function names +Project
-(A) Make sure that variables are accessed trough setters and getters and not directly
-(A) Make variables public/protected/private
+(A) Make all code consistent +Project
+(A) Make windows build work +Project
 (Z) ------------------ +Project
-x 2015-08-29 Create system for vim to detect on which system I am running in order to select correct makefile config +Workflow
+(A) Create system for vim to detect on which system I am running in order to select correct makefile config +Workflow
 (Z) ------------------ +Workflow

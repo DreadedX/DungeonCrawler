@@ -1,6 +1,6 @@
 # include "Standard.h"
 
-glm::vec4 positionLast = glm::vec4(0, 0, 0, 0);
+glm::vec4 positionLast = glm::vec4(0, 0, 0, 1);
 glm::vec4 toMove       = glm::vec4(0, 0, 0, 0);
 
 float tweenFloat = 0.1 * VT;

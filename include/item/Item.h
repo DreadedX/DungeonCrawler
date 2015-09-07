@@ -1,6 +1,26 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+enum {
+
+    TYPE_RANGED = 0,
+    TYPE_MELEE = 1,
+    TYPE_PASSIVE = 2
+};
+
+enum {
+
+    TYPE_ARROW = 0,
+    TYPE_FIRE = 1,
+    TYPE_HEALING = 2
+};
+
+struct ItemType {
+
+    virtual void attack() {}
+    virtual void passive() {}
+};
+
 struct ItemComponent : Component {
 
     ItemComponent(int id);
@@ -8,6 +28,11 @@ struct ItemComponent : Component {
     std::string name;
     float value;
     float weight;
+
+    ItemType *itemType = nullptr;
+
+    void attack();
+    void passive();
 };
 
 struct ModifierItemComponent : Component {
