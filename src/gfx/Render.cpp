@@ -108,7 +108,7 @@ void Render::init() {
     glLoadIdentity();
     // TODO: Try and make this work
     // gluPerspective(fov, 4.0f / 3.0f, 0.1f, 200.0f);
-    glOrtho(0,48,0,24,-100, 100);
+    glOrtho(0,32,0,18,-100, 100);
     #endif
 }
 
@@ -238,22 +238,29 @@ void Render::entity(glm::vec4 position, glm::vec4 scale, float mAngle, GLuint te
 
     glDrawArrays(GL_TRIANGLES, 0, 2*3);
     #else
+    
+    glPushMatrix();
+    glTranslatef(position.x, position.y, 0);
+    glRotatef(mAngle*57.2974, 0, 0, 1);
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, tex);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
-    glVertex3f(position.x, position.y, 0);
+    glVertex3f(-scale.x/2, -scale.y/2, 0);
 
     glTexCoord2f(1, 0);
-    glVertex3f(position.x+scale.x, position.y, 0);
+    glVertex3f(scale.x/2, -scale.y/2, 0);
 
     glTexCoord2f(1, 1);
-    glVertex3f(position.x+scale.x, position.y+scale.y, 0);
+    glVertex3f(scale.x/2, scale.y/2, 0);
 
     glTexCoord2f(0, 1);
-    glVertex3f(position.x, position.y+scale.y, 0);
+    glVertex3f(-scale.x/2, scale.y/2, 0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
+
+    glPopMatrix();
     #endif
 }
 

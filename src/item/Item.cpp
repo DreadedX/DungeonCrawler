@@ -64,6 +64,7 @@ ItemComponent::ItemComponent(int id) {
 
 	// NOTE: If attack() spawn projectile
 	case TYPE_RANGED:
+	    Log::print("Ranged weapon", DEBUG);
 	    itemType = new ArrowAttack;
 	    break;
 
@@ -77,6 +78,7 @@ ItemComponent::ItemComponent(int id) {
 
 void ItemComponent::attack() {
 
+    Log::print("Attacking", DEBUG);
     itemType->attack();
 }
 

@@ -61,7 +61,11 @@ void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int 
     ImGuiIO& io = ImGui::GetIO();
     if (io.WantCaptureMouse) {
 
+	#if not LEGACY
 	ImGui_ImplGlfwGL3_MouseButtonCallback(window, button, action, mods);
+	#else
+	// ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+	#endif
     } else {
     #endif
 

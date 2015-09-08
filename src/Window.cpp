@@ -91,7 +91,6 @@ void glfw() {
     ImGui_ImplGlfw_Init(window, false);
 
     // Setup ImGui callbacks
-    glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
     glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
     glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
 #endif

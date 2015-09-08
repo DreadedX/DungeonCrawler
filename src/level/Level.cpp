@@ -71,10 +71,6 @@ void Level::init() {
     player.addComponent<InventoryComponent>();
     player.addComponent<PlayerComponent>();
 
-    // NOTE: Only for testing
-    player.getComponent<HealthComponent>().damage(10);
-
-    // Initialize all entities
 }
 
 Manager *Level::getManager() {

@@ -1,6 +1,7 @@
 # Default values
 TYPE = debug
 CXX = g++
+WINDOWS = false
 
 # Load project settings
 CONFIG = default
@@ -17,7 +18,11 @@ COMPILE_FLAGS += -O3
 endif
 
 NAME = bin/$(CONFIG)/$(TYPE)/$(PROGRAM_NAME)
+ifeq ($(WINDOWS),false)
 LIBS = $(shell pkg-config --libs --cflags $(LIBS_EXTERN))
+else
+LIBS = $(shell i686-w64-mingw32-pkg-config --libs --cflags $(LIBS_EXTERN))
+endif
 COMPILE_FLAGS += -pthread -Wno-write-strings -std=c++14 -Wall -Wextra $(COMPILE_FLAGS_EXTRA) $(DEFS) -Winvalid-pch
 # TODO: Make this automated
 INCLUDES = -I build/header/$(CONFIG)/$(TYPE) -I include -I libs/include -I libs/include/imgui -I libs/include/leakage -I libs/include/rapidjson -I libs/include/gorilla -I /usr/include/freetype2 -Llibs/a

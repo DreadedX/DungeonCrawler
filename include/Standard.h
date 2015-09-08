@@ -44,11 +44,6 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-// OpenAL
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/alut.h>
-
 // Zlib
 #include <zlib.h>
 
