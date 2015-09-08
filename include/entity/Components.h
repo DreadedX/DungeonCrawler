@@ -23,6 +23,7 @@ struct CollisionComponent : Component {
     void init() override;
 
     glm::mat4 checkCollision(glm::vec4 mVelocity);
+    bool hasCollided(glm::vec4 mVelocity);
 };
 
 struct PhysicsComponent : Component {
@@ -48,6 +49,7 @@ struct PhysicsComponent : Component {
 struct ProjectileComponent : Component {
 
     PositionComponent *cPosition = nullptr;
+    CollisionComponent *cCollision = nullptr;
     PhysicsComponent *cPhysics = nullptr;
 
     glm::vec4 velocity;

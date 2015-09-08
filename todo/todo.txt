@@ -4,10 +4,8 @@
 (A) Implement actual inventory managment +Feature
 (A) Make items actually do something +Feature
 (A) Make the collision system work correctly +Feature
-(A) Text-boxes for dialogue +Feature
 (B) Implement audio +Feature
 (B) Implement lighting +Feature
-(B) Store tile type in gaff, for automated blueprint to tilemap system +Feature
 (C) Implement loading screen +Feature
 (C) Implement particle system +Feature
 (C) Make actual enemies +Feature
@@ -26,7 +24,6 @@
 (C) Create actual assets +Improve
 (C) Make view distance a compile option (Legacy only) +Improve
 (C) Multi-threading +Improve
-(C) Store maze piece blueprints in gaff file +Improve
 (Z) ------------------ +Improve
 (A) Improve function names +Project
 (A) Make all code consistent +Project

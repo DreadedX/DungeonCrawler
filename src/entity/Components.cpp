@@ -29,7 +29,7 @@ void CollisionComponent::init() {
 
 glm::mat4 CollisionComponent::checkCollision(glm::vec4 mVelocity) {
 
-	// X-axis
+    // X-axis
     glm::mat4 tempMoveX = glm::translate(IDENTITY, glm::vec3(mVelocity.x, 0, 0));
 
     glm::vec4 tempPositionX0 = (tempMoveX * cPosition->position) + cHitbox->origin;
@@ -77,6 +77,51 @@ glm::mat4 CollisionComponent::checkCollision(glm::vec4 mVelocity) {
     return move;
 }
 
+bool CollisionComponent::hasCollided(glm::vec4 mVelocity) {
+
+    // X-axis
+    glm::mat4 tempMoveX = glm::translate(IDENTITY, glm::vec3(mVelocity.x, 0, 0));
+
+    glm::vec4 tempPositionX0 = (tempMoveX * cPosition->position) + cHitbox->origin;
+
+    glm::vec4 tempPositionX1 = tempPositionX0;
+    tempPositionX1.x += cHitbox->size.x;
+
+    glm::vec4 tempPositionX2 = tempPositionX0;
+    tempPositionX2.y += cHitbox->size.y;
+
+    glm::vec4 tempPositionX3 = tempPositionX0;
+    tempPositionX3.x += cHitbox->size.x;
+    tempPositionX3.y += cHitbox->size.y;
+
+    if (Level::isSolid(tempPositionX0) || Level::isSolid(tempPositionX1) || Level::isSolid(tempPositionX2) || Level::isSolid(tempPositionX3)) {
+
+	return true;
+    }
+
+    // Y-axis
+    glm::mat4 tempMoveY = glm::translate(IDENTITY, glm::vec3(0, mVelocity.y, 0));
+
+    glm::vec4 tempPositionY0 = (tempMoveY * cPosition->position) + cHitbox->origin;
+
+    glm::vec4 tempPositionY1 = tempPositionY0;
+    tempPositionY1.x += cHitbox->size.x;
+
+    glm::vec4 tempPositionY2 = tempPositionY0;
+    tempPositionY2.y += cHitbox->size.y;
+
+    glm::vec4 tempPositionY3 = tempPositionY0;
+    tempPositionY3.x += cHitbox->size.x;
+    tempPositionY3.y += cHitbox->size.y;
+
+    if (Level::isSolid(tempPositionY0) || Level::isSolid(tempPositionY1) || Level::isSolid(tempPositionY2) || Level::isSolid(tempPositionY3)) {
+
+	return true;
+    }
+
+    return false;
+}
+
 void PhysicsComponent::tick() {
 
     glm::mat4 move;
@@ -112,17 +157,23 @@ ProjectileComponent::ProjectileComponent(glm::vec4 mVelocity) {
 void ProjectileComponent::init() {
 
     cPosition = &entity->getComponent<PositionComponent>();
+    cCollision = &entity->getComponent<CollisionComponent>();
     cPhysics = &entity->getComponent<PhysicsComponent>();
     cPhysics->velocity = velocity;
 }
 
 void ProjectileComponent::tick() {
 
-    // TODO: Check if the projectile has collided
     life--;
     if (life <= 0) {
 
 	entity->destroy();
+    }
+    
+    // TODO: Make this look graphicly nicer
+    if (cCollision->hasCollided(velocity)) {
+
+	velocity = glm::vec4(0, 0, 0, 0);
     }
 
     cPhysics->velocity = velocity;

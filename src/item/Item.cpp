@@ -8,7 +8,6 @@ struct MeleeAttack : ItemType {
     }
 };
 
-
 struct ArrowAttack : ItemType {
 
     void attack() override {
@@ -17,7 +16,7 @@ struct ArrowAttack : ItemType {
 	Input::setState(GLFW_MOUSE_BUTTON_LEFT, false);
 	auto& projectile = Level::getManager()->addEntity();
 	projectile.addComponent<PositionComponent>(Level::getPlayer()->getComponent<PositionComponent>().position);
-	projectile.addComponent<HitboxComponent>(glm::vec4(0, 0, 0, 0), glm::vec4(17.0f/16.0f, 10.0f/16.0f, 1, 0));
+	projectile.addComponent<HitboxComponent>(glm::vec4(0, 0, 0, 0), glm::vec4(1, 1, 1, 0));
 	projectile.addComponent<CollisionComponent>();
 	projectile.addComponent<PhysicsComponent>();
 	float angle = Math::pointAngle(glm::vec4(WIDTH*SCALE/2, HEIGHT*SCALE/2, 0, 1), Input::getMousePos());
@@ -115,7 +114,6 @@ void ModifierItemComponent::init() {
     item->value *= value;
     item->weight *= weight;
 }
-
 
 void EnchantmentItemComponent::init() {
 

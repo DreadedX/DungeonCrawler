@@ -1,2 +1,3 @@
 x 2015-09-06 Get mouse location +Feature
 x 2015-09-08 Prevent reloading of already loaded textures +Bug
+x 2015-09-08 Text-boxes for dialogue +Feature
