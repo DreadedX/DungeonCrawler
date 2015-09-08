@@ -1,5 +1,4 @@
 (A) Using the exit command causes pthread error +Bug
-(A) Prevent reloading of already loaded textures +Bug
 (Z) ------------------ +Bug
 (A) Implement UI system +Feature
 (A) Implement actual inventory managment +Feature

@@ -1,9 +1,20 @@
 #include "Standard.h"
 
+std::unordered_map<std::string, GLuint> loaded;
+
 GLuint Texture::load(std::string name) {
 
-    // Create texture
     GLuint tex;
+
+    if (loaded.find(name) != loaded.end()) {
+
+	tex = loaded[name];
+
+	Log::print(String::format("Texture %i already loaded", tex), DEBUG);
+	return tex;
+    }
+
+    // Create texture
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
 
@@ -60,6 +71,8 @@ GLuint Texture::load(std::string name) {
     // Free memory
     delete[] pixels;
     pixels = nullptr;
+
+    loaded[name] = tex;
 
     // Return texture id
     return tex;

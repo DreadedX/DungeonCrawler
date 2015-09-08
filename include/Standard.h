@@ -31,6 +31,7 @@
 #include <type_traits>
 #include <thread>
 #include <map>
+#include <unordered_map>
 
 #if DEBUG_MODE && __linux__
 #include <proc/readproc.h>
