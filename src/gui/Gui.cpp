@@ -54,6 +54,47 @@ void Gui::tick() {
 
     // NOTE: This needs to be called last, else it will cause nullpointers
     Text::tick();
+
+    // Inventory ui code
+    Manager *manager = Level::getManager();
+    auto items = manager->getEntitiesByGroup(GROUP_INVENTORY);
+
+    // TODO: This should propably move into the inventory component
+    static uint currentItem = 0;
+
+    for (uint i = 0; i < 16; i++) {
+
+	std::string itemName = "";
+	if (manager->getEntitiesByGroup(GROUP_INVENTORY).size() > i) {
+
+	    itemName = items[i]->getComponent<ItemComponent>().name;
+	} else {
+
+	    break;
+	}
+
+	std::string suffix = "";
+	if (i == currentItem) {
+
+	    suffix = " *";
+	}
+
+	Text::add(String::format("%s %s", itemName.c_str(), suffix.c_str()), glm::ivec4(2, HEIGHT-(10*(i+1)), 0, 1), 0.25f, glm::ivec4(1, 1, 1, 1), 0)->display = false;
+    }
+
+    // TODO: This should propably move into the inventory component
+    if (Input::isPressed(Key::ITEM_DOWN)) {
+
+	Input::setState(Key::ITEM_DOWN, false);
+
+	currentItem++;
+    }
+    if (Input::isPressed(Key::ITEM_UP)) {
+
+	Input::setState(Key::ITEM_UP, false);
+
+	currentItem--;
+    }
 }
 
 void Gui::render() {

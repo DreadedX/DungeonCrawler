@@ -314,8 +314,7 @@ bool InventoryComponent::addItem() {
 
     Entity &item = Level::getManager()->addEntity();
     item.addGroup(GROUP_INVENTORY);
-    Level::getManager()->addToGroup(&item, GROUP_INVENTORY);
-    item.addComponent<ItemComponent>(1);
+    item.addComponent<ItemComponent>(Randomizer::random(itemCount, &seedItem) - 1);
     // item.addComponent<ItemComponent>(Randomizer::random(itemCount, &seedItem) - 1);
     item.addComponent<ModifierItemComponent>(Randomizer::random(modifierCount, &seedItem) - 1);
 
@@ -356,7 +355,6 @@ void TextureComponent::init() {
 
     cPosition = &entity->getComponent<PositionComponent>();
 }
-
 
 void TextureComponent::render() {
 

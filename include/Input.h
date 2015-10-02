@@ -23,6 +23,9 @@ namespace Key {
     const int PAUSE = GLFW_KEY_ESCAPE;
     const int CONTINUE = GLFW_KEY_SPACE;
 
+    const int ITEM_UP = GLFW_MOUSE_BUTTON_5;
+    const int ITEM_DOWN = GLFW_MOUSE_BUTTON_4;
+
     const int DEBUG_ZOOM_IN = GLFW_KEY_Q;
     const int DEBUG_ZOOM_OUT = GLFW_KEY_E;
     const int DEBUG_NEW_LEVEL = GLFW_KEY_R;

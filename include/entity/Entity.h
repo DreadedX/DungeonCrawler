@@ -5,6 +5,7 @@ class Entity;
 class Manager;
 
 // TODO: Make this an enum
+// TODO: It is propably a good idea to move all these kinds of definitions into the definitions file
 static const std::size_t GROUP_INVENTORY = 1;
 
 struct Component {
